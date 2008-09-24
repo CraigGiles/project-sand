@@ -32,6 +32,28 @@ namespace SandTileEngine
         private const int noTile = -1;
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Get the source sprite texture
+        /// </summary>
+        public Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
+
+        /// <summary>
+        /// Get the rectangle that defines the source sprite
+        /// on the sheet.
+        /// </summary>
+        public Rectangle this[int i]
+        {
+            get { return spriteDefinitions[i]; }
+        }
+
+        #endregion
+
         #region Constructors
         /// <summary>
         /// Create a new Sprite Sheet
@@ -50,29 +72,6 @@ namespace SandTileEngine
         public void AddSourceSprite(int key, Rectangle rect)
         {
             spriteDefinitions.Add(key, rect);
-        }
-
-        /// <summary>
-        /// Get the source sprite texture
-        /// </summary>
-        public Texture2D Texture
-        {
-            get
-            {
-                return texture;
-            }
-        }
-
-        /// <summary>
-        /// Get the rectangle that defines the source sprite
-        /// on the sheet.
-        /// </summary>
-        public Rectangle this[int i]
-        {
-            get
-            {
-                return spriteDefinitions[i];
-            }
         }
 
         /// <summary>
