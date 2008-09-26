@@ -30,6 +30,22 @@ namespace SandTileEngine
 
         #endregion
 
+        #region Fields
+
+        private string layerName;
+        private SpriteSheet sheet;
+        private Rectangle visibleTiles;
+
+        //drawing parameters
+        private Vector2 cameraPostionValue;
+        private float zoomValue;
+        private Vector2 scaleValue;
+        private Vector2 displaySize;
+        private bool visibilityChanged;
+        private byte alpha;
+
+        #endregion
+
         #region Tile Information
 
         static int tileWidth = 32;
@@ -94,21 +110,14 @@ namespace SandTileEngine
             get { return map.GetLength(0); }
         }
 
-        #endregion
-
-        #region Fields
-
-        private string gridName;
-        private SpriteSheet sheet;
-        private Rectangle visibleTiles;
-
-        //drawing parameters
-        private Vector2 cameraPostionValue;
-        private float zoomValue;
-        private Vector2 scaleValue;
-        private Vector2 displaySize;
-        private bool visibilityChanged;
-        private byte alpha;
+        /// <summary>
+        /// Determines the opacity of the layer
+        /// </summary>
+        public byte Alpha
+        {
+            get { return alpha; }
+            set { alpha = value; }
+        }
 
         #endregion
 
@@ -212,7 +221,7 @@ namespace SandTileEngine
         /// </summary>
         public void debugPrint()
         {
-            Console.WriteLine("-=- " + gridName + "-=-\n");
+            Console.WriteLine("-=- " + layerName + "-=-\n");
             for (int i = 0; i < map.GetLength(0); i++)
             {
                 for (int j = 0; j < map.GetLength(1); j++)
@@ -304,7 +313,7 @@ namespace SandTileEngine
             visibilityChanged = false;
         }
 
-        public void Draw(SpriteBatch batch, Camera camera)
+        public void Draw(SpriteBatch batch)
         {
             if (visibilityChanged) DetermineVisibility();
             
@@ -314,7 +323,6 @@ namespace SandTileEngine
             Vector2 screenCenter = new Vector2(
                 (displaySize.X / 2),
                 (displaySize.Y / 2));
-            //Vector2 screenCenter = Vector2.Zero;
 
             //begin a batch of sprites to be drawn all at once
             batch.Begin(SpriteBlendMode.AlphaBlend);
@@ -324,10 +332,8 @@ namespace SandTileEngine
             bool validTile;
 
             for (int x = visibleTiles.Left; x < visibleTiles.Right; x++)
-            //for (int x = 0; x < 10; x++)
             {
                 for (int y = visibleTiles.Top; y < visibleTiles.Bottom; y++)
-                //for (int y = 0; y < 10; y++)
                 {
                     if (map[x,y] != -1)
                     {
