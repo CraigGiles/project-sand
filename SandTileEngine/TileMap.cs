@@ -21,7 +21,7 @@ namespace SandTileEngine
     /// <summary>
     /// Tile editor renderer that will display
     /// </summary>
-    class TileMap
+    public class TileMap
     {
         #region Constants
 
@@ -32,9 +32,15 @@ namespace SandTileEngine
         const int cDefaultTileHeight = 40;
         const int cDefaultTileWidth = 40;
         const int cTileOffset = 1;
+
         #endregion
 
         #region Fields
+
+        // Name of the map
+        string name;
+        // Name of the map used in game or for information
+        string mapName;
 
         // Tile information
         SpriteSheet tileSheet;
@@ -53,7 +59,6 @@ namespace SandTileEngine
         string mapTileFile;
         int tileWidth, tileHeight;
         int[] transparentColor = new int[3];
-        string mapName;
         int mapWidth, mapHeight;
         int[,] mapBounds;
         int[,] mapCodes;
@@ -63,17 +68,43 @@ namespace SandTileEngine
         #region Properties
 
         /// <summary>
+        /// Name of the map used for the editor
+        /// </summary>
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        /// <summary>
+        /// Name of the map used in game or for information
+        /// </summary>
+        public string MapName
+        {
+            get { return mapName; }
+            set { mapName = value; }
+        }
+
+        /// <summary>
         /// Returns the 2D array of map boundaries
         /// </summary>
-        private int[,] MapBounds
+        public int[,] MapBounds
         {
             get { return mapBounds; }
         }
 
         /// <summary>
+        /// Returns the 2D array of map codes
+        /// </summary>
+        public int[,] MapCodes
+        {
+            get { return mapCodes; }
+        }
+
+        /// <summary>
         /// Returns the current map height
         /// </summary>
-        private int MapHeight
+        public int MapHeight
         {
             get { return mapHeight; }
         }
@@ -81,9 +112,18 @@ namespace SandTileEngine
         /// <summary>
         /// Returns the current map width
         /// </summary>
-        private int MapWidth
+        public int MapWidth
         {
             get { return mapWidth; }
+        }
+
+        /// <summary>
+        /// Obtains the i-th layer of the map
+        /// </summary>
+        public byte this[int i]
+        {
+            get { return tileLayer[i]; }
+            set { tileLayer[i] = value; }
         }
 
         #endregion
