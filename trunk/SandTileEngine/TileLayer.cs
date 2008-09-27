@@ -80,6 +80,14 @@ namespace SandTileEngine
         int[,] map;
 
         /// <summary>
+        /// Returns the matrix of tile information on the layer
+        /// </summary>
+        public int[,] Map
+        {
+            get { return map; }
+        }
+
+        /// <summary>
         /// Returns the width of the layer in pixels
         /// </summary>
         public int WidthInPixels

@@ -19,6 +19,18 @@ using Microsoft.Xna.Framework.Content;
 namespace SandTileEngine
 {
     /// <summary>
+    /// Enum for easier reading of layer numbers
+    /// </summary>
+    public enum Layer : int
+    {
+        BaseLayer = 0,
+        MiddleLayer,
+        TopLayer,
+        CollisionLayer,
+        Atmosphere
+    };
+
+    /// <summary>
     /// Tile editor renderer that will display
     /// </summary>
     public class TileMap
@@ -77,6 +89,14 @@ namespace SandTileEngine
         {
             get { return mapName; }
             set { mapName = value; }
+        }
+
+        /// <summary>
+        /// Returns the tile set that this map is using
+        /// </summary>
+        public SpriteSheet TileSheet
+        {
+            get { return tileSheet; }
         }
 
         /// <summary>
