@@ -86,6 +86,12 @@
   <ItemGroup>
     <None Include="Resources\newprojecticon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SandTileEngine\SandTileEngine.csproj">
+      <Project>{4F7B776E-525B-42D1-AAEE-058823DF563E}</Project>
+      <Name>SandTileEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
