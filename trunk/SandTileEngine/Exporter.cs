@@ -145,8 +145,8 @@ namespace SandTileEngine
 
                 CreateElementTileSheet(xmlDoc, assetNode);
 
-                //CreateElementTileDimensions(xmlDoc, assetNode,
-                //    tileMap.TileWidth, tileMap.TileHeight);
+                CreateElementTileDimensions(xmlDoc, assetNode,
+                    tileMap[0].Width, tileMap[0].Height);
                 #endregion
 
                 #region Map Layers
@@ -155,19 +155,19 @@ namespace SandTileEngine
                 
                 //comment "Map Layers"
                 //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "BaseLayer", baseLayer);
+                //    "BaseLayer", tileMap[0].Matrix);
 
                 //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "MiddleLayer", middleLayer);
+                //    "MiddleLayer", tileMap[1].Matrix);
 
                 //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "TopLayer", topLayer);
+                //    "TopLayer", tileMap[2].Matrix);
 
                 //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "AtmosphereLayer", atmosphereLayer);
+                //    "AtmosphereLayer", tileMap[3].Matrix);
 
                 //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "CollisionLayer", collisionLayer);
+                //    "CollisionLayer", tileMap[4].Matrix);
                 #endregion
 
                 xmlDoc.Save(xmlExportedFileName);
@@ -225,7 +225,7 @@ namespace SandTileEngine
         private void CreateElementMapName(XmlDocument xmlDoc, XmlElement assetNode,
                                                         string mapName)
         {
-            XmlElement nameElement = xmlDoc.CreateElement(mapNameElementFormat);
+            XmlElement nameElement = xmlDoc.CreateElement(ElementNameMapName);
             nameElement.InnerText = mapName;
             assetNode.AppendChild(nameElement);
         }
@@ -291,12 +291,12 @@ namespace SandTileEngine
         #region Tile Dimensions
 
         /// <summary>
-        /// The Tag used for the Map Dimensions element
+        /// The Tag used for the Tile Dimensions element
         /// </summary>
         string elementNameTileDimensions = "TileDimensions";
 
         /// <summary>
-        /// The Tag used for the Map Dimensions element
+        /// The Tag used for the Tile Dimensions element
         /// </summary>
         public string ElementNameTileDimensions
         {
