@@ -113,27 +113,6 @@ namespace SandTileEngine
         /// </summary>
         public void ExportXml(string fileName, TileMap tileMap)
         {
-            //Splits the 5 layers out of the TileMap and
-            //calls the ExportXml method
-
-            //ExportXml(fileName,
-            //    tileMap.BaseLayer,
-            //    tileMap.MiddleLayer,
-            //    tileMap.TopLayer,
-            //    tileMap.AtmosphereLayer,
-            //    tileMap.CollisionLayer);
-        }
-
-        /// <summary>
-        /// Exports the map data to an XML file
-        /// </summary>
-        public void ExportXml(string fileName,
-            TileLayer baseLayer,
-            TileLayer middleLayer,
-            TileLayer topLayer,
-            TileLayer atmosphereLayer,
-            TileLayer collisionLayer)
-        {
             XmlDocument xmlDoc = new XmlDocument();
 
             //try to write the file, and if things go wrong
@@ -158,31 +137,37 @@ namespace SandTileEngine
 
                 #region Map Details
                 CreateComment(xmlDoc, assetNode, "Basic Map Details");
-                CreateElementMapName(xmlDoc, assetNode);
-                CreateElementMapDimensions(xmlDoc, assetNode);
+
+                CreateElementMapName(xmlDoc, assetNode, tileMap.Name);
+
+                CreateElementMapDimensions(xmlDoc, assetNode, 
+                    tileMap.MapWidth, tileMap.MapHeight);
+
                 CreateElementTileSheet(xmlDoc, assetNode);
-                CreateElementTileDimensions(xmlDoc, assetNode);
+
+                //CreateElementTileDimensions(xmlDoc, assetNode,
+                //    tileMap.TileWidth, tileMap.TileHeight);
                 #endregion
 
                 #region Map Layers
                 //Map Layers comment
                 CreateComment(xmlDoc, assetNode, "Map Layers");
-
+                
                 //comment "Map Layers"
-                CreateElementLayerInformation(xmlDoc, assetNode,
-                    "BaseLayer", baseLayer);
+                //CreateElementLayerInformation(xmlDoc, assetNode,
+                //    "BaseLayer", baseLayer);
 
-                CreateElementLayerInformation(xmlDoc, assetNode,
-                    "MiddleLayer", middleLayer);
+                //CreateElementLayerInformation(xmlDoc, assetNode,
+                //    "MiddleLayer", middleLayer);
 
-                CreateElementLayerInformation(xmlDoc, assetNode,
-                    "TopLayer", topLayer);
+                //CreateElementLayerInformation(xmlDoc, assetNode,
+                //    "TopLayer", topLayer);
 
-                CreateElementLayerInformation(xmlDoc, assetNode,
-                    "AtmosphereLayer", atmosphereLayer);
+                //CreateElementLayerInformation(xmlDoc, assetNode,
+                //    "AtmosphereLayer", atmosphereLayer);
 
-                CreateElementLayerInformation(xmlDoc, assetNode,
-                    "CollisionLayer", collisionLayer);
+                //CreateElementLayerInformation(xmlDoc, assetNode,
+                //    "CollisionLayer", collisionLayer);
                 #endregion
 
                 xmlDoc.Save(xmlExportedFileName);
@@ -192,9 +177,10 @@ namespace SandTileEngine
                 WriteError(ex.ToString());
             }
         }
+
         #endregion
 
-        #region Private Methods
+        #region Write To Error Log
         /// <summary>
         /// Writes an error message to a debug log file
         /// </summary>        
@@ -203,7 +189,9 @@ namespace SandTileEngine
             //Writes the error message to a log file.
             ErrorLog.WriteErrorMessage(error);
         }
+        #endregion
 
+        #region Comment
         /// <summary>
         /// Creates a comment line in the XML file
         /// </summary>
@@ -213,26 +201,79 @@ namespace SandTileEngine
             XmlComment commentElement = xmlDoc.CreateComment(comment);
             assetNode.AppendChild(commentElement);
         }
+        #endregion
 
+        #region Map Name
+
+        /// <summary>
+        /// The Tag used for the Map Name element
+        /// </summary>
+        string elementNameMapName = "Name";
+
+        /// <summary>
+        /// The Tag used for the Map Name element
+        /// </summary>
+        public string ElementNameMapName
+        {
+            get { return elementNameMapName; }
+            set { elementNameMapName = value; }
+        }
 
         /// <summary>
         /// Creates the XML Element for the Map Name
         /// </summary>
-        private void CreateElementMapName(XmlDocument xmlDoc, XmlElement assetNode)
+        private void CreateElementMapName(XmlDocument xmlDoc, XmlElement assetNode,
+                                                        string mapName)
         {
-            XmlElement mapName = xmlDoc.CreateElement("Name");
-            mapName.InnerText = "InsertMapName";
-            assetNode.AppendChild(mapName);
+            XmlElement nameElement = xmlDoc.CreateElement(mapNameElementFormat);
+            nameElement.InnerText = mapName;
+            assetNode.AppendChild(nameElement);
+        }
+        #endregion
+
+        #region Map Dimensions
+
+        /// <summary>
+        /// The Tag used for the Map Dimensions element
+        /// </summary>
+        string elementNameMapDimensions = "MapDimensions";
+
+        /// <summary>
+        /// The Tag used for the Map Dimensions element
+        /// </summary>
+        public string ElementNameMapDimensions
+        {
+            get { return elementNameMapDimensions; }
+            set { elementNameMapDimensions = value; }
         }
 
         /// <summary>
         /// Creates the XML Element for the Map Dimensions
         /// </summary>
-        private void CreateElementMapDimensions(XmlDocument xmlDoc, XmlElement assetNode)
+        private void CreateElementMapDimensions(XmlDocument xmlDoc, XmlElement assetNode,
+                                                int width, int height)
         {
-            XmlElement mapDimensions = xmlDoc.CreateElement("MapDimensions");
-            mapDimensions.InnerText = "X Y";
+            XmlElement mapDimensions = xmlDoc.CreateElement(ElementNameMapDimensions);
+            mapDimensions.InnerText = width.ToString() + " " + height.ToString();
             assetNode.AppendChild(mapDimensions);
+        }
+
+        #endregion
+
+        #region Tile Sheet
+
+        /// <summary>
+        /// The Tag used for the TileSheet element
+        /// </summary>
+        string elementNameTileSheet = "TileSheetContentName";
+
+        /// <summary>
+        /// The Tag used for the TileSheet element
+        /// </summary>
+        public string ElementNameTileSheet
+        {
+            get { return elementNameTileSheet; }
+            set { elementNameTileSheet = value; }
         }
 
         /// <summary>
@@ -240,20 +281,43 @@ namespace SandTileEngine
         /// </summary>
         private void CreateElementTileSheet(XmlDocument xmlDoc, XmlElement assetNode)
         {
-            XmlElement tileSheetContentName = xmlDoc.CreateElement("TileSheetContentName");
+            XmlElement tileSheetContentName = xmlDoc.CreateElement(ElementNameTileSheet);
             tileSheetContentName.InnerText = "TextureDirectoryAndPath";
             assetNode.AppendChild(tileSheetContentName);
+        }
+
+        #endregion
+
+        #region Tile Dimensions
+
+        /// <summary>
+        /// The Tag used for the Map Dimensions element
+        /// </summary>
+        string elementNameTileDimensions = "TileDimensions";
+
+        /// <summary>
+        /// The Tag used for the Map Dimensions element
+        /// </summary>
+        public string ElementNameTileDimensions
+        {
+            get { return elementNameTileDimensions; }
+            set { elementNameTileDimensions = value; }
         }
 
         /// <summary>
         /// Creates the XML Element for the Tile Dimensions
         /// </summary>
-        private void CreateElementTileDimensions(XmlDocument xmlDoc, XmlElement assetNode)
+        private void CreateElementTileDimensions(XmlDocument xmlDoc, XmlElement assetNode,
+                                                 int tileWidth, int tileHeight)
         {
-            XmlElement tileDimensions = xmlDoc.CreateElement("TileDimensions");
-            tileDimensions.InnerText = "X Y";
+            XmlElement tileDimensions = xmlDoc.CreateElement(ElementNameTileDimensions);
+            tileDimensions.InnerText = tileWidth.ToString() + " " + tileHeight.ToString();
             assetNode.AppendChild(tileDimensions);
         }
+
+        #endregion
+
+        #region Layer Information
 
         /// <summary>
         /// Creates the XML Element for a tile layer
@@ -265,6 +329,7 @@ namespace SandTileEngine
             layerElement.InnerText = "InsertLayerInformationHere";
             assetNode.AppendChild(layerElement);
         }
+
         #endregion
     }
 }
