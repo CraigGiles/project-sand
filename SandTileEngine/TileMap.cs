@@ -27,11 +27,8 @@ namespace SandTileEngine
 
         // Max number of tiles
         const int cNumTiles = 200;
-
-        // Default values for loading tiles
-        const int cDefaultTileHeight = 40;
-        const int cDefaultTileWidth = 40;
-        const int cTileOffset = 1;
+        // Max number of layers for a map
+        const int cMaxLayers = 5;
 
         #endregion
 
@@ -42,12 +39,9 @@ namespace SandTileEngine
         // Name of the map used in game or for information
         string mapName;
 
-        // Tile information
+        // Tile layer information
         SpriteSheet tileSheet;
-        List<TileLayer> tileLayer = new List<TileLayer>();
-
-        // Alpha of each layer
-        List<int> tileLayerAlpha;
+        List<TileLayer> tileLayer = new List<TileLayer>(cMaxLayers);
 
         // Animated sprites
         //private SpriteSheet animatedSpriteSheet;
@@ -120,10 +114,78 @@ namespace SandTileEngine
         /// <summary>
         /// Obtains the i-th layer of the map
         /// </summary>
-        public byte this[int i]
+        public TileLayer this[int i]
         {
             get { return tileLayer[i]; }
             set { tileLayer[i] = value; }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Default contructor
+        /// </summary>
+        public TileMap()
+        {
+            // TODO: Need to do anything?
+        }
+
+        /// <summary>
+        /// Constructor that creates a map with the specified width and height in tiles
+        /// </summary>
+        /// <param name="width">Width in tiles</param>
+        /// <param name="height">Height in tiles</param>
+        public TileMap(int width, int height)
+        {
+            // Creates all the layers for the map
+            for (int i = 0; i < cMaxLayers; i++)
+            {
+                TileLayer layer = new TileLayer(width, height);
+                tileLayer.Add(layer);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Sets the tileset that the map will use
+        /// </summary>
+        /// <param name="sheet">Sheet containing the tileset</param>
+        public void SetSpriteSheet(SpriteSheet sheet)
+        {
+            tileSheet = sheet;
+
+            // Goes through all the layers and sets the sheet
+            for (int i = 0; i < tileLayer.Count; i++)
+            {
+                tileLayer[i].SetSpriteSheet(sheet);
+            }
+        }
+
+        /// <summary>
+        /// Resizes the map to the new width and height
+        /// </summary>
+        /// <param name="width">New width size for the map in tiles</param>
+        /// <param name="height">New height size for the map in tiles</param>
+        /// <returns>True if the resize was successful, false otherwise</returns>
+        public bool ResizeMap(int width, int height)
+        {
+            // Safety check, make sure the width and height are valid
+            if (width <= 0 || height <= 0)
+                return false;
+
+            mapWidth = width;
+            mapHeight = height;
+
+            // Goes through each layer and resizes them
+            for (int i = 0; i < tileLayer.Count; i++)
+                tileLayer[i].ResizeLayer(width, height);
+
+            return true;
         }
 
         #endregion
@@ -137,7 +199,7 @@ namespace SandTileEngine
         {
             foreach (TileLayer layer in tileLayer)
             {
-                layer.Draw(spriteBatch, camera);
+                layer.Draw(spriteBatch);
             }
         }
 

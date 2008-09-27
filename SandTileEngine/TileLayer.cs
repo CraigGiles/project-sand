@@ -27,6 +27,7 @@ namespace SandTileEngine
 
         const int cMinTileSize = 20;
         const int cMaxTileSize = 100;
+        const int cNoTile = -1;
 
         #endregion
 
@@ -134,7 +135,7 @@ namespace SandTileEngine
 
 			for (int x = 0; x < width; x++)
 				for (int y = 0; y < height; y++)
-					map[y, x] = -1;
+					map[y, x] = cNoTile;
 		}
 
         /// <summary>
@@ -214,6 +215,49 @@ namespace SandTileEngine
         public void SetTile(int row, int col, int tile)
         {
             map[row, col] = tile;
+        }
+
+        /// <summary>
+        /// Sets the sprite sheet that this layer uses
+        /// </summary>
+        /// <param name="sheet">Sheet containing the texture for the layer to use</param>
+        public void SetSpriteSheet(SpriteSheet sheet)
+        {
+            this.sheet = sheet;
+        }
+
+        /// <summary>
+        /// Resizes the layer to the new dimensions while preserving the previous data
+        /// </summary>
+        /// <param name="width">New width of the layer in tiles</param>
+        /// <param name="height">New height of the layer in tiles</param>
+        /// <returns>True if successful, false otherwise</returns>
+        public bool ResizeLayer(int width, int height)
+        {
+            // Safety check
+            if (width <= 0 || height <= 0)
+                return false;
+
+            // Creates a new array with the dimenions
+            int[,] newMap = new int[height, width];
+
+            // Determines the smaller grid and loops over what is necessary
+            int copyRows = Math.Min(height, Height);
+            int copyCols = Math.Min(width, Width);
+
+            // Copies what it can from the previous map
+            for (int r = 0; r < copyRows; r++)
+            {
+                for (int c = 0; c < copyCols; c++)
+                {
+                    newMap[r, c] = map[r, c];
+                }
+            }
+
+            // Replace the old map with the new
+            map = newMap;
+
+            return true;
         }
 
         /// <summary>
@@ -312,6 +356,10 @@ namespace SandTileEngine
 
             visibilityChanged = false;
         }
+
+        #endregion
+
+        #region Drawing
 
         public void Draw(SpriteBatch batch)
         {

@@ -24,8 +24,13 @@ namespace SandTileEngine
     public class SpriteSheet
     {
         #region Fields
+
+        // Full path to the filename that contained the texture
+        string fullFileName;
+
         private Texture2D texture;
         private Dictionary<int, Rectangle> spriteDefinitions;
+
         #endregion
 
         #region Constants
@@ -33,6 +38,15 @@ namespace SandTileEngine
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Full path to the filename that contained the texture
+        /// </summary>
+        public string FullFileName
+        {
+            get { return fullFileName; }
+            set { fullFileName = value; }
+        }
 
         /// <summary>
         /// Get the source sprite texture
@@ -55,14 +69,28 @@ namespace SandTileEngine
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Create a new Sprite Sheet
         /// </summary>
+        /// <param name="sheetTexture">Loaded sprite sheet</param>
         public SpriteSheet(Texture2D sheetTexture)
         {
             texture = sheetTexture;
             spriteDefinitions = new Dictionary<int, Rectangle>();
         }
+
+        /// <summary>
+        /// Creates a new Sprite Sheet as well as store the filename
+        /// </summary>
+        /// <param name="sheetTexture">Loaded sprite sheet</param>
+        /// <param name="filename">File that the texture was loaded from</param>
+        public SpriteSheet(Texture2D sheetTexture, string filename)
+            :this(sheetTexture)
+        {
+            fullFileName = filename;
+        }
+
         #endregion
 
         #region Methods
