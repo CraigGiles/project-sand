@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using Microsoft.Xna.Framework;
 
 namespace SandTileEngine
 {
@@ -51,58 +52,6 @@ namespace SandTileEngine
         {
             get { return projectMapClassName; }
             set { projectMapClassName = value; }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// TODO: Currently this option is un-used. When the time comes
-        /// to allow users to customize their export settings, this section
-        /// will be implimented
-        /// </summary>
-        #region Export To Single / Multi Array
-
-        bool exportToSingleDimensional = false;
-        bool exportToMultiDimensional = true;
-
-        /// <summary>
-        /// Gets / Sets the exporter to export
-        /// a Single-Dimensional (int[]) Array
-        /// </summary>
-        public bool ExportToSingleDimensional
-        {
-            get { return exportToSingleDimensional; }
-            set
-            {
-                //set array
-                exportToSingleDimensional = value;
-
-                //if this array is true, toggle other to false
-                if (value == true)
-                    exportToMultiDimensional = false;
-                else
-                    exportToMultiDimensional = true;
-            }
-        }
-
-        /// <summary>
-        /// Gets / Sets the exporter to export
-        /// a Multi-Dimensional (int[,]) Array
-        /// </summary>
-        public bool ExportToMultiDimensional
-        {
-            get { return exportToMultiDimensional; }
-            set
-            {
-                //set array
-                exportToMultiDimensional = value;
-
-                //if this array is true, toggle other to false
-                if (value == true)
-                    exportToSingleDimensional = false;
-                else
-                    exportToSingleDimensional = true;
-            }
         }
 
         #endregion
@@ -329,6 +278,255 @@ namespace SandTileEngine
             layerElement.InnerText = "InsertLayerInformationHere";
             assetNode.AppendChild(layerElement);
         }
+
+        #endregion
+        
+        #region Export Value Specific Data
+
+        #region Point
+
+        /// <summary>
+        /// Exports Point data to the Xml Document
+        /// </summary>
+        public void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, Point point)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = point.X.ToString() + " " + point.Y.ToString();
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of points to the Xml Document
+        /// </summary>
+        public static void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, List<Point> points)
+        {
+            string data = "\n";
+            foreach (Point point in points)
+            {
+                data += point.X.ToString() + " " + point.Y.ToString() + '\n';
+            }
+
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = data;
+            assetNode.AppendChild(element);
+        }
+
+        #endregion
+
+        #region Int
+
+        /// <summary>
+        /// Exports an int32 data to the Xml Document
+        /// </summary>
+        public void ExportIntData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, int value)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = value.ToString();
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of Int32s to the Xml Document
+        /// </summary>
+        public void ExportIntData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, List<int> values)
+        {
+            string data = "\n";
+            foreach (int value in values)
+            {
+                data += value.ToString() + "\n";
+            }
+
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = data;
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports an int array to the Xml Document
+        /// </summary>
+        public void ExportIntData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, int[] value)
+        {
+            string data = string.Empty;
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                data += value[i].ToString() + " ";
+            }
+
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = value.ToString();
+            assetNode.AppendChild(element);
+        }
+        #endregion
+
+        #region Vector2
+        /// <summary>
+        /// Exports Vector2 data to the Xml Document
+        /// </summary>
+        public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, Vector2 vector)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = vector.X.ToString() + " " + vector.Y.ToString();
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of Vector2s to the Xml Document
+        /// </summary>
+        public static void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, List<Vector2> vectors)
+        {
+            string data = "\n";
+            foreach (Vector2 vector in vectors)
+            {
+                data += vector.X.ToString() + " " + vector.Y.ToString() + '\n';
+            }
+
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = data;
+            assetNode.AppendChild(element);
+        }
+        #endregion
+
+        #region Vector3
+
+        /// <summary>
+        /// Exports Vector3 data to the Xml Document
+        /// </summary>
+        public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, Vector3 vector)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = vector.X.ToString() + " " + vector.Y.ToString() +
+                vector.Z.ToString();
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of Vector3s to the Xml Document
+        /// </summary>
+        public static void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, List<Vector3> vectors)
+        {
+            string data = "\n";
+            foreach (Vector3 vector in vectors)
+            {
+                data += vector.X.ToString() + " " + vector.Y.ToString() + vector.Z.ToString() + '\n';
+            }
+
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = data;
+            assetNode.AppendChild(element);
+        }
+
+        #endregion
+
+        #region Rectangle
+        /// <summary>
+        /// Exports Rectangle data to the Xml Document
+        /// </summary>
+        public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, Rectangle rectangle)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText =
+                rectangle.X.ToString() + " " +
+                rectangle.Y.ToString() + " " +
+                rectangle.Width.ToString() + " " +
+                rectangle.Height.ToString() + " ";
+
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of Rectangles to the Xml Document
+        /// </summary>
+        public static void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, List<Rectangle> rectangles)
+        {
+            string data = "\n";
+            foreach (Rectangle rectangle in rectangles)
+            {
+                data +=
+                    rectangle.X.ToString() + " " +
+                    rectangle.Y.ToString() + " " +
+                    rectangle.Width.ToString() + " " +
+                    rectangle.Height.ToString() + " " + "\n";
+            }
+
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = data;
+            assetNode.AppendChild(element);
+        }
+        #endregion
+
+        #region Bool
+        /// <summary>
+        /// Exports an bool statement to the Xml Document
+        /// </summary>
+        public void ExportBoolData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, bool value)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = value.ToString();
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of Bools to the Xml Document
+        /// </summary>
+        public void ExportBoolData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, List<bool> values)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+
+            foreach (bool value in values)
+            {
+                XmlElement node = xmlDoc.CreateElement("Item");
+                node.InnerText = value.ToString();
+                element.AppendChild(node);
+            }
+
+            assetNode.AppendChild(element);
+        }
+        #endregion
+
+        #region String
+        /// <summary>
+        /// Exports an string statement to the Xml Document
+        /// </summary>
+        public void ExportStringData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, string value)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+            element.InnerText = value;
+            assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of string to the Xml Document
+        /// </summary>
+        public void ExportStringData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, List<string> values)
+        {
+            XmlElement element = xmlDoc.CreateElement(elementName);
+
+            foreach (string value in values)
+            {
+                XmlElement node = xmlDoc.CreateElement("Item");
+                node.InnerText = value;
+                element.AppendChild(node);
+            }
+
+            assetNode.AppendChild(element);
+        }
+        #endregion
 
         #endregion
     }
