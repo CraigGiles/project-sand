@@ -299,7 +299,7 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of points to the Xml Document
         /// </summary>
-        public static void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
+        public void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<Point> points)
         {
             string data = "\n";
@@ -311,6 +311,22 @@ namespace SandTileEngine
             XmlElement element = xmlDoc.CreateElement(elementName);
             element.InnerText = data;
             assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of individual points to the Xml Document
+        /// </summary>
+        public void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, params Point[] points)
+        {
+            List<Point> listOfPoints = new List<Point>();
+
+            foreach (Point point in points)
+            {
+                listOfPoints.Add(point);
+            }
+
+            ExportPointData(xmlDoc, assetNode, elementName, listOfPoints);
         }
 
         #endregion
@@ -362,6 +378,7 @@ namespace SandTileEngine
             element.InnerText = value.ToString();
             assetNode.AppendChild(element);
         }
+
         #endregion
 
         #region Vector2
@@ -392,6 +409,23 @@ namespace SandTileEngine
             element.InnerText = data;
             assetNode.AppendChild(element);
         }
+
+        /// <summary>
+        /// Exports a list of individual Vector2s to the Xml Document
+        /// </summary>
+        public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, params Vector2[] vectors)
+        {
+            List<Vector2> list = new List<Vector2>();
+
+            foreach (Vector2 vector in vectors)
+            {
+                list.Add(vector);
+            }
+
+            ExportVectorData(xmlDoc, assetNode, elementName, list);
+        }
+
         #endregion
 
         #region Vector3
@@ -425,13 +459,29 @@ namespace SandTileEngine
             assetNode.AppendChild(element);
         }
 
+        /// <summary>
+        /// Exports a list of individual Vector3s to the Xml Document
+        /// </summary>
+        public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, params Vector3[] vectors)
+        {
+            List<Vector3> list = new List<Vector3>();
+
+            foreach (Vector3 vector in vectors)
+            {
+                list.Add(vector);
+            }
+
+            ExportVectorData(xmlDoc, assetNode, elementName, list);
+        }
+
         #endregion
 
         #region Rectangle
         /// <summary>
         /// Exports Rectangle data to the Xml Document
         /// </summary>
-        public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+        public void ExportRectangleData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, Rectangle rectangle)
         {
             XmlElement element = xmlDoc.CreateElement(elementName);
@@ -447,7 +497,7 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of Rectangles to the Xml Document
         /// </summary>
-        public static void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
+        public static void ExportRectangleData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<Rectangle> rectangles)
         {
             string data = "\n";
@@ -463,6 +513,22 @@ namespace SandTileEngine
             XmlElement element = xmlDoc.CreateElement(elementName);
             element.InnerText = data;
             assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of individual rectangles to the Xml Document
+        /// </summary>
+        public void ExportRectangleData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, params Rectangle[] rectangles)
+        {
+            List<Rectangle> list = new List<Rectangle>();
+
+            foreach (Rectangle rect in rectangles)
+            {
+                list.Add(rect);
+            }
+
+            ExportRectangleData(xmlDoc, assetNode, elementName, list);
         }
         #endregion
 
@@ -495,6 +561,22 @@ namespace SandTileEngine
 
             assetNode.AppendChild(element);
         }
+
+        /// <summary>
+        /// Exports a list of individual bools to the Xml Document
+        /// </summary>
+        public void ExportBoolData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, params bool[] bools)
+        {
+            List<bool> list = new List<bool>();
+
+            foreach (bool newBool in bools)
+            {
+                list.Add(newBool);
+            }
+
+            ExportBoolData(xmlDoc, assetNode, elementName, list);
+        }
         #endregion
 
         #region String
@@ -525,6 +607,22 @@ namespace SandTileEngine
             }
 
             assetNode.AppendChild(element);
+        }
+
+        /// <summary>
+        /// Exports a list of individual Strings to the Xml Document
+        /// </summary>
+        public void ExportStringData(XmlDocument xmlDoc, XmlElement assetNode,
+            string elementName, params string[] strings)
+        {
+            List<string> list = new List<string>();
+
+            foreach (string newString in strings)
+            {
+                list.Add(newString);
+            }
+
+            ExportStringData(xmlDoc, assetNode, elementName, list);
         }
         #endregion
 
