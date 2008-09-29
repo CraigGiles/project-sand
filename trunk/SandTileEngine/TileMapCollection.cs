@@ -17,7 +17,7 @@ namespace SandTileEngine
     /// <summary>
     /// Contains a list of all the maps loaded/created by the editor
     /// </summary>
-    class TileMapCollection
+    public class TileMapCollection
     {
         #region Collection
 
