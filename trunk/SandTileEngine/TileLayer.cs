@@ -43,7 +43,7 @@ namespace SandTileEngine
         private Vector2 scaleValue;
         private Vector2 displaySize;
         private bool visibilityChanged;
-        private byte alpha;
+        private float alpha;
 
         #endregion
 
@@ -122,10 +122,66 @@ namespace SandTileEngine
         /// <summary>
         /// Determines the opacity of the layer
         /// </summary>
-        public byte Alpha
+        public float Alpha
         {
             get { return alpha; }
             set { alpha = value; }
+        }
+
+        #endregion
+
+        #region Camera Properties
+
+        public Vector2 CameraPosition
+        {
+            set
+            {
+                cameraPostionValue = value;
+                visibilityChanged = true;
+            }
+            get
+            {
+                return cameraPostionValue;
+            }
+        }
+
+        public float CameraZoom
+        {
+            set
+            {
+                zoomValue = value;
+                visibilityChanged = true;
+            }
+            get
+            {
+                return zoomValue;
+            }
+        }
+
+        public Vector2 TileScale
+        {
+            set
+            {
+                scaleValue = value;
+                visibilityChanged = true;
+            }
+            get
+            {
+                return scaleValue;
+            }
+        }
+
+        public Vector2 DisplaySize
+        {
+            set
+            {
+                displaySize = value;
+                visibilityChanged = true;
+            }
+            get
+            {
+                return displaySize;
+            }
         }
 
         #endregion
@@ -166,49 +222,6 @@ namespace SandTileEngine
 		{
 			map = (int[,])existingMap.Clone();
 		}
-
-        #endregion
-
-        #region Public Accessors
-
-        public Vector2 CameraPosition
-        {
-            set
-            {
-                cameraPostionValue = value;
-                visibilityChanged = true;
-            }
-            get
-            {
-                return cameraPostionValue;
-            }
-        }
-
-        public float CameraZoom
-        {
-            set
-            {               
-                zoomValue = value;
-                visibilityChanged = true;
-            }
-            get
-            {
-                return zoomValue;
-            }
-        }
-
-        public Vector2 TileScale
-        {
-            set
-            {
-                scaleValue = value;
-                visibilityChanged = true;
-            }
-            get
-            {
-                return scaleValue;
-            }
-        }
 
         #endregion
 
@@ -318,7 +331,6 @@ namespace SandTileEngine
             float top = MathHelper.Min(
                 MathHelper.Min(upperLeft.Y, lowerRight.Y),
                 MathHelper.Min(upperRight.Y, lowerLeft.Y));
-
             float bottom = MathHelper.Max(
                 MathHelper.Max(upperLeft.Y, lowerRight.Y),
                 MathHelper.Max(upperRight.Y, lowerLeft.Y));
@@ -391,7 +403,7 @@ namespace SandTileEngine
             {
                 for (int y = visibleTiles.Top; y < visibleTiles.Bottom; y++)
                 {
-                    if (map[x,y] != -1)
+                    if (map[x,y] != cNoTile)
                     {
                         //Get the tile's position from the grid
                         //in this section we're using reference methods
@@ -418,7 +430,8 @@ namespace SandTileEngine
                         // Note that if the tile isn't valid (i.e., there's no tile in that
                         // spot for that layer), don't render anything
                         if (validTile)
-                            batch.Draw(sheet.Texture, screenCenter, sourceRect, new Color(255, 255, 255, alpha),
+                            batch.Draw(sheet.Texture, screenCenter, sourceRect, 
+                                new Color(255, 255, 255, (byte)(255*alpha)),
                                 1f, position, scale, SpriteEffects.None, 0.0f);
                     }
                 }

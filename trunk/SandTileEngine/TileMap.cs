@@ -46,8 +46,8 @@ namespace SandTileEngine
 
         #region Fields
 
-        // Name of the map
-        string name;
+        // Name of the map for the editor
+        string identifier;
         // Name of the map used in game or for information
         string mapName;
 
@@ -69,17 +69,48 @@ namespace SandTileEngine
         int[,] mapBounds;
         int[,] mapCodes;
 
+        // True if we're displaying a grid
+        bool showGrid = true;
+        // True if the mouse is valid and inside the grid
+        bool mouseInMap = false;
+        // Current mouse position in tile coordinates
+        Point mouseTile = new Point();
+
         #endregion
 
         #region Properties
 
+        #region Display Properties
+
+        /// <summary>
+        /// Whether or not to show the grid over the map
+        /// </summary>
+        public bool ShowGrid
+        {
+            get { return showGrid; }
+            set { showGrid = value; }
+        }
+
+        /// <summary>
+        /// True if the mouse is within the map display, false otherwise
+        /// </summary>
+        public bool MouseInMap
+        {
+            get { return mouseInMap; }
+            set { mouseInMap = value; }
+        }
+
+        #endregion
+
+        #region Map Properties
+
         /// <summary>
         /// Name of the map used for the editor
         /// </summary>
-        public string Name
+        public string Identifier
         {
-            get { return name; }
-            set { name = value; }
+            get { return identifier; }
+            set { identifier = value; }
         }
 
         /// <summary>
@@ -116,7 +147,7 @@ namespace SandTileEngine
         }
 
         /// <summary>
-        /// Returns the current map height
+        /// Returns the current map height in tiles
         /// </summary>
         public int MapHeight
         {
@@ -124,11 +155,29 @@ namespace SandTileEngine
         }
 
         /// <summary>
-        /// Returns the current map width
+        /// Returns the current map height in pixels
+        /// </summary>
+        /// <remarks>For now, just get the pixels from the first layer</remarks>
+        public int MapHeightInPixels
+        {
+            get { return tileLayer[0].HeightInPixels; }
+        }
+
+        /// <summary>
+        /// Returns the current map width in tiles
         /// </summary>
         public int MapWidth
         {
             get { return mapWidth; }
+        }
+
+        /// <summary>
+        /// Returns the current map width in pixels
+        /// </summary>
+        /// <remarks>For now, just get the pixels from the first layer</remarks>
+        public int MapWidthInPixels
+        {
+            get { return tileLayer[0].WidthInPixels; }
         }
 
         /// <summary>
@@ -139,6 +188,8 @@ namespace SandTileEngine
             get { return tileLayer[i]; }
             set { tileLayer[i] = value; }
         }
+
+        #endregion
 
         #endregion
 
@@ -159,11 +210,56 @@ namespace SandTileEngine
         /// <param name="height">Height in tiles</param>
         public TileMap(int width, int height)
         {
+            mapWidth = width;
+            mapHeight = height;
+
             // Creates all the layers for the map
             for (int i = 0; i < cMaxLayers; i++)
             {
                 TileLayer layer = new TileLayer(width, height);
                 tileLayer.Add(layer);
+            }
+        }
+
+        /// <summary>
+        /// Constructor that creates a map with the specified width and height in tiles and also
+        /// stores the size of the display
+        /// </summary>
+        /// <param name="width">Width in tiles</param>
+        /// <param name="height">Height in tiles</param>
+        /// <param name="displaySize">Display size of the window</param>
+        public TileMap(int width, int height, Vector2 displaySize)
+            :this(width, height)
+        {
+            SetDisplaySize(displaySize);
+        }
+
+        #endregion
+
+        #region Camera Functions
+
+        /// <summary>
+        /// Whenever the camera is changed, update the layers with the new information
+        /// </summary>
+        /// <param name="camera">Current camera data</param>
+        public void CameraChange(Camera camera)
+        {
+            for (int i = 0; i < tileLayer.Count; i++)
+            {
+                tileLayer[i].CameraPosition = camera.position;
+                tileLayer[i].CameraZoom = camera.Zoom;
+            }
+        }
+
+        /// <summary>
+        /// Stores the display size of the map window for rendering
+        /// </summary>
+        /// <param name="displaySize">Size of the map window</param>
+        public void SetDisplaySize(Vector2 displaySize)
+        {
+            for (int i = 0; i < tileLayer.Count; i++)
+            {
+                tileLayer[i].DisplaySize = displaySize;
             }
         }
 
@@ -198,14 +294,28 @@ namespace SandTileEngine
             if (width <= 0 || height <= 0)
                 return false;
 
-            mapWidth = width;
-            mapHeight = height;
+            // If the width and height are different than current, resize the map
+            if (mapWidth != width || mapHeight != height)
+            {
+                mapWidth = width;
+                mapHeight = height;
 
-            // Goes through each layer and resizes them
-            for (int i = 0; i < tileLayer.Count; i++)
-                tileLayer[i].ResizeLayer(width, height);
+                // Goes through each layer and resizes them
+                for (int i = 0; i < tileLayer.Count; i++)
+                    tileLayer[i].ResizeLayer(width, height);
+            }
 
             return true;
+        }
+
+        /// <summary>
+        /// Sets where the mouse is currently hovering over
+        /// </summary>
+        /// <param name="x">X coordinate with respect to the top-left corner</param>
+        /// <param name="y">Y coordinate with respect to the top-left corner</param>
+        public void SetMousePosition(int x, int y, Camera camera)
+        {
+
         }
 
         #endregion
@@ -220,6 +330,18 @@ namespace SandTileEngine
             foreach (TileLayer layer in tileLayer)
             {
                 layer.Draw(spriteBatch);
+            }
+
+            // If the grid is on, overlay the layers with a grid
+            if (showGrid)
+            {
+                // TODO:  Render the grid
+            }
+
+            // If the mouse is valid, highlight the tile it's over
+            if (mouseInMap)
+            {
+                // TODO:  Highlight tile
             }
         }
 
