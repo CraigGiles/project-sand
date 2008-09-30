@@ -50,7 +50,7 @@ namespace ProjectSandWindows
             this.btnCancel = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.picTilePreview = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTileWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTileHeight)).BeginInit();
@@ -59,7 +59,7 @@ namespace ProjectSandWindows
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTilePreview)).BeginInit();
             this.SuspendLayout();
             // 
             // picPreview
@@ -297,21 +297,21 @@ namespace ProjectSandWindows
             this.label9.TabIndex = 4;
             this.label9.Text = "Transparent Color:";
             // 
-            // pictureBox2
+            // picTilePreview
             // 
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox2.Location = new System.Drawing.Point(233, 232);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(158, 83);
-            this.pictureBox2.TabIndex = 10;
-            this.pictureBox2.TabStop = false;
+            this.picTilePreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picTilePreview.Location = new System.Drawing.Point(233, 232);
+            this.picTilePreview.Name = "picTilePreview";
+            this.picTilePreview.Size = new System.Drawing.Size(158, 83);
+            this.picTilePreview.TabIndex = 10;
+            this.picTilePreview.TabStop = false;
             // 
             // frmTileProperties
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 327);
-            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.picTilePreview);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
@@ -351,7 +351,7 @@ namespace ProjectSandWindows
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTilePreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -381,6 +381,6 @@ namespace ProjectSandWindows
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox picTilePreview;
     }
 }

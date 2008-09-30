@@ -87,7 +87,7 @@ namespace SandTileEngine
                 #region Map Details
                 CreateComment(xmlDoc, assetNode, "Basic Map Details");
 
-                CreateElementMapName(xmlDoc, assetNode, tileMap.Name);
+                CreateElementMapName(xmlDoc, assetNode, tileMap.Identifier);
 
                 CreateElementMapDimensions(xmlDoc, assetNode, 
                     tileMap.MapWidth, tileMap.MapHeight);

@@ -35,7 +35,7 @@ namespace ProjectSandWindows
             this.numVertical = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtMapName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -77,7 +77,7 @@ namespace ProjectSandWindows
             0});
             this.numHorizontal.Name = "numHorizontal";
             this.numHorizontal.Size = new System.Drawing.Size(55, 20);
-            this.numHorizontal.TabIndex = 2;
+            this.numHorizontal.TabIndex = 1;
             this.numHorizontal.Value = new decimal(new int[] {
             1,
             0,
@@ -126,7 +126,7 @@ namespace ProjectSandWindows
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.txtMapName);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(21, 93);
             this.groupBox1.Name = "groupBox1";
@@ -135,13 +135,13 @@ namespace ProjectSandWindows
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Map Information";
             // 
-            // textBox1
+            // txtMapName
             // 
-            this.textBox1.Location = new System.Drawing.Point(74, 16);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(120, 20);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "MapName";
+            this.txtMapName.Location = new System.Drawing.Point(74, 16);
+            this.txtMapName.Name = "txtMapName";
+            this.txtMapName.Size = new System.Drawing.Size(120, 20);
+            this.txtMapName.TabIndex = 5;
+            this.txtMapName.Text = "MapName";
             // 
             // label4
             // 
@@ -157,7 +157,7 @@ namespace ProjectSandWindows
             this.btnOK.Location = new System.Drawing.Point(21, 193);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 5;
+            this.btnOK.TabIndex = 6;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -167,7 +167,7 @@ namespace ProjectSandWindows
             this.btnCancel.Location = new System.Drawing.Point(155, 193);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -213,7 +213,7 @@ namespace ProjectSandWindows
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtMapName;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
     }
