@@ -37,6 +37,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExporterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExporterForm.Designer.cs">
+      <DependentUpon>ExporterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapProperties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -61,6 +67,10 @@
     <Compile Include="GraphicsDeviceService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ExporterForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExporterForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MapProperties.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MapProperties.cs</DependentUpon>
