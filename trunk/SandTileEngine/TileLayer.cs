@@ -33,17 +33,28 @@ namespace SandTileEngine
 
         #region Fields
 
+        // Name of the layer displayed on the editor and in a dictionary
         private string layerName;
+        // Graphics information
         private SpriteSheet sheet;
+        private Texture2D texture;
         private Rectangle visibleTiles;
 
         //drawing parameters
         private Vector2 cameraPostionValue;
-        private float zoomValue;
-        private Vector2 scaleValue;
+        private float zoomValue = 1f;
+        private Vector2 scaleValue = Vector2.One;
         private Vector2 displaySize;
         private bool visibilityChanged;
         private float alpha;
+
+        // Highlight color
+        Color highlightColor = Color.Gold;
+        // Grid color
+        Color gridColor = Color.Gray;
+
+        // True if this layer is a grid
+        bool isGrid = false;
 
         #endregion
 
@@ -128,6 +139,15 @@ namespace SandTileEngine
             set { alpha = value; }
         }
 
+        /// <summary>
+        /// Determines whether this layer is a grid layer
+        /// </summary>
+        public bool IsGrid
+        {
+            get { return isGrid; }
+            set { isGrid = value; }
+        }
+
         #endregion
 
         #region Camera Properties
@@ -198,8 +218,8 @@ namespace SandTileEngine
 			map = new int[height, width];
 
 			for (int x = 0; x < width; x++)
-				for (int y = 0; y < height; y++)
-					map[y, x] = cNoTile;
+                for (int y = 0; y < height; y++)
+                    map[y, x] = cNoTile;
 		}
 
         /// <summary>
@@ -212,6 +232,21 @@ namespace SandTileEngine
             :this(width, height)
         {
             sheet = tileSheet;
+        }
+
+        /// <summary>
+        /// Creates a special layer with the specified width and height along with a texture for a grid,
+        /// atmosphere, or background
+        /// </summary>
+        /// <param name="width">Width in tiles</param>
+        /// <param name="height">Height in tiles</param>
+        /// <param name="tileTexture">Special texture used for grids, atmospheres, and backgrounds</param>
+        /// <param name="grid">True if this layer is a grid</param>
+        public TileLayer(int width, int height, Texture2D tileTexture, bool grid)
+            : this(width, height)
+        {
+            texture = tileTexture;
+            isGrid = grid;
         }
 
         /// <summary>
@@ -311,14 +346,12 @@ namespace SandTileEngine
             Vector2 upperRight = Vector2.Zero;
             Vector2 lowerLeft = Vector2.Zero;
             Vector2 lowerRight = Vector2.Zero;
-            lowerRight.X = ((displaySize.X / 2) / zoomValue);
-            lowerRight.Y = ((displaySize.Y / 2) / zoomValue);
+            lowerRight.X = (displaySize.X / zoomValue);
+            lowerRight.Y = (displaySize.Y / zoomValue);
             upperRight.X = lowerRight.X;
-            upperRight.Y = -lowerRight.Y;
-            lowerLeft.X = -lowerRight.X;
+            upperRight.Y = 0;
+            lowerLeft.X = 0;
             lowerLeft.Y = lowerRight.Y;
-            upperLeft.X = -lowerRight.X;
-            upperLeft.Y = -lowerRight.Y;
 
             lowerLeft += (cameraPostionValue);
             lowerRight += (cameraPostionValue);
@@ -343,8 +376,8 @@ namespace SandTileEngine
             
 
             //now figure out where we are in the tile sheet
-            float scaledTileWidth = (float)Width * scaleValue.X;
-            float scaledTileHeight = (float)Height * scaleValue.Y;
+            float scaledTileWidth = (float)TileWidth * scaleValue.X;
+            float scaledTileHeight = (float)TileHeight * scaleValue.Y;
 
             //get the visible tiles
             visibleTiles.X = (int)(left / (scaledTileWidth));
@@ -385,12 +418,8 @@ namespace SandTileEngine
         {
             if (visibilityChanged) DetermineVisibility();
             
-
             float scaledTileWidth = (float)tileWidth * scaleValue.X;
             float scaledTileHeight = (float)tileHeight * scaleValue.Y;
-            Vector2 screenCenter = new Vector2(
-                (displaySize.X / 2),
-                (displaySize.Y / 2));
 
             //begin a batch of sprites to be drawn all at once
             batch.Begin(SpriteBlendMode.AlphaBlend);
@@ -399,46 +428,108 @@ namespace SandTileEngine
             Vector2 scale = Vector2.One;
             bool validTile;
 
-            for (int x = visibleTiles.Left; x < visibleTiles.Right; x++)
+            for (int r = visibleTiles.Top; r < visibleTiles.Bottom; r++)
             {
-                for (int y = visibleTiles.Top; y < visibleTiles.Bottom; y++)
+                for (int c = visibleTiles.Left; c < visibleTiles.Right; c++)   
                 {
-                    if (map[x,y] != cNoTile)
+                    if (map[r,c] != cNoTile || isGrid)
                     {
                         //Get the tile's position from the grid
                         //in this section we're using reference methods
                         //for the high frequency math functions
                         Vector2 position = Vector2.Zero;
-                        position.X = (float)x * scaledTileWidth;
-                        position.Y = (float)y * scaledTileHeight;
+                        position.X = (float)c * scaledTileWidth;
+                        position.Y = (float)r * scaledTileHeight;
 
                         //Now, we get the camera position relative to the tile's position
-                        Vector2.Subtract(ref cameraPostionValue, ref position,
+                        Vector2.Subtract(ref position, ref cameraPostionValue,
                             out position);
                         
                         //get the tile's final size (note that scaling is done after 
                         //determining the position)
                         Vector2.Multiply(ref scaleValue, zoomValue, out scale);
 
-                        //get the source rectangle that defines the tile
-                        validTile = sheet.GetRectangle(ref map[x,y],out sourceRect);
+                        // If this isn't a grid, render the tile textures
+                        if (!isGrid)
+                        {
+                            //get the source rectangle that defines the tile
+                            validTile = sheet.GetRectangle(ref map[r, c], out sourceRect);
 
-                        //Draw the tile.  Notice that position is used as the offset and
-                        //the screen center is used as a position.  This is required to
-                        //enable scaling and rotation about the center of the screen by
-                        //drawing tiles as an offset from the center coordinate
-                        // Note that if the tile isn't valid (i.e., there's no tile in that
-                        // spot for that layer), don't render anything
-                        if (validTile)
-                            batch.Draw(sheet.Texture, screenCenter, sourceRect, 
-                                new Color(255, 255, 255, (byte)(255*alpha)),
-                                1f, position, scale, SpriteEffects.None, 0.0f);
+                            //Draw the tile.  Notice that position is used as the offset and
+                            //the screen center is used as a position.  This is required to
+                            //enable scaling and rotation about the center of the screen by
+                            //drawing tiles as an offset from the center coordinate
+                            // Note that if the tile isn't valid (i.e., there's no tile in that
+                            // spot for that layer), don't render anything
+                            if (validTile)
+                                batch.Draw(sheet.Texture, position, sourceRect,
+                                    new Color(255, 255, 255, (byte)(255 * alpha)),
+                                    1f, Vector2.Zero, scale, SpriteEffects.None, 0.0f);
+                        }
+                        else
+                        {
+                            // For a grid, draw a bounding box using the texture provided
+                            // (should be a white dot to be stretched into a line)
+                            batch.Draw(texture, 
+                                new Rectangle((int)(position.X + tileWidth), (int)(position.Y),
+                                    1, tileHeight), gridColor);
+                            batch.Draw(texture,
+                                new Rectangle((int)(position.X), (int)(position.Y + tileHeight),
+                                tileWidth, 1), gridColor);
+                        }
                     }
                 }
             }
 
             batch.End();
         }
+
+        /// <summary>
+        /// Draws the highlighted map tile
+        /// </summary>
+        /// <param name="batch"></param>
+        public void DrawHighlight(SpriteBatch batch, int row, int col)
+        {
+            //begin a batch of sprites to be drawn all at once
+            batch.Begin(SpriteBlendMode.AlphaBlend);
+
+            float scaledTileWidth = (float)tileWidth * scaleValue.X;
+            float scaledTileHeight = (float)tileHeight * scaleValue.Y;
+            Vector2 scale = Vector2.One;
+
+            //Get the tile's position from the grid
+            //in this section we're using reference methods
+            //for the high frequency math functions
+            Vector2 position = Vector2.Zero;
+            position.X = (float)col * scaledTileWidth;
+            position.Y = (float)row * scaledTileHeight;
+
+            //Now, we get the camera position relative to the tile's position
+            Vector2.Subtract(ref position, ref cameraPostionValue,
+                out position);
+
+            //get the tile's final size (note that scaling is done after 
+            //determining the position)
+            Vector2.Multiply(ref scaleValue, zoomValue, out scale);
+
+            // For the highlight, draw a bounding box using the texture provided
+            // (should be a white dot to be stretched into a line) and color it
+            batch.Draw(texture,
+                new Rectangle((int)(position.X + tileWidth), (int)(position.Y),
+                    1, tileHeight), highlightColor);
+            batch.Draw(texture,
+                new Rectangle((int)(position.X), (int)(position.Y + tileHeight),
+                tileWidth, 1), highlightColor);
+            batch.Draw(texture,
+                new Rectangle((int)(position.X), (int)(position.Y),
+                    1, tileHeight), highlightColor);
+            batch.Draw(texture,
+                new Rectangle((int)(position.X), (int)(position.Y),
+                    tileWidth, 1), highlightColor);
+
+            batch.End();
+        }
+
         #endregion
     }
 }

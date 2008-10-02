@@ -63,6 +63,9 @@ namespace ProjectSandWindows
             this.actualSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.codeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,7 +81,7 @@ namespace ProjectSandWindows
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tileDisplay = new ProjectSandWindows.TileDisplay();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -229,7 +232,8 @@ namespace ProjectSandWindows
             this.tilePropertiesToolStripMenuItem,
             this.mapPropertiesToolStripMenuItem,
             this.toolStripMenuItem5,
-            this.projectInformationToolStripMenuItem});
+            this.projectInformationToolStripMenuItem,
+            this.preferencesToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.editToolStripMenuItem.Text = "Edit";
@@ -355,7 +359,9 @@ namespace ProjectSandWindows
             // 
             this.mapToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newMapToolStripMenuItem,
-            this.removeMapToolStripMenuItem});
+            this.removeMapToolStripMenuItem,
+            this.toolStripMenuItem6,
+            this.showGridToolStripMenuItem});
             this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
             this.mapToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.mapToolStripMenuItem.Text = "Map";
@@ -363,9 +369,31 @@ namespace ProjectSandWindows
             // newMapToolStripMenuItem
             // 
             this.newMapToolStripMenuItem.Name = "newMapToolStripMenuItem";
-            this.newMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newMapToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.newMapToolStripMenuItem.Text = "New Map...";
             this.newMapToolStripMenuItem.Click += new System.EventHandler(this.newMapToolStripMenuItem_Click);
+            // 
+            // removeMapToolStripMenuItem
+            // 
+            this.removeMapToolStripMenuItem.Enabled = false;
+            this.removeMapToolStripMenuItem.Name = "removeMapToolStripMenuItem";
+            this.removeMapToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.removeMapToolStripMenuItem.Text = "Remove Map";
+            this.removeMapToolStripMenuItem.Click += new System.EventHandler(this.removeMapToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(133, 6);
+            // 
+            // showGridToolStripMenuItem
+            // 
+            this.showGridToolStripMenuItem.CheckOnClick = true;
+            this.showGridToolStripMenuItem.Enabled = false;
+            this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.showGridToolStripMenuItem.Text = "Show Grid";
+            this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showGridToolStripMenuItem_Click);
             // 
             // codeToolStripMenuItem
             // 
@@ -477,13 +505,11 @@ namespace ProjectSandWindows
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             // 
-            // removeMapToolStripMenuItem
+            // preferencesToolStripMenuItem
             // 
-            this.removeMapToolStripMenuItem.Enabled = false;
-            this.removeMapToolStripMenuItem.Name = "removeMapToolStripMenuItem";
-            this.removeMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.removeMapToolStripMenuItem.Text = "Remove Map";
-            this.removeMapToolStripMenuItem.Click += new System.EventHandler(this.removeMapToolStripMenuItem_Click);
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences...";
             // 
             // tileDisplay
             // 
@@ -572,6 +598,9 @@ namespace ProjectSandWindows
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
     }
 }
 

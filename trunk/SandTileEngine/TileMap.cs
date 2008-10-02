@@ -54,6 +54,10 @@ namespace SandTileEngine
         // Tile layer information
         SpriteSheet tileSheet;
         List<TileLayer> tileLayer = new List<TileLayer>(cMaxLayers);
+        // Special grid layer for displaying over the layers
+        TileLayer gridLayer;
+        // Grid texture (a white point for drawing)
+        Texture2D whiteGrid;
 
         // Animated sprites
         //private SpriteSheet animatedSpriteSheet;
@@ -228,9 +232,16 @@ namespace SandTileEngine
         /// <param name="width">Width in tiles</param>
         /// <param name="height">Height in tiles</param>
         /// <param name="displaySize">Display size of the window</param>
-        public TileMap(int width, int height, Vector2 displaySize)
+        /// <param name="graphics">Graphics to the display for loading files</param>
+        public TileMap(int width, int height, Vector2 displaySize, GraphicsDevice graphics)
             :this(width, height)
         {
+            // Load the grid lines (need another way of doing this?)
+            whiteGrid = Texture2D.FromFile(graphics, "Resources/whitepixel.png");
+
+            // Add the grid layer
+            gridLayer = new TileLayer(width, height, whiteGrid, true);
+
             SetDisplaySize(displaySize);
         }
 
@@ -249,6 +260,8 @@ namespace SandTileEngine
                 tileLayer[i].CameraPosition = camera.position;
                 tileLayer[i].CameraZoom = camera.Zoom;
             }
+            gridLayer.CameraPosition = camera.position;
+            gridLayer.CameraZoom = camera.Zoom;
         }
 
         /// <summary>
@@ -261,6 +274,7 @@ namespace SandTileEngine
             {
                 tileLayer[i].DisplaySize = displaySize;
             }
+            gridLayer.DisplaySize = displaySize;
         }
 
         #endregion
@@ -315,7 +329,9 @@ namespace SandTileEngine
         /// <param name="y">Y coordinate with respect to the top-left corner</param>
         public void SetMousePosition(int x, int y, Camera camera)
         {
-
+            // Calculate the tile the cursor is on
+            mouseTile.X = (int)((x + camera.position.X) / TileLayer.TileWidth);
+            mouseTile.Y = (int)((y + camera.position.Y) / TileLayer.TileHeight);
         }
 
         #endregion
@@ -335,13 +351,14 @@ namespace SandTileEngine
             // If the grid is on, overlay the layers with a grid
             if (showGrid)
             {
-                // TODO:  Render the grid
+                gridLayer.Draw(spriteBatch);
             }
 
             // If the mouse is valid, highlight the tile it's over
             if (mouseInMap)
             {
                 // TODO:  Highlight tile
+                gridLayer.DrawHighlight(spriteBatch, mouseTile.Y, mouseTile.X);
             }
         }
 
