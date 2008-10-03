@@ -104,6 +104,14 @@ namespace SandTileEngine
             set { mouseInMap = value; }
         }
 
+        /// <summary>
+        /// Returns the tile position the mouse is current over
+        /// </summary>
+        public Point MouseTile
+        {
+            get { return mouseTile; }
+        }
+
         #endregion
 
         #region Map Properties
@@ -341,7 +349,7 @@ namespace SandTileEngine
         /// <summary>
         /// Renders the game scene
         /// </summary>
-        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        public void Draw(SpriteBatch spriteBatch)
         {
             foreach (TileLayer layer in tileLayer)
             {
@@ -357,7 +365,6 @@ namespace SandTileEngine
             // If the mouse is valid, highlight the tile it's over
             if (mouseInMap)
             {
-                // TODO:  Highlight tile
                 gridLayer.DrawHighlight(spriteBatch, mouseTile.Y, mouseTile.X);
             }
         }
