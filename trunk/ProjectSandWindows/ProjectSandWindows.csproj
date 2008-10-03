@@ -37,6 +37,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MapDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ExporterForm.cs">
       <SubType>Form</SubType>
     </Compile>

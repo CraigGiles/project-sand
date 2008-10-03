@@ -490,6 +490,10 @@ namespace SandTileEngine
         /// <param name="batch"></param>
         public void DrawHighlight(SpriteBatch batch, int row, int col)
         {
+            // Check to see if the highlight is within the map.  If not, don't draw anything
+            if (row >= Height || col >= Width)
+                return;
+
             //begin a batch of sprites to be drawn all at once
             batch.Begin(SpriteBlendMode.AlphaBlend);
 

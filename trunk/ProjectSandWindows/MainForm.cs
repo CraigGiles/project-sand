@@ -24,10 +24,16 @@ namespace ProjectSandWindows
 
     public partial class MainForm : Form
     {
-        #region Fields
+        #region Constants
 
-        // XNA sprite batch for rendering
-        SpriteBatch spriteBatch;
+        /// <summary>
+        /// Width of the scroll bar
+        /// </summary>
+        const int cScrollbarWidth = 18;
+
+        #endregion
+
+        #region Fields
 
         // Tile properties window
         frmTileProperties tileProperties = new frmTileProperties();
@@ -36,6 +42,8 @@ namespace ProjectSandWindows
 
         // Basic data for the editor
         TileMapCollection tileMapData = new TileMapCollection();
+        // Current map being edited
+        TileMap currentMap;
         Camera camera = new Camera();
 
         // Current opened file
@@ -46,29 +54,23 @@ namespace ProjectSandWindows
         // True if we're in pan mode on the map
         bool inPanMode = false;
 
-        // Sizes for the map scroll bars
-        int maxWidth = 0, maxHeight = 0;
-
-        /// <summary>
-        /// Returns the graphics device for rendering
-        /// </summary>
-        public GraphicsDevice GraphicsDevice
-        {
-            get { return tileDisplay.GraphicsDevice; }
-        }
-
         #endregion
 
         #region Tab Items
 
         // Map display for the tabs
-        List<TileDisplay> mapDisplay = new List<TileDisplay>();
+        List<MapDisplay> mapDisplay = new List<MapDisplay>();
+        // Tile display
+        List<TileDisplay> tileDisplay = new List<TileDisplay>();
         // Scroll bars for the map
         List<HScrollBar> hsbMapDisplay = new List<HScrollBar>();
         List<VScrollBar> vsbMapDisplay = new List<VScrollBar>();
 
         // Current selected tab index
         int currentTabIndex = 0;
+
+        // Sizes for the map scroll bars
+        int maxWidth = 0, maxHeight = 0;
 
         #endregion
 
@@ -78,17 +80,8 @@ namespace ProjectSandWindows
         {
             InitializeComponent();
 
-            // Sets up event handlers for the tile and map display
-            tileDisplay.OnInitialize += new EventHandler(tileDisplay_OnInitialize);
-            tileDisplay.OnDraw += new EventHandler(tileDisplay_OnDraw);
-
             // Set up events for changing tabs
             mapTabControl.SelectedIndexChanged += new EventHandler(mapTabControl_SelectedIndexChanged);
-
-            // Forces the map and tiles to keep redrawing when idle
-            Application.Idle += delegate { 
-                tileDisplay.Invalidate();
-            };
 
             // Clear the status at the bottom
             mapSizeStatusLabel.Text = "";
@@ -106,39 +99,30 @@ namespace ProjectSandWindows
 
         #region Map/Tile Display
 
-        void tileDisplay_OnInitialize(object sender, EventArgs e)
-        {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-        }
-
-        void tileDisplay_OnDraw(object sender, EventArgs e)
-        {
-            Logic();
-            Render();
-        }
-
         void mapDisplay_MouseEnter(object sender, EventArgs e)
         {
             // TODO:  Set mouse position, or does this function need to be created since
             // move will trigger immediately after?
-            tileMapData[currentTabIndex].MouseInMap = true;
+            currentMap.MouseInMap = true;
             mapLocationStatusLabel.Text = "In!";
         }
 
         void mapDisplay_MouseMove(object sender, MouseEventArgs e)
         {
             // Get the mouse position and calculate where to draw the highlighting square
-            // TODO:  For now, just updating the status bar at the bottom
-            mapLocationStatusLabel.Text = "(" + e.X + ", " + e.Y + ")";
-
             // Use the position to find the row and col of the current map
-            tileMapData[currentTabIndex].SetMousePosition(e.X, e.Y, camera);
+            currentMap.SetMousePosition(e.X, e.Y, camera);
 
+            // Update the status at the bottom
+            mapLocationStatusLabel.Text = "(" + currentMap.MouseTile.X + ", " + 
+                currentMap.MouseTile.Y + ")";
+            
             // If the space bar is held down, pan the map depending on how the mouse is moved
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && 
+                (hsbMapDisplay[currentTabIndex].Enabled || vsbMapDisplay[currentTabIndex].Enabled))
             {
                 inPanMode = true;
-                tileMapData[currentTabIndex].MouseInMap = false;
+                currentMap.MouseInMap = false;
             }
 
             // Check to see if the user was dragging the mouse
@@ -163,7 +147,7 @@ namespace ProjectSandWindows
             {
                 // If the mouse doesn't have any buttons press, disable any modes
                 inPanMode = false;
-                tileMapData[currentTabIndex].MouseInMap = true;
+                currentMap.MouseInMap = true;
             }
 
             // Store the position for later
@@ -176,7 +160,7 @@ namespace ProjectSandWindows
             // When the moust leaves, reset the grid highlights
             // TODO:  Reset grid highlights
             mapLocationStatusLabel.Text = "Invalid";
-            tileMapData[currentTabIndex].MouseInMap = false;
+            currentMap.MouseInMap = false;
         }
 
         void display_MouseClick(object sender, MouseEventArgs e)
@@ -191,7 +175,7 @@ namespace ProjectSandWindows
         private void showGridToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Toggle whether to show the grid on the map
-            tileMapData[currentTabIndex].ShowGrid = showGridToolStripMenuItem.Checked;
+            currentMap.ShowGrid = showGridToolStripMenuItem.Checked;
         }
 
         #endregion
@@ -288,12 +272,14 @@ namespace ProjectSandWindows
             {
                 string filename = openFileDialog1.FileName;
 
+                /**
                 Texture2D texture = Texture2D.FromFile(GraphicsDevice, filename);
                 Image image = Image.FromFile(filename);
 
                 // Use this texture as a sprite sheet and open the tile sheet dialog
                 tileProperties.Texture = texture;
                 tileProperties.TextureImage = image;
+                */
 
                 if (tileProperties.ShowDialog() == DialogResult.OK)
                 {
@@ -304,7 +290,7 @@ namespace ProjectSandWindows
 
         #endregion
 
-        #region Tab Functions
+        #region Map Tab Functions
 
         void mapTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -312,11 +298,16 @@ namespace ProjectSandWindows
             // when removing all tabs.
             currentTabIndex = (int)Math.Max(mapTabControl.SelectedIndex, 0);
 
-            // Update the camera view
+            // Update the camera view and map display
             if (mapTabControl.TabCount != 0)
             {
+                currentMap = tileMapData[currentTabIndex];
                 camera.position = Vector2.Zero;
-                tileMapData[currentTabIndex].CameraChange(camera);
+                currentMap.CameraChange(camera);
+            }
+            else
+            {
+                currentMap = null;
             }
 
             UpdateStatus();
@@ -334,42 +325,37 @@ namespace ProjectSandWindows
             mapTabControl.TabPages.Add(tab);
 
             // Create the map display
-            TileDisplay display = new TileDisplay();
-            display.Width = 524;
-            display.Height = 442;
+            MapDisplay display = new MapDisplay();
+            display.Width = tab.Width - cScrollbarWidth;
+            display.Height = tab.Height - cScrollbarWidth;
             display.Location = new System.Drawing.Point(0, 0);
             tab.Controls.Add(display);
             mapDisplay.Add(display);
             
             // Connect the events to the functions
-            display.OnInitialize += new EventHandler(tileDisplay_OnInitialize);
-            display.OnDraw += new EventHandler(tileDisplay_OnDraw);
             display.MouseLeave += new EventHandler(mapDisplay_MouseLeave);
             display.MouseMove += new MouseEventHandler(mapDisplay_MouseMove);
             display.MouseEnter += new EventHandler(mapDisplay_MouseEnter);
             display.MouseClick += new MouseEventHandler(display_MouseClick);
 
-            // Forces the map and tiles to keep redrawing when idle
-            Application.Idle += delegate { display.Invalidate(); };
-
             // Add the scroll bars
             HScrollBar hsbScroll = new HScrollBar();
-            hsbScroll.Width = 524;
-            hsbScroll.Height = 18;
+            hsbScroll.Width = display.Width;
+            hsbScroll.Height = cScrollbarWidth;
             hsbScroll.SmallChange = 1;
             hsbScroll.LargeChange = 25;
-            hsbScroll.Location = new System.Drawing.Point(0, 442);
+            hsbScroll.Location = new System.Drawing.Point(0, display.Height);
             hsbScroll.ValueChanged += new EventHandler(UpdateCamera);
             hsbScroll.Scroll += new ScrollEventHandler(UpdateCameraScroll);
             tab.Controls.Add(hsbScroll);
             hsbMapDisplay.Add(hsbScroll);
 
             VScrollBar vsbScroll = new VScrollBar();
-            vsbScroll.Width = 18;
-            vsbScroll.Height = 442;
+            vsbScroll.Width = cScrollbarWidth;
+            vsbScroll.Height = display.Height;
             vsbScroll.SmallChange = 1;
             vsbScroll.LargeChange = 25;
-            vsbScroll.Location = new System.Drawing.Point(524, 0);
+            vsbScroll.Location = new System.Drawing.Point(display.Width, 0);
             vsbScroll.ValueChanged += new EventHandler(UpdateCamera);
             vsbScroll.Scroll += new ScrollEventHandler(UpdateCameraScroll);
             tab.Controls.Add(vsbScroll);
@@ -422,12 +408,15 @@ namespace ProjectSandWindows
                 TileMap newMap = new TileMap(mapProperties.HorizontalTiles,
                     mapProperties.VerticalTiles, 
                     new Vector2(mapDisplay[currentTabIndex].Width, mapDisplay[currentTabIndex].Height),
-                    GraphicsDevice);
+                    mapDisplay[currentTabIndex].GraphicsDevice);
                 newMap.Identifier = mapProperties.Identifier;
                 newMap.MapName = mapProperties.MapName;
 
                 // Add the map to the collection
                 tileMapData.AddMap(newMap);
+
+                // Set as the current map
+                currentMap = newMap;
 
                 // Switch to the new tab, which will be at the end
                 mapTabControl.SelectedIndex = mapTabControl.TabCount - 1;
@@ -443,8 +432,10 @@ namespace ProjectSandWindows
                 // Update the status at the bottom
                 UpdateStatus();
 
+                // Update the camera and map display
+                mapDisplay[currentTabIndex].Map = newMap;
                 camera.position = Vector2.Zero;
-                tileMapData[currentTabIndex].CameraChange(camera);
+                currentMap.CameraChange(camera);
             }
         }
 
@@ -453,17 +444,17 @@ namespace ProjectSandWindows
             // Fill in map properties with the current information on the map selected
             mapProperties.ClearForm();
             mapProperties.Identifier = mapTabControl.SelectedTab.Text;
-            mapProperties.HorizontalTiles = tileMapData[currentTabIndex].MapWidth;
-            mapProperties.VerticalTiles = tileMapData[currentTabIndex].MapHeight;
-            mapProperties.MapName = tileMapData[currentTabIndex].MapName;
+            mapProperties.HorizontalTiles = currentMap.MapWidth;
+            mapProperties.VerticalTiles = currentMap.MapHeight;
+            mapProperties.MapName = currentMap.MapName;
 
             if (mapProperties.ShowDialog() == DialogResult.OK)
             {
                 // Change the properties of the map and resize if necessary
-                tileMapData[currentTabIndex].Identifier = mapProperties.Identifier;
+                currentMap.Identifier = mapProperties.Identifier;
                 mapTabControl.SelectedTab.Text = mapProperties.Identifier;
-                tileMapData[currentTabIndex].MapName = mapProperties.MapName;
-                tileMapData[currentTabIndex].ResizeMap(mapProperties.HorizontalTiles, mapProperties.VerticalTiles);
+                currentMap.MapName = mapProperties.MapName;
+                currentMap.ResizeMap(mapProperties.HorizontalTiles, mapProperties.VerticalTiles);
 
                 // Using the map size, resize the scroll bars
                 AdjustScrollBars();
@@ -479,9 +470,9 @@ namespace ProjectSandWindows
         /// </summary>
         private void AdjustScrollBars()
         {
-			if (tileMapData[currentTabIndex].MapWidthInPixels > mapDisplay[currentTabIndex].Width)
+			if (currentMap.MapWidthInPixels > mapDisplay[currentTabIndex].Width)
 			{
-				maxWidth = (int)Math.Max(tileMapData[currentTabIndex].MapWidthInPixels - mapDisplay[currentTabIndex].Width, maxWidth);
+				maxWidth = (int)Math.Max(currentMap.MapWidthInPixels - mapDisplay[currentTabIndex].Width, maxWidth);
 
                 hsbMapDisplay[currentTabIndex].Enabled = true;
                 hsbMapDisplay[currentTabIndex].Minimum = 0;
@@ -490,12 +481,14 @@ namespace ProjectSandWindows
 			else
 			{
 				maxWidth = 0;
+                hsbMapDisplay[currentTabIndex].Minimum = 0;
+                hsbMapDisplay[currentTabIndex].Maximum = 0;
                 hsbMapDisplay[currentTabIndex].Enabled = false;
 			}
 
-            if (tileMapData[currentTabIndex].MapHeightInPixels > mapDisplay[currentTabIndex].Height)
+            if (currentMap.MapHeightInPixels > mapDisplay[currentTabIndex].Height)
 			{
-                maxHeight = (int)Math.Max(tileMapData[currentTabIndex].MapHeightInPixels - mapDisplay[currentTabIndex].Height, maxHeight);
+                maxHeight = (int)Math.Max(currentMap.MapHeightInPixels - mapDisplay[currentTabIndex].Height, maxHeight);
 
                 vsbMapDisplay[currentTabIndex].Enabled = true;
                 vsbMapDisplay[currentTabIndex].Minimum = 0;
@@ -504,6 +497,8 @@ namespace ProjectSandWindows
 			else
 			{
 				maxHeight = 0;
+                vsbMapDisplay[currentTabIndex].Minimum = 0;
+                vsbMapDisplay[currentTabIndex].Maximum = 0;
                 vsbMapDisplay[currentTabIndex].Enabled = false;
 			}
         }
@@ -535,7 +530,7 @@ namespace ProjectSandWindows
         {
             camera.position.X = hsbMapDisplay[currentTabIndex].Value;
             camera.position.Y = vsbMapDisplay[currentTabIndex].Value;
-            tileMapData[currentTabIndex].CameraChange(camera);
+            currentMap.CameraChange(camera);
         }
 
         /// <summary>
@@ -565,7 +560,7 @@ namespace ProjectSandWindows
             }
 
             // Update the camera
-            tileMapData[currentTabIndex].CameraChange(camera);
+            currentMap.CameraChange(camera);
 
             // Force the display to update
             mapDisplay[currentTabIndex].Invalidate();
@@ -589,29 +584,9 @@ namespace ProjectSandWindows
             else
             {
                 // Update the status at the bottom
-                mapSizeStatusLabel.Text = "Size: (" + tileMapData[currentTabIndex].MapWidth + ", " +
-                   tileMapData[currentTabIndex].MapHeight + ")";
+                mapSizeStatusLabel.Text = "Size: (" + currentMap.MapWidth + ", " +
+                   currentMap.MapHeight + ")";
             }
-        }
-
-        #endregion
-
-        #region Logic and Drawing
-
-        private void Logic()
-        {
-            // Check the scroll bar positions for updating the camera position
-
-        }
-
-        // Draw all the displays
-        private void Render()
-        {
-            GraphicsDevice.Clear(Color.Black);
-
-            // Draw the map
-            if (mapTabControl.TabCount != 0)
-                tileMapData[currentTabIndex].Draw(spriteBatch, camera);
         }
 
         #endregion

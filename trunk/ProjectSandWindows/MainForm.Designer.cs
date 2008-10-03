@@ -57,6 +57,7 @@ namespace ProjectSandWindows
             this.mapPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.projectInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,8 +82,7 @@ namespace ProjectSandWindows
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tileDisplay = new ProjectSandWindows.TileDisplay();
+            this.tDisplay = new ProjectSandWindows.TileDisplay();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -94,9 +94,9 @@ namespace ProjectSandWindows
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mapSizeStatusLabel,
             this.mapLocationStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 541);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 669);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(792, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(1016, 25);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -135,7 +135,7 @@ namespace ProjectSandWindows
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(792, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1016, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -321,6 +321,12 @@ namespace ProjectSandWindows
             this.projectInformationToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.projectInformationToolStripMenuItem.Text = "Project Information...";
             // 
+            // preferencesToolStripMenuItem
+            // 
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences...";
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -433,7 +439,7 @@ namespace ProjectSandWindows
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 0, 1, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(792, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1016, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -473,7 +479,7 @@ namespace ProjectSandWindows
             this.mapTabControl.Location = new System.Drawing.Point(66, 52);
             this.mapTabControl.Name = "mapTabControl";
             this.mapTabControl.SelectedIndex = 0;
-            this.mapTabControl.Size = new System.Drawing.Size(550, 486);
+            this.mapTabControl.Size = new System.Drawing.Size(710, 614);
             this.mapTabControl.TabIndex = 3;
             // 
             // contextMenuTab
@@ -505,28 +511,23 @@ namespace ProjectSandWindows
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             // 
-            // preferencesToolStripMenuItem
+            // tDisplay
             // 
-            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.preferencesToolStripMenuItem.Text = "Preferences...";
-            // 
-            // tileDisplay
-            // 
-            this.tileDisplay.Location = new System.Drawing.Point(632, 183);
-            this.tileDisplay.Name = "tileDisplay";
-            this.tileDisplay.Size = new System.Drawing.Size(148, 351);
-            this.tileDisplay.TabIndex = 4;
-            this.tileDisplay.Text = "tileDisplay";
+            this.tDisplay.Location = new System.Drawing.Point(782, 206);
+            this.tDisplay.Name = "tDisplay";
+            this.tDisplay.Size = new System.Drawing.Size(222, 460);
+            this.tDisplay.TabIndex = 4;
+            this.tDisplay.Text = "tDisplay";
+            this.tDisplay.TileSheet = null;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 566);
-            this.Controls.Add(this.tileDisplay);
+            this.ClientSize = new System.Drawing.Size(1016, 694);
             this.Controls.Add(this.mapTabControl);
             this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.tDisplay);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -589,7 +590,7 @@ namespace ProjectSandWindows
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem newMapToolStripMenuItem;
         private System.Windows.Forms.TabControl mapTabControl;
-        private TileDisplay tileDisplay;
+        private TileDisplay tDisplay;
         private System.Windows.Forms.ToolStripMenuItem zoomInToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zoomOutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem actualSizeToolStripMenuItem;
