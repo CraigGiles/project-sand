@@ -6,12 +6,24 @@ using Microsoft.Xna.Framework;
 
 namespace SandTileEngine
 {
+    public enum ExportDataStyle
+    {
+        Point,
+        Vector2,
+        Custom,
+    }
+
     /// <summary>
     /// Handles all of the exporting of custom map data
     /// </summary>
     public class Exporter
     {
-        #region Exporter Data
+        /* * * * * * * * *
+         * All names associated with the current map
+         * that needs to be exported to the XML file
+         * * * * * * * * */
+
+        #region XML File Name 
         /// <summary>
         /// The Exported file name for the XML Document
         /// </summary>
@@ -25,7 +37,9 @@ namespace SandTileEngine
             get { return xmlExportedFileName; }
             set { xmlExportedFileName = value; }
         }
+        #endregion
 
+        #region Project Namespace / Class Name
         /// <summary>
         /// The namespace of the projects Map Content Reader
         /// </summary>
@@ -53,80 +67,490 @@ namespace SandTileEngine
             get { return projectMapClassName; }
             set { projectMapClassName = value; }
         }
+        #endregion
+
+        #region Map Name
+
+        /// <summary>
+        /// Should the exported XML file contain the Map Name
+        /// </summary>
+        bool exportMapName = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Map Name
+        /// </summary>
+        public bool ExportMapName
+        {
+            get { return exportMapName; }
+            set { exportMapName = value; }
+        }
+
+        /// <summary>
+        /// Name of map being exported
+        /// </summary>
+        string mapNameElementName = string.Empty;
+
+        /// <summary>
+        /// Name of map being exported
+        /// </summary>
+        public string MapNameElementName
+        {
+            get { return mapNameElementName; }
+            set { mapNameElementName = value; }
+        }
+        #endregion
+
+        #region Map Dimensions
+        /// <summary>
+        /// How is this data going to be exported to the XML document
+        /// </summary>
+        ExportDataStyle mapDimensionsExportStyle = ExportDataStyle.Point;
+
+        /// <summary>
+        /// How is this data going to be exported to the XML document
+        /// </summary>
+        public ExportDataStyle MapDimensionsExportStyle
+        {
+            get { return mapDimensionsExportStyle; }
+            set { mapDimensionsExportStyle = value; }
+        }
+
+        /// <summary>
+        /// Should the exported XML file contain the Map Dimensions
+        /// </summary>
+        bool exportMapDimensions = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Map Dimensions
+        /// </summary>
+        public bool ExportMapDimensions
+        {
+            get { return exportMapDimensions; }
+            set { exportMapDimensions = value; }
+        }
+
+        /// <summary>
+        /// Element name of the Map Dimensions element
+        /// </summary>
+        string mapDimensionsElementName = string.Empty;
+
+        /// <summary>
+        /// Element name of hte Map Dimensions element
+        /// </summary>
+        public string MapDimensionsElementName
+        {
+            get { return mapDimensionsElementName; }
+            set { mapDimensionsElementName = value; }
+        }
+
+        /// <summary>
+        /// Element name of the Map Dimensions > Width element
+        /// </summary>
+        string mapDimensionsWidthName = string.Empty;
+
+        /// <summary>
+        /// Element name of the Map Dimensions > Width element
+        /// </summary>
+        public string MapDimensionsWidthName
+        {
+            get { return mapDimensionsWidthName; }
+            set { mapDimensionsWidthName = value; }
+        }
+
+        /// <summary>
+        /// Element name of the Map Dimensions > Height element
+        /// </summary>
+        string mapDimensionsHeightName = string.Empty;
+
+        /// <summary>
+        /// Element name of the Map Dimensions > Height element
+        /// </summary>
+        public string MapDimensionsHeightName
+        {
+            get { return mapDimensionsHeightName; }
+            set { mapDimensionsHeightName = value; }
+        }
 
         #endregion
 
-        #region Export Xml 
+        #region Tile Sheet
+
         /// <summary>
-        /// Exports the map data to an XML file
+        /// Should the exported XML file contain the Tile Sheet
         /// </summary>
-        public void ExportXml(string fileName, TileMap tileMap)
+        bool exportTileSheet = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Tile Sheet
+        /// </summary>
+        public bool ExportTileSheet
         {
-            XmlDocument xmlDoc = new XmlDocument();
+            get { return exportTileSheet; }
+            set { exportTileSheet = value; }
+        }
+
+        /// <summary>
+        /// Element name used for the Tile Sheet element
+        /// </summary>
+        string tileSheetElementName = String.Empty;
+
+        /// <summary>
+        /// Element name used for the Tile Sheet element
+        /// </summary>
+        public string TileSheetElementName
+        {
+            get { return tileSheetElementName; }
+            set { tileSheetElementName = value; }
+        }
+
+        #endregion
+                
+        #region Tile Dimensions
+        /// <summary>
+        /// How is this data going to be exported to the XML document
+        /// </summary>
+        ExportDataStyle tileDimensionsExportStyle = ExportDataStyle.Point;
+
+        /// <summary>
+        /// How is this data going to be exported to the XML document
+        /// </summary>
+        public ExportDataStyle TileDimensionsExportStyle
+        {
+            get { return tileDimensionsExportStyle; }
+            set { tileDimensionsExportStyle = value; }
+        }
+
+        /// <summary>
+        /// Should the exported XML file contain the Tile DImensions
+        /// </summary>
+        bool exportTileDimensions = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Tile Dimensions
+        /// </summary>
+        public bool ExportTileDimensions
+        {
+            get { return exportTileDimensions; }
+            set { exportTileDimensions = value; }
+        }
+
+        /// <summary>
+        /// The dimensions of a given tile on the map in pixels
+        /// </summary>
+        string tileDimensionsElementName = string.Empty;
+
+        /// <summary>
+        /// The dimensions of a given tile on the map in pixels
+        /// </summary>
+        public string TileDimensionsElementName
+        {
+            get { return tileDimensionsElementName; }
+            set { tileDimensionsElementName = value; }
+        }
+
+        /// <summary>
+        /// The dimensions of a given tile on the map in pixels
+        /// </summary>
+        string tileDimensionsWidthElementName = string.Empty;
+
+        /// <summary>
+        /// The dimensions of a given tile on the map in pixels
+        /// </summary>
+        public string TileDimensionsWidthElementName
+        {
+            get { return tileDimensionsWidthElementName; }
+            set { tileDimensionsWidthElementName = value; }
+        }
+
+        /// <summary>
+        /// The dimensions of a given tile on the map in pixels
+        /// </summary>
+        string tileDimensionsHeightElementName = string.Empty;
+
+        /// <summary>
+        /// The dimensions of a given tile on the map in pixels
+        /// </summary>
+        public string TileDimensionsHeightElementName
+        {
+            get { return tileDimensionsHeightElementName; }
+            set { tileDimensionsHeightElementName = value; }
+        }
+
+
+        #endregion
+
+        #region Layer Information
+
+        /// <summary>
+        /// Should the exported XML file contain the Base Layer
+        /// </summary>
+        bool exportBaseLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Base Layer
+        /// </summary>
+        public bool ExportBaseLayer
+        {
+            get { return exportBaseLayer; }
+            set { exportBaseLayer = value; }
+        }
+
+        /// <summary>
+        /// Should the exported XML file contain the Middle Layer
+        /// </summary>
+        bool exportMiddleLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Middle Layer
+        /// </summary>
+        public bool ExportMiddleLayer
+        {
+            get { return exportMiddleLayer; }
+            set { exportMiddleLayer = value; }
+        }
+
+        /// <summary>
+        /// Should the exported XML file contain the Top Layer
+        /// </summary>
+        bool exportTopLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Top Layer
+        /// </summary>
+        public bool ExportTopLayer
+        {
+            get { return exportTopLayer; }
+            set { exportTopLayer = value; }
+        }
+
+        /// <summary>
+        /// Should the exported XML file contain the Atmosphere Layer
+        /// </summary>
+        bool exportAtmosphereLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Atmosphere Layer
+        /// </summary>
+        public bool ExportAtmosphereLayer
+        {
+            get { return exportAtmosphereLayer; }
+            set { exportAtmosphereLayer = value; }
+        }
+
+        /// <summary>
+        /// Should the exported XML file contain the Collision Layer
+        /// </summary>
+        bool exportCollisionLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Collision Layer
+        /// </summary>
+        public bool ExportCollisionLayer
+        {
+            get { return exportCollisionLayer; }
+            set { exportCollisionLayer = value; }
+        }
+
+        /// <summary>
+        /// Xml Element Name used for Base Layer
+        /// </summary>
+        string baseLayerElementName = String.Empty;
+
+        /// <summary>
+        /// Xml Element Name used for Base Layer
+        /// </summary>
+        public string BaseLayerElementName
+        {
+            get { return baseLayerElementName; }
+            set { baseLayerElementName = value; }
+        }
+
+        /// <summary>
+        /// Xml Element Name used for Middle Layer
+        /// </summary>
+        string middleLayerElementName = String.Empty;
+
+        /// <summary>
+        /// Xml Element Name used for Middle Layer
+        /// </summary>
+        public string MiddleLayerElementName
+        {
+            get { return middleLayerElementName; }
+            set { middleLayerElementName = value; }
+        }
+
+        /// <summary>
+        /// Xml Element Name used for Top Layer
+        /// </summary>
+        string topLayerElementName = String.Empty;
+
+        /// <summary>
+        /// Xml Element Name used for Top Layer
+        /// </summary>
+        public string TopLayerElementName
+        {
+            get { return topLayerElementName; }
+            set { topLayerElementName = value; }
+        }
+
+        /// <summary>
+        /// Xml Element Name used for Atmosphere Layer
+        /// </summary>
+        string atmosphereLayerElementName = String.Empty;
+
+        /// <summary>
+        /// Xml Element Name used for Atmosphere Layer
+        /// </summary>
+        public string AtmosphereLayerElementName
+        {
+            get { return atmosphereLayerElementName; }
+            set { atmosphereLayerElementName = value; }
+        }
+
+        /// <summary>
+        /// Xml Element Name used for Collision Layer
+        /// </summary>
+        string collisionLayerElementName = String.Empty;
+
+        /// <summary>
+        /// Xml Element Name used for Collision Layer
+        /// </summary>
+        public string CollisionLayerElementName
+        {
+            get { return collisionLayerElementName; }
+            set { collisionLayerElementName = value; }
+        }
+
+        #endregion
+        
+        /* * * * * * * * *
+         * Handles all of the exporting logic for writing
+         * the map to an XML file.
+         * * * * * * * * */
+        
+        #region Export Xml
+
+        public void ExportXml(TileMap tileMap)
+        {
+            XmlDocument doc = new XmlDocument();
 
             //try to write the file, and if things go wrong
             //write an entry in error log
             try
             {
                 #region Xml Writer
+                //generate a new XML Writer with correct formatting
                 XmlTextWriter xmlWriter = new XmlTextWriter(xmlExportedFileName, System.Text.Encoding.UTF8);
                 xmlWriter.Formatting = Formatting.Indented;
                 xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+
+                //We want to be able to use this in the XNA Content Pipeline
                 xmlWriter.WriteStartElement("XnaContent");
                 xmlWriter.Close();
-                xmlDoc.Load(xmlExportedFileName);
+
+                //load your newly created xml file
+                doc.Load(xmlExportedFileName);
                 #endregion
 
                 #region Root Element / Asset Node
-                XmlNode root = xmlDoc.DocumentElement;
-                XmlElement assetNode = xmlDoc.CreateElement("Asset");
+                //create the root element
+                XmlNode root = doc.DocumentElement;
+
+                //The asset describes the type of object being imported
+                //through the content pipeline. 
+                XmlElement assetNode = doc.CreateElement("Asset");
                 assetNode.SetAttribute("Type", ProjectDataNamespace + "." + ProjectMapClassName);
                 root.AppendChild(assetNode);
                 #endregion
 
-                #region Map Details
-                CreateComment(xmlDoc, assetNode, "Basic Map Details");
+                //Creates a comment displaying which section of the
+                //map is being exported. This helps the XML readability.
+                CreateComment(doc, assetNode, "Basic Map Details");
 
-                CreateElementMapName(xmlDoc, assetNode, tileMap.Identifier);
+                if (exportMapName)
+                {
+                    ExportStringData(doc, assetNode, MapNameElementName, tileMap.MapName);
+                }
 
-                CreateElementMapDimensions(xmlDoc, assetNode, 
-                    tileMap.MapWidth, tileMap.MapHeight);
+                //if user wishes to export map dimensions;
+                if (exportMapDimensions)
+                {
+                    //if user sets exporting map dimensions as point data
+                    if (MapDimensionsExportStyle == ExportDataStyle.Point)
+                        ExportPointData(doc, assetNode, MapDimensionsElementName, 
+                            new Point(tileMap.MapWidth, tileMap.MapHeight));
 
-                CreateElementTileSheet(xmlDoc, assetNode);
+                    //if user sets exporting map dimensions as custom data
+                    else if (MapDimensionsExportStyle == ExportDataStyle.Custom)
+                        ExportCustomData(doc, assetNode, TileDimensionsElementName,
+                            TileDimensionsWidthElementName, TileDimensionsHeightElementName,
+                            new Point(tileMap.MapWidth, tileMap.MapHeight)); 
+                }
 
-                CreateElementTileDimensions(xmlDoc, assetNode,
-                    tileMap[0].Width, tileMap[0].Height);
-                #endregion
+                if (exportTileSheet)
+                {
+                    ExportStringData(doc, assetNode, TileSheetElementName, tileMap.TileSheet.FullFileName);
+                }
 
-                #region Map Layers
-                //Map Layers comment
-                CreateComment(xmlDoc, assetNode, "Map Layers");
-                
-                //comment "Map Layers"
-                //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "BaseLayer", tileMap[0].Matrix);
+                //if user wishes to export tile dimensions
+                if (exportTileDimensions)
+                {
+                    //if user sets exporting tile dimensions as point data
+                    if (TileDimensionsExportStyle == ExportDataStyle.Point)
+                        ExportPointData(doc, assetNode, TileDimensionsElementName, 
+                            new Point(TileLayer.TileWidth, TileLayer.TileHeight));
 
-                //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "MiddleLayer", tileMap[1].Matrix);
+                    //if user sets exporting tile dimensions as custom data
+                    else if (TileDimensionsExportStyle == ExportDataStyle.Custom)
+                        ExportCustomData(doc, assetNode, TileDimensionsElementName,
+                            TileDimensionsWidthElementName, TileDimensionsHeightElementName,
+                            new Point(
+                                tileMap[0].WidthInPixels / tileMap[0].Width,
+                                tileMap[0].HeightInPixels / tileMap[0].Height)); 
+                }
 
-                //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "TopLayer", tileMap[2].Matrix);
+                //Creates a comment displaying which section of the
+                //map is being exported. This helps the XML readability.
+                CreateComment(doc, assetNode, "Map Layer Information");
 
-                //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "AtmosphereLayer", tileMap[3].Matrix);
+                if (exportBaseLayer)
+                {
+                    ExportIntData(doc, assetNode, baseLayerElementName,
+                        ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.BaseLayer].Map));
+                }
 
-                //CreateElementLayerInformation(xmlDoc, assetNode,
-                //    "CollisionLayer", tileMap[4].Matrix);
-                #endregion
+                if (exportMiddleLayer)
+                {
+                    ExportIntData(doc, assetNode, middleLayerElementName,
+                       ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.MiddleLayer].Map));
+                }
 
-                xmlDoc.Save(xmlExportedFileName);
+                if (exportTopLayer)
+                {
+                    ExportIntData(doc, assetNode, topLayerElementName,
+                       ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.TopLayer].Map));
+                }
+
+                if (exportAtmosphereLayer)
+                {
+                    ExportIntData(doc, assetNode, atmosphereLayerElementName,
+                        ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.Atmosphere].Map));
+                }
+
+                if (exportCollisionLayer)
+                {
+                    ExportIntData(doc, assetNode, collisionLayerElementName, 
+                        ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.CollisionLayer].Map));
+                }
+
+                //save the XML document
+                doc.Save(xmlExportedFileName);
             }
             catch (Exception ex)
             {
                 WriteError(ex.ToString());
             }
         }
-
         #endregion
 
         #region Write To Error Log
@@ -151,137 +575,6 @@ namespace SandTileEngine
             assetNode.AppendChild(commentElement);
         }
         #endregion
-
-        #region Map Name
-
-        /// <summary>
-        /// The Tag used for the Map Name element
-        /// </summary>
-        string elementNameMapName = "Name";
-
-        /// <summary>
-        /// The Tag used for the Map Name element
-        /// </summary>
-        public string ElementNameMapName
-        {
-            get { return elementNameMapName; }
-            set { elementNameMapName = value; }
-        }
-
-        /// <summary>
-        /// Creates the XML Element for the Map Name
-        /// </summary>
-        private void CreateElementMapName(XmlDocument xmlDoc, XmlElement assetNode,
-                                                        string mapName)
-        {
-            XmlElement nameElement = xmlDoc.CreateElement(ElementNameMapName);
-            nameElement.InnerText = mapName;
-            assetNode.AppendChild(nameElement);
-        }
-        #endregion
-
-        #region Map Dimensions
-
-        /// <summary>
-        /// The Tag used for the Map Dimensions element
-        /// </summary>
-        string elementNameMapDimensions = "MapDimensions";
-
-        /// <summary>
-        /// The Tag used for the Map Dimensions element
-        /// </summary>
-        public string ElementNameMapDimensions
-        {
-            get { return elementNameMapDimensions; }
-            set { elementNameMapDimensions = value; }
-        }
-
-        /// <summary>
-        /// Creates the XML Element for the Map Dimensions
-        /// </summary>
-        private void CreateElementMapDimensions(XmlDocument xmlDoc, XmlElement assetNode,
-                                                int width, int height)
-        {
-            XmlElement mapDimensions = xmlDoc.CreateElement(ElementNameMapDimensions);
-            mapDimensions.InnerText = width.ToString() + " " + height.ToString();
-            assetNode.AppendChild(mapDimensions);
-        }
-
-        #endregion
-
-        #region Tile Sheet
-
-        /// <summary>
-        /// The Tag used for the TileSheet element
-        /// </summary>
-        string elementNameTileSheet = "TileSheetContentName";
-
-        /// <summary>
-        /// The Tag used for the TileSheet element
-        /// </summary>
-        public string ElementNameTileSheet
-        {
-            get { return elementNameTileSheet; }
-            set { elementNameTileSheet = value; }
-        }
-
-        /// <summary>
-        /// Creates the XML Element for the TileSheet
-        /// </summary>
-        private void CreateElementTileSheet(XmlDocument xmlDoc, XmlElement assetNode)
-        {
-            XmlElement tileSheetContentName = xmlDoc.CreateElement(ElementNameTileSheet);
-            tileSheetContentName.InnerText = "TextureDirectoryAndPath";
-            assetNode.AppendChild(tileSheetContentName);
-        }
-
-        #endregion
-
-        #region Tile Dimensions
-
-        /// <summary>
-        /// The Tag used for the Tile Dimensions element
-        /// </summary>
-        string elementNameTileDimensions = "TileDimensions";
-
-        /// <summary>
-        /// The Tag used for the Tile Dimensions element
-        /// </summary>
-        public string ElementNameTileDimensions
-        {
-            get { return elementNameTileDimensions; }
-            set { elementNameTileDimensions = value; }
-        }
-
-        /// <summary>
-        /// Creates the XML Element for the Tile Dimensions
-        /// </summary>
-        private void CreateElementTileDimensions(XmlDocument xmlDoc, XmlElement assetNode,
-                                                 int tileWidth, int tileHeight)
-        {
-            XmlElement tileDimensions = xmlDoc.CreateElement(ElementNameTileDimensions);
-            tileDimensions.InnerText = tileWidth.ToString() + " " + tileHeight.ToString();
-            assetNode.AppendChild(tileDimensions);
-        }
-
-        #endregion
-
-        #region Layer Information
-
-        /// <summary>
-        /// Creates the XML Element for a tile layer
-        /// </summary>
-        private void CreateElementLayerInformation(XmlDocument xmlDoc, XmlElement assetNode,
-                                                          string layerName, TileLayer tileLayer)
-        {
-            XmlElement layerElement = xmlDoc.CreateElement(layerName);
-            layerElement.InnerText = "InsertLayerInformationHere";
-            assetNode.AppendChild(layerElement);
-        }
-
-        #endregion
-        
-        #region Export Value Specific Data
 
         #region Point
 
@@ -626,6 +919,12 @@ namespace SandTileEngine
         }
         #endregion
 
+        #region Custom Data Type
+        public void ExportCustomData(XmlDocument doc, XmlElement assetNode, 
+            string mainElementName, string subElementName1, string subElementName2,
+            Point values)
+        {
+        }
         #endregion
     }
 }
