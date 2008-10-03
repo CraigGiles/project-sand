@@ -37,14 +37,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MapDisplay.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ExporterForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ExporterForm.Designer.cs">
       <DependentUpon>ExporterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapDisplay.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MapProperties.cs">
       <SubType>Form</SubType>

@@ -6,6 +6,12 @@ using Microsoft.Xna.Framework;
 
 namespace SandTileEngine
 {
+    /// <summary>
+    /// Styles that can be exported in multiple variations to
+    /// the XML document. IE: Point can be exported as a
+    /// Vector2, or custom data. Vector2 can be exported as
+    /// a point, or custom data.
+    /// </summary>
     public enum ExportDataStyle
     {
         Point,
@@ -70,7 +76,6 @@ namespace SandTileEngine
         #endregion
 
         #region Map Name
-
         /// <summary>
         /// Should the exported XML file contain the Map Name
         /// </summary>
@@ -251,29 +256,29 @@ namespace SandTileEngine
         /// <summary>
         /// The dimensions of a given tile on the map in pixels
         /// </summary>
-        string tileDimensionsWidthElementName = string.Empty;
+        string tileDimensionsWidthName = string.Empty;
 
         /// <summary>
         /// The dimensions of a given tile on the map in pixels
         /// </summary>
-        public string TileDimensionsWidthElementName
+        public string TileDimensionsWidthName
         {
-            get { return tileDimensionsWidthElementName; }
-            set { tileDimensionsWidthElementName = value; }
+            get { return tileDimensionsWidthName; }
+            set { tileDimensionsWidthName = value; }
         }
 
         /// <summary>
         /// The dimensions of a given tile on the map in pixels
         /// </summary>
-        string tileDimensionsHeightElementName = string.Empty;
+        string tileDimensionsHeightName = string.Empty;
 
         /// <summary>
         /// The dimensions of a given tile on the map in pixels
         /// </summary>
-        public string TileDimensionsHeightElementName
+        public string TileDimensionsHeightName
         {
-            get { return tileDimensionsHeightElementName; }
-            set { tileDimensionsHeightElementName = value; }
+            get { return tileDimensionsHeightName; }
+            set { tileDimensionsHeightName = value; }
         }
 
 
@@ -281,6 +286,7 @@ namespace SandTileEngine
 
         #region Layer Information
 
+        #region Base Layer
         /// <summary>
         /// Should the exported XML file contain the Base Layer
         /// </summary>
@@ -296,62 +302,6 @@ namespace SandTileEngine
         }
 
         /// <summary>
-        /// Should the exported XML file contain the Middle Layer
-        /// </summary>
-        bool exportMiddleLayer = true;
-
-        /// <summary>
-        /// Should the exported XML file contain the Middle Layer
-        /// </summary>
-        public bool ExportMiddleLayer
-        {
-            get { return exportMiddleLayer; }
-            set { exportMiddleLayer = value; }
-        }
-
-        /// <summary>
-        /// Should the exported XML file contain the Top Layer
-        /// </summary>
-        bool exportTopLayer = true;
-
-        /// <summary>
-        /// Should the exported XML file contain the Top Layer
-        /// </summary>
-        public bool ExportTopLayer
-        {
-            get { return exportTopLayer; }
-            set { exportTopLayer = value; }
-        }
-
-        /// <summary>
-        /// Should the exported XML file contain the Atmosphere Layer
-        /// </summary>
-        bool exportAtmosphereLayer = true;
-
-        /// <summary>
-        /// Should the exported XML file contain the Atmosphere Layer
-        /// </summary>
-        public bool ExportAtmosphereLayer
-        {
-            get { return exportAtmosphereLayer; }
-            set { exportAtmosphereLayer = value; }
-        }
-
-        /// <summary>
-        /// Should the exported XML file contain the Collision Layer
-        /// </summary>
-        bool exportCollisionLayer = true;
-
-        /// <summary>
-        /// Should the exported XML file contain the Collision Layer
-        /// </summary>
-        public bool ExportCollisionLayer
-        {
-            get { return exportCollisionLayer; }
-            set { exportCollisionLayer = value; }
-        }
-
-        /// <summary>
         /// Xml Element Name used for Base Layer
         /// </summary>
         string baseLayerElementName = String.Empty;
@@ -363,6 +313,22 @@ namespace SandTileEngine
         {
             get { return baseLayerElementName; }
             set { baseLayerElementName = value; }
+        }
+        #endregion
+
+        #region Middle Layer
+        /// <summary>
+        /// Should the exported XML file contain the Middle Layer
+        /// </summary>
+        bool exportMiddleLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Middle Layer
+        /// </summary>
+        public bool ExportMiddleLayer
+        {
+            get { return exportMiddleLayer; }
+            set { exportMiddleLayer = value; }
         }
 
         /// <summary>
@@ -378,6 +344,22 @@ namespace SandTileEngine
             get { return middleLayerElementName; }
             set { middleLayerElementName = value; }
         }
+        #endregion
+        
+        #region Top Layer
+        /// <summary>
+        /// Should the exported XML file contain the Top Layer
+        /// </summary>
+        bool exportTopLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Top Layer
+        /// </summary>
+        public bool ExportTopLayer
+        {
+            get { return exportTopLayer; }
+            set { exportTopLayer = value; }
+        }
 
         /// <summary>
         /// Xml Element Name used for Top Layer
@@ -391,6 +373,22 @@ namespace SandTileEngine
         {
             get { return topLayerElementName; }
             set { topLayerElementName = value; }
+        }
+        #endregion
+        
+        #region Atmosphere Layer
+        /// <summary>
+        /// Should the exported XML file contain the Atmosphere Layer
+        /// </summary>
+        bool exportAtmosphereLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Atmosphere Layer
+        /// </summary>
+        public bool ExportAtmosphereLayer
+        {
+            get { return exportAtmosphereLayer; }
+            set { exportAtmosphereLayer = value; }
         }
 
         /// <summary>
@@ -406,6 +404,22 @@ namespace SandTileEngine
             get { return atmosphereLayerElementName; }
             set { atmosphereLayerElementName = value; }
         }
+        #endregion
+        
+        #region Collision Layer
+        /// <summary>
+        /// Should the exported XML file contain the Collision Layer
+        /// </summary>
+        bool exportCollisionLayer = true;
+
+        /// <summary>
+        /// Should the exported XML file contain the Collision Layer
+        /// </summary>
+        public bool ExportCollisionLayer
+        {
+            get { return exportCollisionLayer; }
+            set { exportCollisionLayer = value; }
+        }
 
         /// <summary>
         /// Xml Element Name used for Collision Layer
@@ -420,7 +434,8 @@ namespace SandTileEngine
             get { return collisionLayerElementName; }
             set { collisionLayerElementName = value; }
         }
-
+        #endregion
+        
         #endregion
         
         /* * * * * * * * *
@@ -430,6 +445,11 @@ namespace SandTileEngine
         
         #region Export Xml
 
+
+        /// <summary>
+        /// Builds an XML file with all Map data ready to plug
+        /// into your XNA's Project Content Pipeline
+        /// </summary>
         public void ExportXml(TileMap tileMap)
         {
             XmlDocument doc = new XmlDocument();
@@ -456,118 +476,190 @@ namespace SandTileEngine
                 //create the root element
                 XmlNode root = doc.DocumentElement;
 
-                //The asset describes the type of object being imported
-                //through the content pipeline. 
-                XmlElement assetNode = doc.CreateElement("Asset");
-                assetNode.SetAttribute("Type", ProjectDataNamespace + "." + ProjectMapClassName);
-                root.AppendChild(assetNode);
+                XmlElement assetNode = CreateAssetNode(doc, root);
                 #endregion
 
+                #region Export Information
                 //Creates a comment displaying which section of the
                 //map is being exported. This helps the XML readability.
                 CreateComment(doc, assetNode, "Basic Map Details");
 
-                if (exportMapName)
-                {
-                    ExportStringData(doc, assetNode, MapNameElementName, tileMap.MapName);
-                }
-
-                //if user wishes to export map dimensions;
-                if (exportMapDimensions)
-                {
-                    //if user sets exporting map dimensions as point data
-                    if (MapDimensionsExportStyle == ExportDataStyle.Point)
-                        ExportPointData(doc, assetNode, MapDimensionsElementName, 
-                            new Point(tileMap.MapWidth, tileMap.MapHeight));
-
-                    //if user sets exporting map dimensions as custom data
-                    else if (MapDimensionsExportStyle == ExportDataStyle.Custom)
-                        ExportCustomData(doc, assetNode, TileDimensionsElementName,
-                            TileDimensionsWidthElementName, TileDimensionsHeightElementName,
-                            new Point(tileMap.MapWidth, tileMap.MapHeight)); 
-                }
-
-                if (exportTileSheet)
-                {
-                    ExportStringData(doc, assetNode, TileSheetElementName, tileMap.TileSheet.FullFileName);
-                }
-
-                //if user wishes to export tile dimensions
-                if (exportTileDimensions)
-                {
-                    //if user sets exporting tile dimensions as point data
-                    if (TileDimensionsExportStyle == ExportDataStyle.Point)
-                        ExportPointData(doc, assetNode, TileDimensionsElementName, 
-                            new Point(TileLayer.TileWidth, TileLayer.TileHeight));
-
-                    //if user sets exporting tile dimensions as custom data
-                    else if (TileDimensionsExportStyle == ExportDataStyle.Custom)
-                        ExportCustomData(doc, assetNode, TileDimensionsElementName,
-                            TileDimensionsWidthElementName, TileDimensionsHeightElementName,
-                            new Point(
-                                tileMap[0].WidthInPixels / tileMap[0].Width,
-                                tileMap[0].HeightInPixels / tileMap[0].Height)); 
-                }
+                ExportMapData(tileMap, doc, assetNode);         //Map Name / Map Dimensions
+                
+                ExportTileInformation(tileMap, doc, assetNode); //TileSheet / Tile Dimensions
 
                 //Creates a comment displaying which section of the
                 //map is being exported. This helps the XML readability.
                 CreateComment(doc, assetNode, "Map Layer Information");
-
-                if (exportBaseLayer)
-                {
-                    ExportIntData(doc, assetNode, baseLayerElementName,
-                        ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.BaseLayer].Map));
-                }
-
-                if (exportMiddleLayer)
-                {
-                    ExportIntData(doc, assetNode, middleLayerElementName,
-                       ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.MiddleLayer].Map));
-                }
-
-                if (exportTopLayer)
-                {
-                    ExportIntData(doc, assetNode, topLayerElementName,
-                       ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.TopLayer].Map));
-                }
-
-                if (exportAtmosphereLayer)
-                {
-                    ExportIntData(doc, assetNode, atmosphereLayerElementName,
-                        ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.Atmosphere].Map));
-                }
-
-                if (exportCollisionLayer)
-                {
-                    ExportIntData(doc, assetNode, collisionLayerElementName, 
-                        ArrayHelper.ConvertMultiArrayToSingle(tileMap[(int)Layer.CollisionLayer].Map));
-                }
+                
+                ExportLayerInformation(tileMap, doc, assetNode);
+                #endregion
 
                 //save the XML document
                 doc.Save(xmlExportedFileName);
             }
             catch (Exception ex)
             {
-                WriteError(ex.ToString());
+                ErrorLog.WriteErrorMessage(ex.ToString());
             }
         }
-        #endregion
 
-        #region Write To Error Log
         /// <summary>
-        /// Writes an error message to a debug log file
-        /// </summary>        
-        private void WriteError(string error)
+        /// Creates the asset node for the XNA Content Pipeline
+        /// </summary>
+        /// <remarks>
+        /// The asset describes the type of object being imported
+        /// through the content pipeline. XNA uses this format;
+        /// Asset Type="ProjectNamespace.ProjectClass"
+        /// so we will use the same format in our exported file.
+        /// If these values are changed, chances are you may have to re-work
+        /// how your content pipeline reads XML files
+        /// </remarks>
+        private XmlElement CreateAssetNode(XmlDocument doc, XmlNode root)
         {
-            //Writes the error message to a log file.
-            ErrorLog.WriteErrorMessage(error);
+            XmlElement assetNode = doc.CreateElement("Asset");
+            assetNode.SetAttribute("Type", ProjectDataNamespace + "." + ProjectMapClassName);
+            root.AppendChild(assetNode);
+            return assetNode;
         }
+
+        /// <summary>
+        /// Exports basic map data (MapName, MapDimensions) to the XML file
+        /// </summary>
+        /// <remarks>
+        /// The MapName node houses the 'Area Name' of the map and 
+        /// not the file name or asset name. For example, an asset name
+        /// could be "Map001" and read through the content pipeline that way, 
+        /// but when in-game characters refer to Map001 as the "Enchanted Forrest.
+        /// 
+        /// Map Dimensions can be exported in two different ways, and it is up
+        /// to the user which way works best for them. Some projets may choose to 
+        /// import Point data directly into their TileMap class, while other
+        /// projects wish to import each data type individually.
+        /// </remarks>
+        private void ExportMapData(TileMap tileMap, XmlDocument doc, XmlElement assetNode)
+        {
+            //If the user wishes to export the MapName node to XML
+            if (exportMapName)
+            {
+                ExportStringData(doc, assetNode, MapNameElementName, tileMap.MapName);
+            }
+
+            //if user wishes to export MapDimensions node to XML
+            if (exportMapDimensions)
+            {
+                //if user sets exporting map dimensions as point data
+                if (MapDimensionsExportStyle == ExportDataStyle.Point)
+                    ExportPointData(doc, assetNode, MapDimensionsElementName,
+                        new Point(tileMap.MapWidth, tileMap.MapHeight));
+
+                //if user sets exporting map dimensions as custom data
+                else if (MapDimensionsExportStyle == ExportDataStyle.Custom)
+                    ExportCustomData(doc, assetNode, TileDimensionsElementName,
+                        TileDimensionsWidthName, TileDimensionsHeightName,
+                        new Point(tileMap.MapWidth, tileMap.MapHeight));
+            }
+        }
+
+        /// <summary>
+        /// Exports Tile Information to the XML file
+        /// </summary>
+        /// <remarks>
+        /// When exporting tile sheet, the ContentPath + ContentFileName are exported
+        /// making it easy to plug both files into your project. The full file
+        /// name would typically be "Content//YourTexturesFolder//TileSheetName"
+        /// 
+        /// Tile Dimensions can be exported in two different ways, and it is up
+        /// to the user which way works best for them. Some projets may choose to 
+        /// import Point data directly into their TileMap class, while other
+        /// projects wish to import each data type individually.
+        /// </remarks>
+        private void ExportTileInformation(TileMap tileMap, XmlDocument doc, XmlElement assetNode)
+        {
+            if (exportTileSheet)
+            {
+                ExportStringData(doc, assetNode, TileSheetElementName, tileMap.TileSheet.FullFileName);
+            }
+
+            //if user wishes to export tile dimensions
+            if (exportTileDimensions)
+            {
+                //if user sets exporting tile dimensions as point data
+                if (TileDimensionsExportStyle == ExportDataStyle.Point)
+                    ExportPointData(doc, assetNode, TileDimensionsElementName,
+                        new Point(TileLayer.TileWidth, TileLayer.TileHeight));
+
+                //if user sets exporting tile dimensions as custom data
+                else if (TileDimensionsExportStyle == ExportDataStyle.Custom)
+                    ExportCustomData(doc, assetNode, TileDimensionsElementName,
+                        TileDimensionsWidthName, TileDimensionsHeightName,
+                        new Point(
+                            tileMap[0].WidthInPixels / tileMap[0].Width,
+                            tileMap[0].HeightInPixels / tileMap[0].Height));
+            }
+        }
+
+        /// <summary>
+        /// Exports map layer information to the XML file
+        /// </summary>
+        /// <remarks>
+        /// Through testing we found that XNA will not serialize a multi-dimensional
+        /// array and still be able to plug right into the content pipeline. Because
+        /// of this, we had to export the layers as an int[] array. If your project
+        /// requires int[,] arrays, it can be modified back inside your ContentReader.
+        /// Look in the documentation at the ArrayHelper class for converting a single
+        /// dimensional array to multi dimensional array.
+        /// 
+        /// Also of note, TileMaps created with this editor only support 5 layers;
+        /// Base - Ground level textures such as grass
+        /// Middle - Objects placed on top of base level - Subject to depth
+        /// Top - Objects always drawn on top of in-game characters
+        /// Atmosphere - Fog / Rain / Snow / etc
+        /// Collision - Layer transparent to the user but controls the bounds of game objects
+        /// </remarks>
+        private void ExportLayerInformation(TileMap tileMap, XmlDocument doc, XmlElement assetNode)
+        {
+            if (exportBaseLayer)
+            {
+                ExportIntData(doc, assetNode, baseLayerElementName,
+                    ArrayHelper.ConvertMultiToSingle(tileMap[(int)Layer.BaseLayer].Map));
+            }
+
+            if (exportMiddleLayer)
+            {
+                ExportIntData(doc, assetNode, middleLayerElementName,
+                   ArrayHelper.ConvertMultiToSingle(tileMap[(int)Layer.MiddleLayer].Map));
+            }
+
+            if (exportTopLayer)
+            {
+                ExportIntData(doc, assetNode, topLayerElementName,
+                   ArrayHelper.ConvertMultiToSingle(tileMap[(int)Layer.TopLayer].Map));
+            }
+
+            if (exportAtmosphereLayer)
+            {
+                ExportIntData(doc, assetNode, atmosphereLayerElementName,
+                    ArrayHelper.ConvertMultiToSingle(tileMap[(int)Layer.Atmosphere].Map));
+            }
+
+            if (exportCollisionLayer)
+            {
+                ExportIntData(doc, assetNode, collisionLayerElementName,
+                    ArrayHelper.ConvertMultiToSingle(tileMap[(int)Layer.CollisionLayer].Map));
+            }
+        }
+
+
         #endregion
 
         #region Comment
         /// <summary>
         /// Creates a comment line in the XML file
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="comment">Comment to insert into the doc</param>
         private void CreateComment(XmlDocument xmlDoc, XmlElement assetNode,
                                                       string comment)
         {
@@ -581,6 +673,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports Point data to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="point">Point data being exported</param>
         public void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, Point point)
         {
@@ -592,6 +688,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of points to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="points">List of point data being exported</param>
         public void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<Point> points)
         {
@@ -609,6 +709,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of individual points to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="points">Array of points data being exported</param>
         public void ExportPointData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, params Point[] points)
         {
@@ -629,6 +733,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports an int32 data to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="value">int value being exported</param>
         public void ExportIntData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, int value)
         {
@@ -640,6 +748,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of Int32s to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="values">int values being exported</param>
         public void ExportIntData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<int> values)
         {
@@ -657,6 +769,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports an int array to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="value">int values being exported</param>
         public void ExportIntData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, int[] value)
         {
@@ -678,6 +794,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports Vector2 data to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="vector">vector value being exported</param>
         public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, Vector2 vector)
         {
@@ -689,6 +809,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of Vector2s to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="vectors">list of vector values being exported</param>
         public static void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<Vector2> vectors)
         {
@@ -706,6 +830,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of individual Vector2s to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="vectors">list of vector values being exported</param>
         public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, params Vector2[] vectors)
         {
@@ -722,10 +850,13 @@ namespace SandTileEngine
         #endregion
 
         #region Vector3
-
         /// <summary>
-        /// Exports Vector3 data to the Xml Document
+        /// Exports a list of individual Vector2s to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="vector">vector value being exported</param>
         public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, Vector3 vector)
         {
@@ -738,6 +869,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of Vector3s to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="vectors">list of vector values being exported</param>
         public static void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<Vector3> vectors)
         {
@@ -755,6 +890,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of individual Vector3s to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="vectors">list of vector values being exported</param>
         public void ExportVectorData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, params Vector3[] vectors)
         {
@@ -774,6 +913,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports Rectangle data to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="rectangle">rectangle value being exported</param>
         public void ExportRectangleData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, Rectangle rectangle)
         {
@@ -790,6 +933,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of Rectangles to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="rectangles">list of rectangles being exported</param>
         public static void ExportRectangleData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<Rectangle> rectangles)
         {
@@ -811,6 +958,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of individual rectangles to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="rectangles">list of rectangles being exported</param>
         public void ExportRectangleData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, params Rectangle[] rectangles)
         {
@@ -829,6 +980,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports an bool statement to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="value">bool being exported</param>
         public void ExportBoolData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, bool value)
         {
@@ -840,6 +995,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of Bools to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="values">list of bools being exported</param>
         public void ExportBoolData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<bool> values)
         {
@@ -858,6 +1017,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of individual bools to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="bools">list of bools being exported</param>
         public void ExportBoolData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, params bool[] bools)
         {
@@ -876,6 +1039,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports an string statement to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="value">string being exported</param>
         public void ExportStringData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, string value)
         {
@@ -887,6 +1054,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of string to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="values">strings being exported</param>
         public void ExportStringData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, List<string> values)
         {
@@ -905,6 +1076,10 @@ namespace SandTileEngine
         /// <summary>
         /// Exports a list of individual Strings to the Xml Document
         /// </summary>
+        /// <param name="xmlDoc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="elementName">XmlNode's name</param>
+        /// <param name="values">strings being exported</param>
         public void ExportStringData(XmlDocument xmlDoc, XmlElement assetNode,
             string elementName, params string[] strings)
         {
@@ -920,10 +1095,36 @@ namespace SandTileEngine
         #endregion
 
         #region Custom Data Type
+        /// <summary>
+        /// Exports point data in a custom format to the XML document
+        /// </summary>
+        /// <param name="doc">XML Document being edited</param>
+        /// <param name="assetNode">The XNA Asset Node created by the editor</param>
+        /// <param name="mainElementName">Main XmlNode's name</param>
+        /// <param name="subElementName1">Child XmlNode of MainElementName</param>
+        /// <param name="subElementName2">Child XmlNode of MainElementName</param>
+        /// <param name="values">Point values being exported</param>
         public void ExportCustomData(XmlDocument doc, XmlElement assetNode, 
             string mainElementName, string subElementName1, string subElementName2,
             Point values)
         {
+            //create the main element
+            XmlElement element = doc.CreateElement(mainElementName);
+
+            //create two sub elements (nodes)
+            XmlElement subElement1 = doc.CreateElement(subElementName1);
+            XmlElement subElement2 = doc.CreateElement(subElementName2);
+
+            //set the sub elements inner text to the value
+            subElement1.InnerText = values.X.ToString();
+            subElement2.InnerText = values.Y.ToString();
+
+            //append the sub elements into the main element
+            element.AppendChild(subElement1);
+            element.AppendChild(subElement2);
+
+            //append the main element into the document
+            assetNode.AppendChild(element);
         }
         #endregion
     }

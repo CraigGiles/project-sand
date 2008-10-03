@@ -54,9 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArrayHelper.cs" />
+    <Compile Include="Helpers\ArrayHelper.cs" />
     <Compile Include="Camera.cs" />
-    <Compile Include="ErrorLog.cs" />
+    <Compile Include="Helpers\ErrorLog.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="SpriteSheetCollection.cs" />
     <Compile Include="TileMap.cs" />
