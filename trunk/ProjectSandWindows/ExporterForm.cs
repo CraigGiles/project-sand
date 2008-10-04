@@ -263,7 +263,34 @@ namespace ProjectSandWindows
         {
             ChangeMapLayersOutput();
         }
+
+        private void mapLayerCheckBoxBaseLayer_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeMapLayersOutput();
+        }
+
+        private void mapLayerCheckBoxMiddleLayer_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeMapLayersOutput();
+        }
+
+        private void mapLayerCheckBoxTopLayer_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeMapLayersOutput();
+        }
+
+        private void mapLayerCheckBoxAtmosphereLayer_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeMapLayersOutput();
+        }
+
+        private void mapLayerCheckBoxCollisionLayer_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeMapLayersOutput();
+        }
         #endregion
+
+
 
 
         

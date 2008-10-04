@@ -58,6 +58,10 @@ namespace ProjectSandWindows
             this.tileDimensionsOutput = new System.Windows.Forms.Label();
             this.exportTileDimensionsCheckBox = new System.Windows.Forms.CheckBox();
             this.layerInformationGroupBox = new System.Windows.Forms.GroupBox();
+            this.mapLayersBaseElement = new System.Windows.Forms.TextBox();
+            this.mapLayersOutputTypeGroupBox = new System.Windows.Forms.GroupBox();
+            this.mapLayersIndividualButton = new System.Windows.Forms.RadioButton();
+            this.mapLayersGroupedButton = new System.Windows.Forms.RadioButton();
             this.mapLayerOutput = new System.Windows.Forms.Label();
             this.collisionLayerInput = new System.Windows.Forms.TextBox();
             this.atmosphereLayerInput = new System.Windows.Forms.TextBox();
@@ -69,10 +73,6 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxTopLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxMiddleLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxBaseLayer = new System.Windows.Forms.CheckBox();
-            this.mapLayersOutputTypeGroupBox = new System.Windows.Forms.GroupBox();
-            this.mapLayersGroupedButton = new System.Windows.Forms.RadioButton();
-            this.mapLayersIndividualButton = new System.Windows.Forms.RadioButton();
-            this.mapLayersBaseElement = new System.Windows.Forms.TextBox();
             this.mapNameGroupBox.SuspendLayout();
             this.mapDimensionsGroupBox.SuspendLayout();
             this.mapDimensionsOutputTypeGroupBox.SuspendLayout();
@@ -406,6 +406,50 @@ namespace ProjectSandWindows
             this.layerInformationGroupBox.TabStop = false;
             this.layerInformationGroupBox.Text = "Map Layers";
             // 
+            // mapLayersBaseElement
+            // 
+            this.mapLayersBaseElement.Location = new System.Drawing.Point(69, 98);
+            this.mapLayersBaseElement.Name = "mapLayersBaseElement";
+            this.mapLayersBaseElement.Size = new System.Drawing.Size(150, 20);
+            this.mapLayersBaseElement.TabIndex = 16;
+            this.mapLayersBaseElement.Text = "MapLayers";
+            this.mapLayersBaseElement.TextChanged += new System.EventHandler(this.mapLayersBaseElement_TextChanged);
+            // 
+            // mapLayersOutputTypeGroupBox
+            // 
+            this.mapLayersOutputTypeGroupBox.Controls.Add(this.mapLayersIndividualButton);
+            this.mapLayersOutputTypeGroupBox.Controls.Add(this.mapLayersGroupedButton);
+            this.mapLayersOutputTypeGroupBox.Location = new System.Drawing.Point(69, 20);
+            this.mapLayersOutputTypeGroupBox.Name = "mapLayersOutputTypeGroupBox";
+            this.mapLayersOutputTypeGroupBox.Size = new System.Drawing.Size(150, 72);
+            this.mapLayersOutputTypeGroupBox.TabIndex = 15;
+            this.mapLayersOutputTypeGroupBox.TabStop = false;
+            this.mapLayersOutputTypeGroupBox.Text = "Output Type";
+            // 
+            // mapLayersIndividualButton
+            // 
+            this.mapLayersIndividualButton.AutoSize = true;
+            this.mapLayersIndividualButton.Checked = true;
+            this.mapLayersIndividualButton.Location = new System.Drawing.Point(7, 44);
+            this.mapLayersIndividualButton.Name = "mapLayersIndividualButton";
+            this.mapLayersIndividualButton.Size = new System.Drawing.Size(70, 17);
+            this.mapLayersIndividualButton.TabIndex = 1;
+            this.mapLayersIndividualButton.TabStop = true;
+            this.mapLayersIndividualButton.Text = "Individual";
+            this.mapLayersIndividualButton.UseVisualStyleBackColor = true;
+            this.mapLayersIndividualButton.CheckedChanged += new System.EventHandler(this.mapLayersIndividualButton_CheckedChanged);
+            // 
+            // mapLayersGroupedButton
+            // 
+            this.mapLayersGroupedButton.AutoSize = true;
+            this.mapLayersGroupedButton.Location = new System.Drawing.Point(7, 20);
+            this.mapLayersGroupedButton.Name = "mapLayersGroupedButton";
+            this.mapLayersGroupedButton.Size = new System.Drawing.Size(66, 17);
+            this.mapLayersGroupedButton.TabIndex = 0;
+            this.mapLayersGroupedButton.Text = "Grouped";
+            this.mapLayersGroupedButton.UseVisualStyleBackColor = true;
+            this.mapLayersGroupedButton.CheckedChanged += new System.EventHandler(this.mapLayersGroupedButton_CheckedChanged);
+            // 
             // mapLayerOutput
             // 
             this.mapLayerOutput.AutoSize = true;
@@ -471,6 +515,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxCollisionLayer.TabIndex = 4;
             this.mapLayerCheckBoxCollisionLayer.Text = "Collision";
             this.mapLayerCheckBoxCollisionLayer.UseVisualStyleBackColor = true;
+            this.mapLayerCheckBoxCollisionLayer.CheckedChanged += new System.EventHandler(this.mapLayerCheckBoxCollisionLayer_CheckedChanged);
             // 
             // mapLayerCheckBoxAtmosphereLayer
             // 
@@ -483,6 +528,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxAtmosphereLayer.TabIndex = 3;
             this.mapLayerCheckBoxAtmosphereLayer.Text = "Atmosphere";
             this.mapLayerCheckBoxAtmosphereLayer.UseVisualStyleBackColor = true;
+            this.mapLayerCheckBoxAtmosphereLayer.CheckedChanged += new System.EventHandler(this.mapLayerCheckBoxAtmosphereLayer_CheckedChanged);
             // 
             // mapLayerCheckBoxTopLayer
             // 
@@ -495,6 +541,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxTopLayer.TabIndex = 2;
             this.mapLayerCheckBoxTopLayer.Text = "Top";
             this.mapLayerCheckBoxTopLayer.UseVisualStyleBackColor = true;
+            this.mapLayerCheckBoxTopLayer.CheckedChanged += new System.EventHandler(this.mapLayerCheckBoxTopLayer_CheckedChanged);
             // 
             // mapLayerCheckBoxMiddleLayer
             // 
@@ -507,6 +554,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxMiddleLayer.TabIndex = 1;
             this.mapLayerCheckBoxMiddleLayer.Text = "Middle";
             this.mapLayerCheckBoxMiddleLayer.UseVisualStyleBackColor = true;
+            this.mapLayerCheckBoxMiddleLayer.CheckedChanged += new System.EventHandler(this.mapLayerCheckBoxMiddleLayer_CheckedChanged);
             // 
             // mapLayerCheckBoxBaseLayer
             // 
@@ -519,50 +567,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxBaseLayer.TabIndex = 0;
             this.mapLayerCheckBoxBaseLayer.Text = "Base";
             this.mapLayerCheckBoxBaseLayer.UseVisualStyleBackColor = true;
-            // 
-            // mapLayersOutputTypeGroupBox
-            // 
-            this.mapLayersOutputTypeGroupBox.Controls.Add(this.mapLayersIndividualButton);
-            this.mapLayersOutputTypeGroupBox.Controls.Add(this.mapLayersGroupedButton);
-            this.mapLayersOutputTypeGroupBox.Location = new System.Drawing.Point(69, 20);
-            this.mapLayersOutputTypeGroupBox.Name = "mapLayersOutputTypeGroupBox";
-            this.mapLayersOutputTypeGroupBox.Size = new System.Drawing.Size(150, 72);
-            this.mapLayersOutputTypeGroupBox.TabIndex = 15;
-            this.mapLayersOutputTypeGroupBox.TabStop = false;
-            this.mapLayersOutputTypeGroupBox.Text = "Output Type";
-            // 
-            // mapLayersGroupedButton
-            // 
-            this.mapLayersGroupedButton.AutoSize = true;
-            this.mapLayersGroupedButton.Location = new System.Drawing.Point(7, 20);
-            this.mapLayersGroupedButton.Name = "mapLayersGroupedButton";
-            this.mapLayersGroupedButton.Size = new System.Drawing.Size(66, 17);
-            this.mapLayersGroupedButton.TabIndex = 0;
-            this.mapLayersGroupedButton.Text = "Grouped";
-            this.mapLayersGroupedButton.UseVisualStyleBackColor = true;
-            this.mapLayersGroupedButton.CheckedChanged += new System.EventHandler(this.mapLayersGroupedButton_CheckedChanged);
-            // 
-            // mapLayersIndividualButton
-            // 
-            this.mapLayersIndividualButton.AutoSize = true;
-            this.mapLayersIndividualButton.Checked = true;
-            this.mapLayersIndividualButton.Location = new System.Drawing.Point(7, 44);
-            this.mapLayersIndividualButton.Name = "mapLayersIndividualButton";
-            this.mapLayersIndividualButton.Size = new System.Drawing.Size(70, 17);
-            this.mapLayersIndividualButton.TabIndex = 1;
-            this.mapLayersIndividualButton.TabStop = true;
-            this.mapLayersIndividualButton.Text = "Individual";
-            this.mapLayersIndividualButton.UseVisualStyleBackColor = true;
-            this.mapLayersIndividualButton.CheckedChanged += new System.EventHandler(this.mapLayersIndividualButton_CheckedChanged);
-            // 
-            // mapLayersBaseElement
-            // 
-            this.mapLayersBaseElement.Location = new System.Drawing.Point(69, 98);
-            this.mapLayersBaseElement.Name = "mapLayersBaseElement";
-            this.mapLayersBaseElement.Size = new System.Drawing.Size(150, 20);
-            this.mapLayersBaseElement.TabIndex = 16;
-            this.mapLayersBaseElement.Text = "MapLayers";
-            this.mapLayersBaseElement.TextChanged += new System.EventHandler(this.mapLayersBaseElement_TextChanged);
+            this.mapLayerCheckBoxBaseLayer.CheckedChanged += new System.EventHandler(this.mapLayerCheckBoxBaseLayer_CheckedChanged);
             // 
             // ExporterForm
             // 
