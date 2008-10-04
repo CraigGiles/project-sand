@@ -590,5 +590,12 @@ namespace ProjectSandWindows
         }
 
         #endregion
+
+        private void exportXMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExporterForm form = new ExporterForm();
+            form.ShowDialog();
+        }
+
     }
 }

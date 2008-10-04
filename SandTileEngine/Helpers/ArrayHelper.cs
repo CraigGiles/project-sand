@@ -5,8 +5,7 @@ using System.Text;
 namespace SandTileEngine
 {
     /// <summary>
-    /// Various methods used to help with the manipulation of
-    /// arrays
+    /// Various methods used to help with the manipulation of arrays
     /// </summary>
     public class ArrayHelper
     {
