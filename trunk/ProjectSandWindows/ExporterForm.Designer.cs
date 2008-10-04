@@ -36,49 +36,48 @@ namespace ProjectSandWindows
             this.mapNameInput = new System.Windows.Forms.TextBox();
             this.mapDimensionsGroupBox = new System.Windows.Forms.GroupBox();
             this.exportMapDimensionsCheckBox = new System.Windows.Forms.CheckBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.widthBox = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.customButton = new System.Windows.Forms.RadioButton();
-            this.pointButton = new System.Windows.Forms.RadioButton();
+            this.mapDimensionsHeightInput = new System.Windows.Forms.TextBox();
+            this.mapDimensionsWidthInput = new System.Windows.Forms.TextBox();
+            this.mapDimensionsOutputTypeGroupBox = new System.Windows.Forms.GroupBox();
+            this.mapDimensionsCustomButton = new System.Windows.Forms.RadioButton();
+            this.mapDimensionsPointButton = new System.Windows.Forms.RadioButton();
             this.mapDimensionsOutput = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.mapDimensionsInput = new System.Windows.Forms.TextBox();
             this.tileSheetGroupBox = new System.Windows.Forms.GroupBox();
             this.exportTileSheetCheckBox = new System.Windows.Forms.CheckBox();
             this.tileSheetOutput = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tileSheetContentInput = new System.Windows.Forms.TextBox();
             this.tileDimensionsGroupBox = new System.Windows.Forms.GroupBox();
-            this.tileDimensionsHeightTextBox = new System.Windows.Forms.TextBox();
-            this.tileDimensionsWidthTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tileDimensionsCustom = new System.Windows.Forms.RadioButton();
-            this.tileDimensionsPoint = new System.Windows.Forms.RadioButton();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.tileDimensionsHeightInput = new System.Windows.Forms.TextBox();
+            this.tileDimensionsWidthInput = new System.Windows.Forms.TextBox();
+            this.tileDimensionsOutputTypeGroupBox = new System.Windows.Forms.GroupBox();
+            this.tileDimensionsCustomButton = new System.Windows.Forms.RadioButton();
+            this.tileDimensionsPointButton = new System.Windows.Forms.RadioButton();
+            this.tileDimensionsInput = new System.Windows.Forms.TextBox();
             this.tileDimensionsOutput = new System.Windows.Forms.Label();
             this.exportTileDimensionsCheckBox = new System.Windows.Forms.CheckBox();
             this.layerInformationGroupBox = new System.Windows.Forms.GroupBox();
-            this.collisionLayerTextBox = new System.Windows.Forms.TextBox();
-            this.atmosphereLayerTextBox = new System.Windows.Forms.TextBox();
-            this.topLayerTextBox = new System.Windows.Forms.TextBox();
-            this.middleLayerTextBox = new System.Windows.Forms.TextBox();
-            this.baseLayerTextBox = new System.Windows.Forms.TextBox();
+            this.collisionLayerOutput = new System.Windows.Forms.Label();
+            this.atmosphereLayerOutput = new System.Windows.Forms.Label();
+            this.topLayerOutput = new System.Windows.Forms.Label();
+            this.middleLayerOutput = new System.Windows.Forms.Label();
+            this.baseLayerOutput = new System.Windows.Forms.Label();
+            this.collisionLayerInput = new System.Windows.Forms.TextBox();
+            this.atmosphereLayerInput = new System.Windows.Forms.TextBox();
+            this.topLayerInput = new System.Windows.Forms.TextBox();
+            this.middleLayerInput = new System.Windows.Forms.TextBox();
+            this.baseLayerInput = new System.Windows.Forms.TextBox();
             this.mapLayerCheckBoxCollisionLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxAtmosphereLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxTopLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxMiddleLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxBaseLayer = new System.Windows.Forms.CheckBox();
-            this.baseLayerOutput = new System.Windows.Forms.Label();
-            this.middleLayerOutput = new System.Windows.Forms.Label();
-            this.topLayerOutput = new System.Windows.Forms.Label();
-            this.atmosphereLayerOutput = new System.Windows.Forms.Label();
-            this.collisionLayerOutput = new System.Windows.Forms.Label();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.mapNameGroupBox.SuspendLayout();
             this.mapDimensionsGroupBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.mapDimensionsOutputTypeGroupBox.SuspendLayout();
             this.tileSheetGroupBox.SuspendLayout();
             this.tileDimensionsGroupBox.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.tileDimensionsOutputTypeGroupBox.SuspendLayout();
             this.layerInformationGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -142,15 +141,16 @@ namespace ProjectSandWindows
             this.mapNameInput.Size = new System.Drawing.Size(150, 20);
             this.mapNameInput.TabIndex = 0;
             this.mapNameInput.Text = "Name";
+            this.mapNameInput.TextChanged += new System.EventHandler(this.mapNameInput_TextChanged);
             // 
             // mapDimensionsGroupBox
             // 
             this.mapDimensionsGroupBox.Controls.Add(this.exportMapDimensionsCheckBox);
-            this.mapDimensionsGroupBox.Controls.Add(this.textBox3);
-            this.mapDimensionsGroupBox.Controls.Add(this.widthBox);
-            this.mapDimensionsGroupBox.Controls.Add(this.groupBox1);
+            this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsHeightInput);
+            this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsWidthInput);
+            this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsOutputTypeGroupBox);
             this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsOutput);
-            this.mapDimensionsGroupBox.Controls.Add(this.textBox1);
+            this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsInput);
             this.mapDimensionsGroupBox.Location = new System.Drawing.Point(12, 88);
             this.mapDimensionsGroupBox.Name = "mapDimensionsGroupBox";
             this.mapDimensionsGroupBox.Size = new System.Drawing.Size(610, 179);
@@ -170,54 +170,58 @@ namespace ProjectSandWindows
             this.exportMapDimensionsCheckBox.Text = "Export";
             this.exportMapDimensionsCheckBox.UseVisualStyleBackColor = true;
             // 
-            // textBox3
+            // mapDimensionsHeightInput
             // 
-            this.textBox3.Location = new System.Drawing.Point(96, 150);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(123, 20);
-            this.textBox3.TabIndex = 4;
-            this.textBox3.Text = "Height";
+            this.mapDimensionsHeightInput.Location = new System.Drawing.Point(96, 150);
+            this.mapDimensionsHeightInput.Name = "mapDimensionsHeightInput";
+            this.mapDimensionsHeightInput.Size = new System.Drawing.Size(123, 20);
+            this.mapDimensionsHeightInput.TabIndex = 4;
+            this.mapDimensionsHeightInput.Text = "Height";
+            this.mapDimensionsHeightInput.TextChanged += new System.EventHandler(this.mapDimensionsHeightInput_TextChanged);
             // 
-            // widthBox
+            // mapDimensionsWidthInput
             // 
-            this.widthBox.Location = new System.Drawing.Point(96, 124);
-            this.widthBox.Name = "widthBox";
-            this.widthBox.Size = new System.Drawing.Size(123, 20);
-            this.widthBox.TabIndex = 3;
-            this.widthBox.Text = "Width";
+            this.mapDimensionsWidthInput.Location = new System.Drawing.Point(96, 124);
+            this.mapDimensionsWidthInput.Name = "mapDimensionsWidthInput";
+            this.mapDimensionsWidthInput.Size = new System.Drawing.Size(123, 20);
+            this.mapDimensionsWidthInput.TabIndex = 3;
+            this.mapDimensionsWidthInput.Text = "Width";
+            this.mapDimensionsWidthInput.TextChanged += new System.EventHandler(this.mapDimensionsWidthInput_TextChanged);
             // 
-            // groupBox1
+            // mapDimensionsOutputTypeGroupBox
             // 
-            this.groupBox1.Controls.Add(this.customButton);
-            this.groupBox1.Controls.Add(this.pointButton);
-            this.groupBox1.Location = new System.Drawing.Point(69, 19);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(149, 71);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Output Type";
+            this.mapDimensionsOutputTypeGroupBox.Controls.Add(this.mapDimensionsCustomButton);
+            this.mapDimensionsOutputTypeGroupBox.Controls.Add(this.mapDimensionsPointButton);
+            this.mapDimensionsOutputTypeGroupBox.Location = new System.Drawing.Point(69, 19);
+            this.mapDimensionsOutputTypeGroupBox.Name = "mapDimensionsOutputTypeGroupBox";
+            this.mapDimensionsOutputTypeGroupBox.Size = new System.Drawing.Size(149, 71);
+            this.mapDimensionsOutputTypeGroupBox.TabIndex = 2;
+            this.mapDimensionsOutputTypeGroupBox.TabStop = false;
+            this.mapDimensionsOutputTypeGroupBox.Text = "Output Type";
             // 
-            // customButton
+            // mapDimensionsCustomButton
             // 
-            this.customButton.AutoSize = true;
-            this.customButton.Checked = true;
-            this.customButton.Location = new System.Drawing.Point(7, 44);
-            this.customButton.Name = "customButton";
-            this.customButton.Size = new System.Drawing.Size(60, 17);
-            this.customButton.TabIndex = 1;
-            this.customButton.TabStop = true;
-            this.customButton.Text = "Custom";
-            this.customButton.UseVisualStyleBackColor = true;
+            this.mapDimensionsCustomButton.AutoSize = true;
+            this.mapDimensionsCustomButton.Checked = true;
+            this.mapDimensionsCustomButton.Location = new System.Drawing.Point(7, 44);
+            this.mapDimensionsCustomButton.Name = "mapDimensionsCustomButton";
+            this.mapDimensionsCustomButton.Size = new System.Drawing.Size(60, 17);
+            this.mapDimensionsCustomButton.TabIndex = 1;
+            this.mapDimensionsCustomButton.TabStop = true;
+            this.mapDimensionsCustomButton.Text = "Custom";
+            this.mapDimensionsCustomButton.UseVisualStyleBackColor = true;
+            this.mapDimensionsCustomButton.CheckedChanged += new System.EventHandler(this.mapDimensionsCustomButton_CheckedChanged);
             // 
-            // pointButton
+            // mapDimensionsPointButton
             // 
-            this.pointButton.AutoSize = true;
-            this.pointButton.Location = new System.Drawing.Point(7, 20);
-            this.pointButton.Name = "pointButton";
-            this.pointButton.Size = new System.Drawing.Size(49, 17);
-            this.pointButton.TabIndex = 0;
-            this.pointButton.Text = "Point";
-            this.pointButton.UseVisualStyleBackColor = true;
+            this.mapDimensionsPointButton.AutoSize = true;
+            this.mapDimensionsPointButton.Location = new System.Drawing.Point(7, 20);
+            this.mapDimensionsPointButton.Name = "mapDimensionsPointButton";
+            this.mapDimensionsPointButton.Size = new System.Drawing.Size(49, 17);
+            this.mapDimensionsPointButton.TabIndex = 0;
+            this.mapDimensionsPointButton.Text = "Point";
+            this.mapDimensionsPointButton.UseVisualStyleBackColor = true;
+            this.mapDimensionsPointButton.CheckedChanged += new System.EventHandler(this.mapDimensionsPointButton_CheckedChanged);
             // 
             // mapDimensionsOutput
             // 
@@ -229,19 +233,20 @@ namespace ProjectSandWindows
             this.mapDimensionsOutput.Text = "<MapDimensions>\r\n     <Width>X</Width>\r\n     <Height>Y</Height>\r\n</MapDimensions>" +
                 "";
             // 
-            // textBox1
+            // mapDimensionsInput
             // 
-            this.textBox1.Location = new System.Drawing.Point(69, 96);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(150, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "MapDimensions";
+            this.mapDimensionsInput.Location = new System.Drawing.Point(69, 96);
+            this.mapDimensionsInput.Name = "mapDimensionsInput";
+            this.mapDimensionsInput.Size = new System.Drawing.Size(150, 20);
+            this.mapDimensionsInput.TabIndex = 0;
+            this.mapDimensionsInput.Text = "MapDimensions";
+            this.mapDimensionsInput.TextChanged += new System.EventHandler(this.mapDimensionsInput_TextChanged);
             // 
             // tileSheetGroupBox
             // 
             this.tileSheetGroupBox.Controls.Add(this.exportTileSheetCheckBox);
             this.tileSheetGroupBox.Controls.Add(this.tileSheetOutput);
-            this.tileSheetGroupBox.Controls.Add(this.textBox2);
+            this.tileSheetGroupBox.Controls.Add(this.tileSheetContentInput);
             this.tileSheetGroupBox.Location = new System.Drawing.Point(12, 274);
             this.tileSheetGroupBox.Name = "tileSheetGroupBox";
             this.tileSheetGroupBox.Size = new System.Drawing.Size(610, 51);
@@ -270,20 +275,21 @@ namespace ProjectSandWindows
             this.tileSheetOutput.TabIndex = 1;
             this.tileSheetOutput.Text = "<TileSheetContentName>Content//Textures//TextureName</TileSheetContentName>";
             // 
-            // textBox2
+            // tileSheetContentInput
             // 
-            this.textBox2.Location = new System.Drawing.Point(69, 19);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(150, 20);
-            this.textBox2.TabIndex = 0;
-            this.textBox2.Text = "TileSheetContentName";
+            this.tileSheetContentInput.Location = new System.Drawing.Point(69, 19);
+            this.tileSheetContentInput.Name = "tileSheetContentInput";
+            this.tileSheetContentInput.Size = new System.Drawing.Size(150, 20);
+            this.tileSheetContentInput.TabIndex = 0;
+            this.tileSheetContentInput.Text = "TileSheetContentName";
+            this.tileSheetContentInput.TextChanged += new System.EventHandler(this.tileSheetContentInput_TextChanged);
             // 
             // tileDimensionsGroupBox
             // 
-            this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsHeightTextBox);
-            this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsWidthTextBox);
-            this.tileDimensionsGroupBox.Controls.Add(this.groupBox2);
-            this.tileDimensionsGroupBox.Controls.Add(this.textBox4);
+            this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsHeightInput);
+            this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsWidthInput);
+            this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsOutputTypeGroupBox);
+            this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsInput);
             this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsOutput);
             this.tileDimensionsGroupBox.Controls.Add(this.exportTileDimensionsCheckBox);
             this.tileDimensionsGroupBox.Location = new System.Drawing.Point(12, 332);
@@ -293,62 +299,67 @@ namespace ProjectSandWindows
             this.tileDimensionsGroupBox.TabStop = false;
             this.tileDimensionsGroupBox.Text = "Tile Dimensions";
             // 
-            // tileDimensionsHeightTextBox
+            // tileDimensionsHeightInput
             // 
-            this.tileDimensionsHeightTextBox.Location = new System.Drawing.Point(96, 148);
-            this.tileDimensionsHeightTextBox.Name = "tileDimensionsHeightTextBox";
-            this.tileDimensionsHeightTextBox.Size = new System.Drawing.Size(122, 20);
-            this.tileDimensionsHeightTextBox.TabIndex = 5;
-            this.tileDimensionsHeightTextBox.Text = "TileHeight";
+            this.tileDimensionsHeightInput.Location = new System.Drawing.Point(96, 148);
+            this.tileDimensionsHeightInput.Name = "tileDimensionsHeightInput";
+            this.tileDimensionsHeightInput.Size = new System.Drawing.Size(122, 20);
+            this.tileDimensionsHeightInput.TabIndex = 5;
+            this.tileDimensionsHeightInput.Text = "TileHeight";
+            this.tileDimensionsHeightInput.TextChanged += new System.EventHandler(this.tileDimensionsHeightInput_TextChanged);
             // 
-            // tileDimensionsWidthTextBox
+            // tileDimensionsWidthInput
             // 
-            this.tileDimensionsWidthTextBox.Location = new System.Drawing.Point(96, 121);
-            this.tileDimensionsWidthTextBox.Name = "tileDimensionsWidthTextBox";
-            this.tileDimensionsWidthTextBox.Size = new System.Drawing.Size(122, 20);
-            this.tileDimensionsWidthTextBox.TabIndex = 4;
-            this.tileDimensionsWidthTextBox.Text = "TileWidth";
+            this.tileDimensionsWidthInput.Location = new System.Drawing.Point(96, 121);
+            this.tileDimensionsWidthInput.Name = "tileDimensionsWidthInput";
+            this.tileDimensionsWidthInput.Size = new System.Drawing.Size(122, 20);
+            this.tileDimensionsWidthInput.TabIndex = 4;
+            this.tileDimensionsWidthInput.Text = "TileWidth";
+            this.tileDimensionsWidthInput.TextChanged += new System.EventHandler(this.tileDimensionsWidthInput_TextChanged);
             // 
-            // groupBox2
+            // tileDimensionsOutputTypeGroupBox
             // 
-            this.groupBox2.Controls.Add(this.tileDimensionsCustom);
-            this.groupBox2.Controls.Add(this.tileDimensionsPoint);
-            this.groupBox2.Location = new System.Drawing.Point(69, 20);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(149, 68);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "groupBox2";
+            this.tileDimensionsOutputTypeGroupBox.Controls.Add(this.tileDimensionsCustomButton);
+            this.tileDimensionsOutputTypeGroupBox.Controls.Add(this.tileDimensionsPointButton);
+            this.tileDimensionsOutputTypeGroupBox.Location = new System.Drawing.Point(69, 20);
+            this.tileDimensionsOutputTypeGroupBox.Name = "tileDimensionsOutputTypeGroupBox";
+            this.tileDimensionsOutputTypeGroupBox.Size = new System.Drawing.Size(149, 68);
+            this.tileDimensionsOutputTypeGroupBox.TabIndex = 3;
+            this.tileDimensionsOutputTypeGroupBox.TabStop = false;
+            this.tileDimensionsOutputTypeGroupBox.Text = "Output Type";
             // 
-            // tileDimensionsCustom
+            // tileDimensionsCustomButton
             // 
-            this.tileDimensionsCustom.AutoSize = true;
-            this.tileDimensionsCustom.Location = new System.Drawing.Point(6, 43);
-            this.tileDimensionsCustom.Name = "tileDimensionsCustom";
-            this.tileDimensionsCustom.Size = new System.Drawing.Size(60, 17);
-            this.tileDimensionsCustom.TabIndex = 1;
-            this.tileDimensionsCustom.Text = "Custom";
-            this.tileDimensionsCustom.UseVisualStyleBackColor = true;
+            this.tileDimensionsCustomButton.AutoSize = true;
+            this.tileDimensionsCustomButton.Location = new System.Drawing.Point(6, 43);
+            this.tileDimensionsCustomButton.Name = "tileDimensionsCustomButton";
+            this.tileDimensionsCustomButton.Size = new System.Drawing.Size(60, 17);
+            this.tileDimensionsCustomButton.TabIndex = 1;
+            this.tileDimensionsCustomButton.Text = "Custom";
+            this.tileDimensionsCustomButton.UseVisualStyleBackColor = true;
+            this.tileDimensionsCustomButton.CheckedChanged += new System.EventHandler(this.tileDimensionsCustomButton_CheckedChanged);
             // 
-            // tileDimensionsPoint
+            // tileDimensionsPointButton
             // 
-            this.tileDimensionsPoint.AutoSize = true;
-            this.tileDimensionsPoint.Checked = true;
-            this.tileDimensionsPoint.Location = new System.Drawing.Point(7, 20);
-            this.tileDimensionsPoint.Name = "tileDimensionsPoint";
-            this.tileDimensionsPoint.Size = new System.Drawing.Size(49, 17);
-            this.tileDimensionsPoint.TabIndex = 0;
-            this.tileDimensionsPoint.TabStop = true;
-            this.tileDimensionsPoint.Text = "Point";
-            this.tileDimensionsPoint.UseVisualStyleBackColor = true;
+            this.tileDimensionsPointButton.AutoSize = true;
+            this.tileDimensionsPointButton.Checked = true;
+            this.tileDimensionsPointButton.Location = new System.Drawing.Point(7, 20);
+            this.tileDimensionsPointButton.Name = "tileDimensionsPointButton";
+            this.tileDimensionsPointButton.Size = new System.Drawing.Size(49, 17);
+            this.tileDimensionsPointButton.TabIndex = 0;
+            this.tileDimensionsPointButton.TabStop = true;
+            this.tileDimensionsPointButton.Text = "Point";
+            this.tileDimensionsPointButton.UseVisualStyleBackColor = true;
+            this.tileDimensionsPointButton.CheckedChanged += new System.EventHandler(this.tileDimensionsPointButton_CheckedChanged);
             // 
-            // textBox4
+            // tileDimensionsInput
             // 
-            this.textBox4.Location = new System.Drawing.Point(69, 94);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(149, 20);
-            this.textBox4.TabIndex = 2;
-            this.textBox4.Text = "TileDimensions";
+            this.tileDimensionsInput.Location = new System.Drawing.Point(69, 94);
+            this.tileDimensionsInput.Name = "tileDimensionsInput";
+            this.tileDimensionsInput.Size = new System.Drawing.Size(149, 20);
+            this.tileDimensionsInput.TabIndex = 2;
+            this.tileDimensionsInput.Text = "TileDimensions";
+            this.tileDimensionsInput.TextChanged += new System.EventHandler(this.tileDimensionsInput_TextChanged);
             // 
             // tileDimensionsOutput
             // 
@@ -378,11 +389,11 @@ namespace ProjectSandWindows
             this.layerInformationGroupBox.Controls.Add(this.topLayerOutput);
             this.layerInformationGroupBox.Controls.Add(this.middleLayerOutput);
             this.layerInformationGroupBox.Controls.Add(this.baseLayerOutput);
-            this.layerInformationGroupBox.Controls.Add(this.collisionLayerTextBox);
-            this.layerInformationGroupBox.Controls.Add(this.atmosphereLayerTextBox);
-            this.layerInformationGroupBox.Controls.Add(this.topLayerTextBox);
-            this.layerInformationGroupBox.Controls.Add(this.middleLayerTextBox);
-            this.layerInformationGroupBox.Controls.Add(this.baseLayerTextBox);
+            this.layerInformationGroupBox.Controls.Add(this.collisionLayerInput);
+            this.layerInformationGroupBox.Controls.Add(this.atmosphereLayerInput);
+            this.layerInformationGroupBox.Controls.Add(this.topLayerInput);
+            this.layerInformationGroupBox.Controls.Add(this.middleLayerInput);
+            this.layerInformationGroupBox.Controls.Add(this.baseLayerInput);
             this.layerInformationGroupBox.Controls.Add(this.mapLayerCheckBoxCollisionLayer);
             this.layerInformationGroupBox.Controls.Add(this.mapLayerCheckBoxAtmosphereLayer);
             this.layerInformationGroupBox.Controls.Add(this.mapLayerCheckBoxTopLayer);
@@ -395,45 +406,95 @@ namespace ProjectSandWindows
             this.layerInformationGroupBox.TabStop = false;
             this.layerInformationGroupBox.Text = "Map Layers";
             // 
-            // collisionLayerTextBox
+            // collisionLayerOutput
             // 
-            this.collisionLayerTextBox.Location = new System.Drawing.Point(95, 120);
-            this.collisionLayerTextBox.Name = "collisionLayerTextBox";
-            this.collisionLayerTextBox.Size = new System.Drawing.Size(123, 20);
-            this.collisionLayerTextBox.TabIndex = 9;
-            this.collisionLayerTextBox.Text = "CollisionLayer";
+            this.collisionLayerOutput.AutoSize = true;
+            this.collisionLayerOutput.Location = new System.Drawing.Point(227, 123);
+            this.collisionLayerOutput.Name = "collisionLayerOutput";
+            this.collisionLayerOutput.Size = new System.Drawing.Size(206, 13);
+            this.collisionLayerOutput.TabIndex = 14;
+            this.collisionLayerOutput.Text = "<CollisionLayer>layer info</CollisionLayer>";
             // 
-            // atmosphereLayerTextBox
+            // atmosphereLayerOutput
             // 
-            this.atmosphereLayerTextBox.Location = new System.Drawing.Point(95, 94);
-            this.atmosphereLayerTextBox.Name = "atmosphereLayerTextBox";
-            this.atmosphereLayerTextBox.Size = new System.Drawing.Size(123, 20);
-            this.atmosphereLayerTextBox.TabIndex = 8;
-            this.atmosphereLayerTextBox.Text = "AtmosphereLayer";
+            this.atmosphereLayerOutput.AutoSize = true;
+            this.atmosphereLayerOutput.Location = new System.Drawing.Point(227, 97);
+            this.atmosphereLayerOutput.Name = "atmosphereLayerOutput";
+            this.atmosphereLayerOutput.Size = new System.Drawing.Size(242, 13);
+            this.atmosphereLayerOutput.TabIndex = 13;
+            this.atmosphereLayerOutput.Text = "<AtmosphereLayer>layer info</AtmosphereLayer>";
             // 
-            // topLayerTextBox
+            // topLayerOutput
             // 
-            this.topLayerTextBox.Location = new System.Drawing.Point(95, 68);
-            this.topLayerTextBox.Name = "topLayerTextBox";
-            this.topLayerTextBox.Size = new System.Drawing.Size(123, 20);
-            this.topLayerTextBox.TabIndex = 7;
-            this.topLayerTextBox.Text = "TopLayer";
+            this.topLayerOutput.AutoSize = true;
+            this.topLayerOutput.Location = new System.Drawing.Point(227, 71);
+            this.topLayerOutput.Name = "topLayerOutput";
+            this.topLayerOutput.Size = new System.Drawing.Size(168, 13);
+            this.topLayerOutput.TabIndex = 12;
+            this.topLayerOutput.Text = "<TopLayer>layer info</TopLayer>";
             // 
-            // middleLayerTextBox
+            // middleLayerOutput
             // 
-            this.middleLayerTextBox.Location = new System.Drawing.Point(95, 42);
-            this.middleLayerTextBox.Name = "middleLayerTextBox";
-            this.middleLayerTextBox.Size = new System.Drawing.Size(123, 20);
-            this.middleLayerTextBox.TabIndex = 6;
-            this.middleLayerTextBox.Text = "MiddleLayer";
+            this.middleLayerOutput.AutoSize = true;
+            this.middleLayerOutput.Location = new System.Drawing.Point(227, 45);
+            this.middleLayerOutput.Name = "middleLayerOutput";
+            this.middleLayerOutput.Size = new System.Drawing.Size(192, 13);
+            this.middleLayerOutput.TabIndex = 11;
+            this.middleLayerOutput.Text = "<MiddleLayer>layer info</MiddleLayer>";
             // 
-            // baseLayerTextBox
+            // baseLayerOutput
             // 
-            this.baseLayerTextBox.Location = new System.Drawing.Point(95, 16);
-            this.baseLayerTextBox.Name = "baseLayerTextBox";
-            this.baseLayerTextBox.Size = new System.Drawing.Size(123, 20);
-            this.baseLayerTextBox.TabIndex = 5;
-            this.baseLayerTextBox.Text = "BaseLayer";
+            this.baseLayerOutput.AutoSize = true;
+            this.baseLayerOutput.Location = new System.Drawing.Point(227, 19);
+            this.baseLayerOutput.Name = "baseLayerOutput";
+            this.baseLayerOutput.Size = new System.Drawing.Size(178, 13);
+            this.baseLayerOutput.TabIndex = 10;
+            this.baseLayerOutput.Text = "<BaseLayer>layer info</BaseLayer>";
+            // 
+            // collisionLayerInput
+            // 
+            this.collisionLayerInput.Location = new System.Drawing.Point(95, 120);
+            this.collisionLayerInput.Name = "collisionLayerInput";
+            this.collisionLayerInput.Size = new System.Drawing.Size(123, 20);
+            this.collisionLayerInput.TabIndex = 9;
+            this.collisionLayerInput.Text = "CollisionLayer";
+            this.collisionLayerInput.TextChanged += new System.EventHandler(this.collisionLayerInput_TextChanged);
+            // 
+            // atmosphereLayerInput
+            // 
+            this.atmosphereLayerInput.Location = new System.Drawing.Point(95, 94);
+            this.atmosphereLayerInput.Name = "atmosphereLayerInput";
+            this.atmosphereLayerInput.Size = new System.Drawing.Size(123, 20);
+            this.atmosphereLayerInput.TabIndex = 8;
+            this.atmosphereLayerInput.Text = "AtmosphereLayer";
+            this.atmosphereLayerInput.TextChanged += new System.EventHandler(this.atmosphereLayerInput_TextChanged);
+            // 
+            // topLayerInput
+            // 
+            this.topLayerInput.Location = new System.Drawing.Point(95, 68);
+            this.topLayerInput.Name = "topLayerInput";
+            this.topLayerInput.Size = new System.Drawing.Size(123, 20);
+            this.topLayerInput.TabIndex = 7;
+            this.topLayerInput.Text = "TopLayer";
+            this.topLayerInput.TextChanged += new System.EventHandler(this.topLayerInput_TextChanged);
+            // 
+            // middleLayerInput
+            // 
+            this.middleLayerInput.Location = new System.Drawing.Point(95, 42);
+            this.middleLayerInput.Name = "middleLayerInput";
+            this.middleLayerInput.Size = new System.Drawing.Size(123, 20);
+            this.middleLayerInput.TabIndex = 6;
+            this.middleLayerInput.Text = "MiddleLayer";
+            this.middleLayerInput.TextChanged += new System.EventHandler(this.middleLayerInput_TextChanged);
+            // 
+            // baseLayerInput
+            // 
+            this.baseLayerInput.Location = new System.Drawing.Point(95, 16);
+            this.baseLayerInput.Name = "baseLayerInput";
+            this.baseLayerInput.Size = new System.Drawing.Size(123, 20);
+            this.baseLayerInput.TabIndex = 5;
+            this.baseLayerInput.Text = "BaseLayer";
+            this.baseLayerInput.TextChanged += new System.EventHandler(this.baseLayerInput_TextChanged);
             // 
             // mapLayerCheckBoxCollisionLayer
             // 
@@ -495,65 +556,12 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxBaseLayer.Text = "Base";
             this.mapLayerCheckBoxBaseLayer.UseVisualStyleBackColor = true;
             // 
-            // baseLayerOutput
-            // 
-            this.baseLayerOutput.AutoSize = true;
-            this.baseLayerOutput.Location = new System.Drawing.Point(227, 19);
-            this.baseLayerOutput.Name = "baseLayerOutput";
-            this.baseLayerOutput.Size = new System.Drawing.Size(178, 13);
-            this.baseLayerOutput.TabIndex = 10;
-            this.baseLayerOutput.Text = "<BaseLayer>layer info</BaseLayer>";
-            // 
-            // middleLayerOutput
-            // 
-            this.middleLayerOutput.AutoSize = true;
-            this.middleLayerOutput.Location = new System.Drawing.Point(227, 45);
-            this.middleLayerOutput.Name = "middleLayerOutput";
-            this.middleLayerOutput.Size = new System.Drawing.Size(192, 13);
-            this.middleLayerOutput.TabIndex = 11;
-            this.middleLayerOutput.Text = "<MiddleLayer>layer info</MiddleLayer>";
-            // 
-            // topLayerOutput
-            // 
-            this.topLayerOutput.AutoSize = true;
-            this.topLayerOutput.Location = new System.Drawing.Point(227, 71);
-            this.topLayerOutput.Name = "topLayerOutput";
-            this.topLayerOutput.Size = new System.Drawing.Size(168, 13);
-            this.topLayerOutput.TabIndex = 12;
-            this.topLayerOutput.Text = "<TopLayer>layer info</TopLayer>";
-            // 
-            // atmosphereLayerOutput
-            // 
-            this.atmosphereLayerOutput.AutoSize = true;
-            this.atmosphereLayerOutput.Location = new System.Drawing.Point(227, 97);
-            this.atmosphereLayerOutput.Name = "atmosphereLayerOutput";
-            this.atmosphereLayerOutput.Size = new System.Drawing.Size(242, 13);
-            this.atmosphereLayerOutput.TabIndex = 13;
-            this.atmosphereLayerOutput.Text = "<AtmosphereLayer>layer info</AtmosphereLayer>";
-            // 
-            // collisionLayerOutput
-            // 
-            this.collisionLayerOutput.AutoSize = true;
-            this.collisionLayerOutput.Location = new System.Drawing.Point(227, 123);
-            this.collisionLayerOutput.Name = "collisionLayerOutput";
-            this.collisionLayerOutput.Size = new System.Drawing.Size(206, 13);
-            this.collisionLayerOutput.TabIndex = 14;
-            this.collisionLayerOutput.Text = "<CollisionLayer>layer info</CollisionLayer>";
-            // 
-            // vScrollBar1
-            // 
-            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar1.Location = new System.Drawing.Point(632, 0);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 466);
-            this.vScrollBar1.TabIndex = 7;
-            // 
             // ExporterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(649, 466);
-            this.Controls.Add(this.vScrollBar1);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(647, 466);
             this.Controls.Add(this.layerInformationGroupBox);
             this.Controls.Add(this.tileDimensionsGroupBox);
             this.Controls.Add(this.tileSheetGroupBox);
@@ -561,20 +569,22 @@ namespace ProjectSandWindows
             this.Controls.Add(this.mapNameGroupBox);
             this.Controls.Add(this.xmlOutputLabel);
             this.Controls.Add(this.elementNameLabel);
+            this.MaximumSize = new System.Drawing.Size(655, 500);
+            this.MinimumSize = new System.Drawing.Size(655, 500);
             this.Name = "ExporterForm";
             this.Text = "ExporterForm";
             this.mapNameGroupBox.ResumeLayout(false);
             this.mapNameGroupBox.PerformLayout();
             this.mapDimensionsGroupBox.ResumeLayout(false);
             this.mapDimensionsGroupBox.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.mapDimensionsOutputTypeGroupBox.ResumeLayout(false);
+            this.mapDimensionsOutputTypeGroupBox.PerformLayout();
             this.tileSheetGroupBox.ResumeLayout(false);
             this.tileSheetGroupBox.PerformLayout();
             this.tileDimensionsGroupBox.ResumeLayout(false);
             this.tileDimensionsGroupBox.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.tileDimensionsOutputTypeGroupBox.ResumeLayout(false);
+            this.tileDimensionsOutputTypeGroupBox.PerformLayout();
             this.layerInformationGroupBox.ResumeLayout(false);
             this.layerInformationGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -590,34 +600,34 @@ namespace ProjectSandWindows
         private System.Windows.Forms.Label mapNameOutput;
         private System.Windows.Forms.TextBox mapNameInput;
         private System.Windows.Forms.GroupBox mapDimensionsGroupBox;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton customButton;
-        private System.Windows.Forms.RadioButton pointButton;
+        private System.Windows.Forms.GroupBox mapDimensionsOutputTypeGroupBox;
+        private System.Windows.Forms.RadioButton mapDimensionsCustomButton;
+        private System.Windows.Forms.RadioButton mapDimensionsPointButton;
         private System.Windows.Forms.Label mapDimensionsOutput;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox widthBox;
+        private System.Windows.Forms.TextBox mapDimensionsInput;
+        private System.Windows.Forms.TextBox mapDimensionsHeightInput;
+        private System.Windows.Forms.TextBox mapDimensionsWidthInput;
         private System.Windows.Forms.GroupBox tileSheetGroupBox;
         private System.Windows.Forms.Label tileSheetOutput;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tileSheetContentInput;
         private System.Windows.Forms.CheckBox exportMapNameCheckBox;
         private System.Windows.Forms.CheckBox exportMapDimensionsCheckBox;
         private System.Windows.Forms.CheckBox exportTileSheetCheckBox;
         private System.Windows.Forms.GroupBox tileDimensionsGroupBox;
-        private System.Windows.Forms.TextBox tileDimensionsHeightTextBox;
-        private System.Windows.Forms.TextBox tileDimensionsWidthTextBox;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton tileDimensionsCustom;
-        private System.Windows.Forms.RadioButton tileDimensionsPoint;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox tileDimensionsHeightInput;
+        private System.Windows.Forms.TextBox tileDimensionsWidthInput;
+        private System.Windows.Forms.GroupBox tileDimensionsOutputTypeGroupBox;
+        private System.Windows.Forms.RadioButton tileDimensionsCustomButton;
+        private System.Windows.Forms.RadioButton tileDimensionsPointButton;
+        private System.Windows.Forms.TextBox tileDimensionsInput;
         private System.Windows.Forms.Label tileDimensionsOutput;
         private System.Windows.Forms.CheckBox exportTileDimensionsCheckBox;
         private System.Windows.Forms.GroupBox layerInformationGroupBox;
-        private System.Windows.Forms.TextBox collisionLayerTextBox;
-        private System.Windows.Forms.TextBox atmosphereLayerTextBox;
-        private System.Windows.Forms.TextBox topLayerTextBox;
-        private System.Windows.Forms.TextBox middleLayerTextBox;
-        private System.Windows.Forms.TextBox baseLayerTextBox;
+        private System.Windows.Forms.TextBox collisionLayerInput;
+        private System.Windows.Forms.TextBox atmosphereLayerInput;
+        private System.Windows.Forms.TextBox topLayerInput;
+        private System.Windows.Forms.TextBox middleLayerInput;
+        private System.Windows.Forms.TextBox baseLayerInput;
         private System.Windows.Forms.CheckBox mapLayerCheckBoxCollisionLayer;
         private System.Windows.Forms.CheckBox mapLayerCheckBoxAtmosphereLayer;
         private System.Windows.Forms.CheckBox mapLayerCheckBoxTopLayer;
@@ -628,7 +638,6 @@ namespace ProjectSandWindows
         private System.Windows.Forms.Label topLayerOutput;
         private System.Windows.Forms.Label middleLayerOutput;
         private System.Windows.Forms.Label baseLayerOutput;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
 
     }
 }
