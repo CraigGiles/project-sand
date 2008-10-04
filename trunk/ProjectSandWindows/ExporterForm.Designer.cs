@@ -28,6 +28,7 @@ namespace ProjectSandWindows
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExporterForm));
             this.elementNameLabel = new System.Windows.Forms.Label();
             this.xmlOutputLabel = new System.Windows.Forms.Label();
             this.mapNameGroupBox = new System.Windows.Forms.GroupBox();
@@ -57,11 +58,7 @@ namespace ProjectSandWindows
             this.tileDimensionsOutput = new System.Windows.Forms.Label();
             this.exportTileDimensionsCheckBox = new System.Windows.Forms.CheckBox();
             this.layerInformationGroupBox = new System.Windows.Forms.GroupBox();
-            this.collisionLayerOutput = new System.Windows.Forms.Label();
-            this.atmosphereLayerOutput = new System.Windows.Forms.Label();
-            this.topLayerOutput = new System.Windows.Forms.Label();
-            this.middleLayerOutput = new System.Windows.Forms.Label();
-            this.baseLayerOutput = new System.Windows.Forms.Label();
+            this.mapLayerOutput = new System.Windows.Forms.Label();
             this.collisionLayerInput = new System.Windows.Forms.TextBox();
             this.atmosphereLayerInput = new System.Windows.Forms.TextBox();
             this.topLayerInput = new System.Windows.Forms.TextBox();
@@ -72,6 +69,10 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxTopLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxMiddleLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxBaseLayer = new System.Windows.Forms.CheckBox();
+            this.mapLayersOutputTypeGroupBox = new System.Windows.Forms.GroupBox();
+            this.mapLayersGroupedButton = new System.Windows.Forms.RadioButton();
+            this.mapLayersIndividualButton = new System.Windows.Forms.RadioButton();
+            this.mapLayersBaseElement = new System.Windows.Forms.TextBox();
             this.mapNameGroupBox.SuspendLayout();
             this.mapDimensionsGroupBox.SuspendLayout();
             this.mapDimensionsOutputTypeGroupBox.SuspendLayout();
@@ -79,6 +80,7 @@ namespace ProjectSandWindows
             this.tileDimensionsGroupBox.SuspendLayout();
             this.tileDimensionsOutputTypeGroupBox.SuspendLayout();
             this.layerInformationGroupBox.SuspendLayout();
+            this.mapLayersOutputTypeGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // elementNameLabel
@@ -271,9 +273,9 @@ namespace ProjectSandWindows
             this.tileSheetOutput.AutoSize = true;
             this.tileSheetOutput.Location = new System.Drawing.Point(225, 15);
             this.tileSheetOutput.Name = "tileSheetOutput";
-            this.tileSheetOutput.Size = new System.Drawing.Size(418, 13);
+            this.tileSheetOutput.Size = new System.Drawing.Size(408, 13);
             this.tileSheetOutput.TabIndex = 1;
-            this.tileSheetOutput.Text = "<TileSheetContentName>Content//Textures//TextureName</TileSheetContentName>";
+            this.tileSheetOutput.Text = "<TileSheetContentName>ProjectsContentPath//TileSheet</TileSheetContentName>";
             // 
             // tileSheetContentInput
             // 
@@ -384,11 +386,9 @@ namespace ProjectSandWindows
             // 
             // layerInformationGroupBox
             // 
-            this.layerInformationGroupBox.Controls.Add(this.collisionLayerOutput);
-            this.layerInformationGroupBox.Controls.Add(this.atmosphereLayerOutput);
-            this.layerInformationGroupBox.Controls.Add(this.topLayerOutput);
-            this.layerInformationGroupBox.Controls.Add(this.middleLayerOutput);
-            this.layerInformationGroupBox.Controls.Add(this.baseLayerOutput);
+            this.layerInformationGroupBox.Controls.Add(this.mapLayersBaseElement);
+            this.layerInformationGroupBox.Controls.Add(this.mapLayersOutputTypeGroupBox);
+            this.layerInformationGroupBox.Controls.Add(this.mapLayerOutput);
             this.layerInformationGroupBox.Controls.Add(this.collisionLayerInput);
             this.layerInformationGroupBox.Controls.Add(this.atmosphereLayerInput);
             this.layerInformationGroupBox.Controls.Add(this.topLayerInput);
@@ -401,59 +401,23 @@ namespace ProjectSandWindows
             this.layerInformationGroupBox.Controls.Add(this.mapLayerCheckBoxBaseLayer);
             this.layerInformationGroupBox.Location = new System.Drawing.Point(12, 523);
             this.layerInformationGroupBox.Name = "layerInformationGroupBox";
-            this.layerInformationGroupBox.Size = new System.Drawing.Size(610, 181);
+            this.layerInformationGroupBox.Size = new System.Drawing.Size(610, 258);
             this.layerInformationGroupBox.TabIndex = 6;
             this.layerInformationGroupBox.TabStop = false;
             this.layerInformationGroupBox.Text = "Map Layers";
             // 
-            // collisionLayerOutput
+            // mapLayerOutput
             // 
-            this.collisionLayerOutput.AutoSize = true;
-            this.collisionLayerOutput.Location = new System.Drawing.Point(227, 123);
-            this.collisionLayerOutput.Name = "collisionLayerOutput";
-            this.collisionLayerOutput.Size = new System.Drawing.Size(206, 13);
-            this.collisionLayerOutput.TabIndex = 14;
-            this.collisionLayerOutput.Text = "<CollisionLayer>layer info</CollisionLayer>";
-            // 
-            // atmosphereLayerOutput
-            // 
-            this.atmosphereLayerOutput.AutoSize = true;
-            this.atmosphereLayerOutput.Location = new System.Drawing.Point(227, 97);
-            this.atmosphereLayerOutput.Name = "atmosphereLayerOutput";
-            this.atmosphereLayerOutput.Size = new System.Drawing.Size(242, 13);
-            this.atmosphereLayerOutput.TabIndex = 13;
-            this.atmosphereLayerOutput.Text = "<AtmosphereLayer>layer info</AtmosphereLayer>";
-            // 
-            // topLayerOutput
-            // 
-            this.topLayerOutput.AutoSize = true;
-            this.topLayerOutput.Location = new System.Drawing.Point(227, 71);
-            this.topLayerOutput.Name = "topLayerOutput";
-            this.topLayerOutput.Size = new System.Drawing.Size(168, 13);
-            this.topLayerOutput.TabIndex = 12;
-            this.topLayerOutput.Text = "<TopLayer>layer info</TopLayer>";
-            // 
-            // middleLayerOutput
-            // 
-            this.middleLayerOutput.AutoSize = true;
-            this.middleLayerOutput.Location = new System.Drawing.Point(227, 45);
-            this.middleLayerOutput.Name = "middleLayerOutput";
-            this.middleLayerOutput.Size = new System.Drawing.Size(192, 13);
-            this.middleLayerOutput.TabIndex = 11;
-            this.middleLayerOutput.Text = "<MiddleLayer>layer info</MiddleLayer>";
-            // 
-            // baseLayerOutput
-            // 
-            this.baseLayerOutput.AutoSize = true;
-            this.baseLayerOutput.Location = new System.Drawing.Point(227, 19);
-            this.baseLayerOutput.Name = "baseLayerOutput";
-            this.baseLayerOutput.Size = new System.Drawing.Size(178, 13);
-            this.baseLayerOutput.TabIndex = 10;
-            this.baseLayerOutput.Text = "<BaseLayer>layer info</BaseLayer>";
+            this.mapLayerOutput.AutoSize = true;
+            this.mapLayerOutput.Location = new System.Drawing.Point(227, 20);
+            this.mapLayerOutput.Name = "mapLayerOutput";
+            this.mapLayerOutput.Size = new System.Drawing.Size(257, 65);
+            this.mapLayerOutput.TabIndex = 10;
+            this.mapLayerOutput.Text = resources.GetString("mapLayerOutput.Text");
             // 
             // collisionLayerInput
             // 
-            this.collisionLayerInput.Location = new System.Drawing.Point(95, 120);
+            this.collisionLayerInput.Location = new System.Drawing.Point(95, 228);
             this.collisionLayerInput.Name = "collisionLayerInput";
             this.collisionLayerInput.Size = new System.Drawing.Size(123, 20);
             this.collisionLayerInput.TabIndex = 9;
@@ -462,7 +426,7 @@ namespace ProjectSandWindows
             // 
             // atmosphereLayerInput
             // 
-            this.atmosphereLayerInput.Location = new System.Drawing.Point(95, 94);
+            this.atmosphereLayerInput.Location = new System.Drawing.Point(95, 202);
             this.atmosphereLayerInput.Name = "atmosphereLayerInput";
             this.atmosphereLayerInput.Size = new System.Drawing.Size(123, 20);
             this.atmosphereLayerInput.TabIndex = 8;
@@ -471,7 +435,7 @@ namespace ProjectSandWindows
             // 
             // topLayerInput
             // 
-            this.topLayerInput.Location = new System.Drawing.Point(95, 68);
+            this.topLayerInput.Location = new System.Drawing.Point(95, 176);
             this.topLayerInput.Name = "topLayerInput";
             this.topLayerInput.Size = new System.Drawing.Size(123, 20);
             this.topLayerInput.TabIndex = 7;
@@ -480,7 +444,7 @@ namespace ProjectSandWindows
             // 
             // middleLayerInput
             // 
-            this.middleLayerInput.Location = new System.Drawing.Point(95, 42);
+            this.middleLayerInput.Location = new System.Drawing.Point(95, 150);
             this.middleLayerInput.Name = "middleLayerInput";
             this.middleLayerInput.Size = new System.Drawing.Size(123, 20);
             this.middleLayerInput.TabIndex = 6;
@@ -489,7 +453,7 @@ namespace ProjectSandWindows
             // 
             // baseLayerInput
             // 
-            this.baseLayerInput.Location = new System.Drawing.Point(95, 16);
+            this.baseLayerInput.Location = new System.Drawing.Point(95, 124);
             this.baseLayerInput.Name = "baseLayerInput";
             this.baseLayerInput.Size = new System.Drawing.Size(123, 20);
             this.baseLayerInput.TabIndex = 5;
@@ -501,7 +465,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxCollisionLayer.AutoSize = true;
             this.mapLayerCheckBoxCollisionLayer.Checked = true;
             this.mapLayerCheckBoxCollisionLayer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mapLayerCheckBoxCollisionLayer.Location = new System.Drawing.Point(7, 123);
+            this.mapLayerCheckBoxCollisionLayer.Location = new System.Drawing.Point(7, 231);
             this.mapLayerCheckBoxCollisionLayer.Name = "mapLayerCheckBoxCollisionLayer";
             this.mapLayerCheckBoxCollisionLayer.Size = new System.Drawing.Size(64, 17);
             this.mapLayerCheckBoxCollisionLayer.TabIndex = 4;
@@ -513,7 +477,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxAtmosphereLayer.AutoSize = true;
             this.mapLayerCheckBoxAtmosphereLayer.Checked = true;
             this.mapLayerCheckBoxAtmosphereLayer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mapLayerCheckBoxAtmosphereLayer.Location = new System.Drawing.Point(7, 97);
+            this.mapLayerCheckBoxAtmosphereLayer.Location = new System.Drawing.Point(7, 205);
             this.mapLayerCheckBoxAtmosphereLayer.Name = "mapLayerCheckBoxAtmosphereLayer";
             this.mapLayerCheckBoxAtmosphereLayer.Size = new System.Drawing.Size(82, 17);
             this.mapLayerCheckBoxAtmosphereLayer.TabIndex = 3;
@@ -525,7 +489,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxTopLayer.AutoSize = true;
             this.mapLayerCheckBoxTopLayer.Checked = true;
             this.mapLayerCheckBoxTopLayer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mapLayerCheckBoxTopLayer.Location = new System.Drawing.Point(7, 71);
+            this.mapLayerCheckBoxTopLayer.Location = new System.Drawing.Point(7, 179);
             this.mapLayerCheckBoxTopLayer.Name = "mapLayerCheckBoxTopLayer";
             this.mapLayerCheckBoxTopLayer.Size = new System.Drawing.Size(45, 17);
             this.mapLayerCheckBoxTopLayer.TabIndex = 2;
@@ -537,7 +501,7 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxMiddleLayer.AutoSize = true;
             this.mapLayerCheckBoxMiddleLayer.Checked = true;
             this.mapLayerCheckBoxMiddleLayer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mapLayerCheckBoxMiddleLayer.Location = new System.Drawing.Point(7, 45);
+            this.mapLayerCheckBoxMiddleLayer.Location = new System.Drawing.Point(7, 153);
             this.mapLayerCheckBoxMiddleLayer.Name = "mapLayerCheckBoxMiddleLayer";
             this.mapLayerCheckBoxMiddleLayer.Size = new System.Drawing.Size(57, 17);
             this.mapLayerCheckBoxMiddleLayer.TabIndex = 1;
@@ -549,12 +513,56 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxBaseLayer.AutoSize = true;
             this.mapLayerCheckBoxBaseLayer.Checked = true;
             this.mapLayerCheckBoxBaseLayer.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mapLayerCheckBoxBaseLayer.Location = new System.Drawing.Point(7, 19);
+            this.mapLayerCheckBoxBaseLayer.Location = new System.Drawing.Point(7, 127);
             this.mapLayerCheckBoxBaseLayer.Name = "mapLayerCheckBoxBaseLayer";
             this.mapLayerCheckBoxBaseLayer.Size = new System.Drawing.Size(50, 17);
             this.mapLayerCheckBoxBaseLayer.TabIndex = 0;
             this.mapLayerCheckBoxBaseLayer.Text = "Base";
             this.mapLayerCheckBoxBaseLayer.UseVisualStyleBackColor = true;
+            // 
+            // mapLayersOutputTypeGroupBox
+            // 
+            this.mapLayersOutputTypeGroupBox.Controls.Add(this.mapLayersIndividualButton);
+            this.mapLayersOutputTypeGroupBox.Controls.Add(this.mapLayersGroupedButton);
+            this.mapLayersOutputTypeGroupBox.Location = new System.Drawing.Point(69, 20);
+            this.mapLayersOutputTypeGroupBox.Name = "mapLayersOutputTypeGroupBox";
+            this.mapLayersOutputTypeGroupBox.Size = new System.Drawing.Size(150, 72);
+            this.mapLayersOutputTypeGroupBox.TabIndex = 15;
+            this.mapLayersOutputTypeGroupBox.TabStop = false;
+            this.mapLayersOutputTypeGroupBox.Text = "Output Type";
+            // 
+            // mapLayersGroupedButton
+            // 
+            this.mapLayersGroupedButton.AutoSize = true;
+            this.mapLayersGroupedButton.Location = new System.Drawing.Point(7, 20);
+            this.mapLayersGroupedButton.Name = "mapLayersGroupedButton";
+            this.mapLayersGroupedButton.Size = new System.Drawing.Size(66, 17);
+            this.mapLayersGroupedButton.TabIndex = 0;
+            this.mapLayersGroupedButton.Text = "Grouped";
+            this.mapLayersGroupedButton.UseVisualStyleBackColor = true;
+            this.mapLayersGroupedButton.CheckedChanged += new System.EventHandler(this.mapLayersGroupedButton_CheckedChanged);
+            // 
+            // mapLayersIndividualButton
+            // 
+            this.mapLayersIndividualButton.AutoSize = true;
+            this.mapLayersIndividualButton.Checked = true;
+            this.mapLayersIndividualButton.Location = new System.Drawing.Point(7, 44);
+            this.mapLayersIndividualButton.Name = "mapLayersIndividualButton";
+            this.mapLayersIndividualButton.Size = new System.Drawing.Size(70, 17);
+            this.mapLayersIndividualButton.TabIndex = 1;
+            this.mapLayersIndividualButton.TabStop = true;
+            this.mapLayersIndividualButton.Text = "Individual";
+            this.mapLayersIndividualButton.UseVisualStyleBackColor = true;
+            this.mapLayersIndividualButton.CheckedChanged += new System.EventHandler(this.mapLayersIndividualButton_CheckedChanged);
+            // 
+            // mapLayersBaseElement
+            // 
+            this.mapLayersBaseElement.Location = new System.Drawing.Point(69, 98);
+            this.mapLayersBaseElement.Name = "mapLayersBaseElement";
+            this.mapLayersBaseElement.Size = new System.Drawing.Size(150, 20);
+            this.mapLayersBaseElement.TabIndex = 16;
+            this.mapLayersBaseElement.Text = "MapLayers";
+            this.mapLayersBaseElement.TextChanged += new System.EventHandler(this.mapLayersBaseElement_TextChanged);
             // 
             // ExporterForm
             // 
@@ -587,6 +595,8 @@ namespace ProjectSandWindows
             this.tileDimensionsOutputTypeGroupBox.PerformLayout();
             this.layerInformationGroupBox.ResumeLayout(false);
             this.layerInformationGroupBox.PerformLayout();
+            this.mapLayersOutputTypeGroupBox.ResumeLayout(false);
+            this.mapLayersOutputTypeGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -633,11 +643,11 @@ namespace ProjectSandWindows
         private System.Windows.Forms.CheckBox mapLayerCheckBoxTopLayer;
         private System.Windows.Forms.CheckBox mapLayerCheckBoxMiddleLayer;
         private System.Windows.Forms.CheckBox mapLayerCheckBoxBaseLayer;
-        private System.Windows.Forms.Label collisionLayerOutput;
-        private System.Windows.Forms.Label atmosphereLayerOutput;
-        private System.Windows.Forms.Label topLayerOutput;
-        private System.Windows.Forms.Label middleLayerOutput;
-        private System.Windows.Forms.Label baseLayerOutput;
+        private System.Windows.Forms.Label mapLayerOutput;
+        private System.Windows.Forms.GroupBox mapLayersOutputTypeGroupBox;
+        private System.Windows.Forms.RadioButton mapLayersIndividualButton;
+        private System.Windows.Forms.RadioButton mapLayersGroupedButton;
+        private System.Windows.Forms.TextBox mapLayersBaseElement;
 
     }
 }
