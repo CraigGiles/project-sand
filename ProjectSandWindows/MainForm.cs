@@ -86,6 +86,8 @@ namespace ProjectSandWindows
             // Clear the status at the bottom
             mapSizeStatusLabel.Text = "";
             mapLocationStatusLabel.Text = "";
+
+            ExporterSettings.Initialize();
         }
 
         private void MainForm_Load(object sender, EventArgs e)

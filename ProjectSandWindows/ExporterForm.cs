@@ -12,6 +12,7 @@ namespace ProjectSandWindows
     public partial class ExporterForm : Form
     {
         #region Constructor(s)
+
         /// <summary>
         /// Creates a new ExporterForm object
         /// </summary>
@@ -21,16 +22,54 @@ namespace ProjectSandWindows
             Form.ActiveForm.AutoScroll = true;
         }
 
+        /// <summary>
+        /// Creates a new ExporterForm object
+        /// </summary>
         public ExporterForm(TileMap map)
         {
             InitializeComponent();
             Form.ActiveForm.AutoScroll = true;
         }
 
+        /// <summary>
+        /// Creates a new ExporterForm object
+        /// </summary>
         public ExporterForm(List<TileMap> maps)
         {
             InitializeComponent();
             Form.ActiveForm.AutoScroll = true;
+        }
+
+        #endregion
+
+        #region Xna Data
+
+        private void ChangeXnaDataOutput()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("Filename: " + xmlFileNameInput.Text + ".xml\n\n");
+            sb.Append("<XnaContent>\n");
+            sb.Append("     <Asset Type=\"" + projectDataNamespaceInput.Text + ".");
+            sb.Append(projectMapClassInput.Text + "\">\n\n");
+            sb.Append("     </Asset>\n");
+            sb.Append("</XnaContent>\n");
+            xnaDataOutput.Text = sb.ToString();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            ChangeXnaDataOutput();
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            ChangeXnaDataOutput();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            ChangeXnaDataOutput();
         }
 
         #endregion
@@ -288,11 +327,71 @@ namespace ProjectSandWindows
         {
             ChangeMapLayersOutput();
         }
-        #endregion
+        #endregion        
+
+
+
+        private void SetExportSettings()
+        {
+            ExporterSettings settings = ExporterSettings.Settings;
+
+            settings.XmlFileName = xmlFileNameInput.Text;
+            settings.ProjectDataNamespace = projectDataNamespaceInput.Text;
+            settings.ProjectMapClassName = projectMapClassInput.Text;
+
+            settings.ExportMapName = exportMapNameCheckBox.Checked;
+            settings.ElementMapName = mapNameInput.Text;
+
+
+
+            if (mapDimensionsPointButton.Checked)
+                settings.DataStyleMapDimensions = ExportDataStyle.Point;
+            else if (mapDimensionsCustomButton.Checked)
+                settings.DataStyleMapDimensions = ExportDataStyle.Custom;
+
+            settings.ExportMapDimensions = exportMapDimensionsCheckBox.Checked;
+            settings.ElementMapDimensions = mapDimensionsInput.Text;
+            settings.ElementMapWidth = mapDimensionsWidthInput.Text;
+            settings.ElementMapHeight = mapDimensionsHeightInput.Text;
+
+            settings.ExportTileSheet = exportTileSheetCheckBox.Checked;
+            settings.ElementTileSheet = tileSheetContentInput.Text;
+
+
+
+            if (tileDimensionsPointButton.Checked)
+                settings.DataStyleTileDimensions = ExportDataStyle.Point;
+            else if (tileDimensionsCustomButton.Checked)
+                settings.DataStyleTileDimensions = ExportDataStyle.Custom;
+
+            settings.ExportTileDimensions = exportTileDimensionsCheckBox.Checked;
+            settings.ElementTileDimensions = tileDimensionsInput.Text;
+            settings.ElementTileWidth = tileDimensionsWidthInput.Text;
+            settings.ElementTileHeight = tileDimensionsHeightInput.Text;
 
 
 
 
-        
+            if (mapLayersGroupedButton.Checked)
+                settings.DataStyleMapLayers = ExportDataStyle.Grouped;
+            else if (mapLayersIndividualButton.Checked)
+                settings.DataStyleMapLayers = ExportDataStyle.Individual;
+
+            settings.ExportBaseLayer = mapLayerCheckBoxBaseLayer.Checked;
+            settings.ExportMiddleLayer = mapLayerCheckBoxMiddleLayer.Checked;
+            settings.ExportTopLayer = mapLayerCheckBoxTopLayer.Checked;
+            settings.ExportAtmosphereLayer = mapLayerCheckBoxAtmosphereLayer.Checked;
+            settings.ExportCollisionLayer = mapLayerCheckBoxCollisionLayer.Checked;
+
+        }
+
+        private void exportXmlButton_Click(object sender, EventArgs e)
+        {
+            SetExportSettings();
+            Exporter exporter = new Exporter();
+            TileMap tileMap = new TileMap();
+            exporter.ExportXml(tileMap);
+        }
+
     }
 }

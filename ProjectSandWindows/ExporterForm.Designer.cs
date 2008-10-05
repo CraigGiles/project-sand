@@ -73,6 +73,16 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxTopLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxMiddleLayer = new System.Windows.Forms.CheckBox();
             this.mapLayerCheckBoxBaseLayer = new System.Windows.Forms.CheckBox();
+            this.exportXmlButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.xnaDataGroupBox = new System.Windows.Forms.GroupBox();
+            this.xnaDataOutput = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.projectMapClassInput = new System.Windows.Forms.TextBox();
+            this.projectDataNamespaceInput = new System.Windows.Forms.TextBox();
+            this.xmlFileNameInput = new System.Windows.Forms.TextBox();
             this.mapNameGroupBox.SuspendLayout();
             this.mapDimensionsGroupBox.SuspendLayout();
             this.mapDimensionsOutputTypeGroupBox.SuspendLayout();
@@ -81,6 +91,8 @@ namespace ProjectSandWindows
             this.tileDimensionsOutputTypeGroupBox.SuspendLayout();
             this.layerInformationGroupBox.SuspendLayout();
             this.mapLayersOutputTypeGroupBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.xnaDataGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // elementNameLabel
@@ -108,7 +120,7 @@ namespace ProjectSandWindows
             this.mapNameGroupBox.Controls.Add(this.exportMapNameCheckBox);
             this.mapNameGroupBox.Controls.Add(this.mapNameOutput);
             this.mapNameGroupBox.Controls.Add(this.mapNameInput);
-            this.mapNameGroupBox.Location = new System.Drawing.Point(12, 32);
+            this.mapNameGroupBox.Location = new System.Drawing.Point(8, 227);
             this.mapNameGroupBox.Name = "mapNameGroupBox";
             this.mapNameGroupBox.Size = new System.Drawing.Size(610, 49);
             this.mapNameGroupBox.TabIndex = 2;
@@ -153,7 +165,7 @@ namespace ProjectSandWindows
             this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsOutputTypeGroupBox);
             this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsOutput);
             this.mapDimensionsGroupBox.Controls.Add(this.mapDimensionsInput);
-            this.mapDimensionsGroupBox.Location = new System.Drawing.Point(12, 88);
+            this.mapDimensionsGroupBox.Location = new System.Drawing.Point(8, 283);
             this.mapDimensionsGroupBox.Name = "mapDimensionsGroupBox";
             this.mapDimensionsGroupBox.Size = new System.Drawing.Size(610, 179);
             this.mapDimensionsGroupBox.TabIndex = 3;
@@ -249,7 +261,7 @@ namespace ProjectSandWindows
             this.tileSheetGroupBox.Controls.Add(this.exportTileSheetCheckBox);
             this.tileSheetGroupBox.Controls.Add(this.tileSheetOutput);
             this.tileSheetGroupBox.Controls.Add(this.tileSheetContentInput);
-            this.tileSheetGroupBox.Location = new System.Drawing.Point(12, 274);
+            this.tileSheetGroupBox.Location = new System.Drawing.Point(8, 469);
             this.tileSheetGroupBox.Name = "tileSheetGroupBox";
             this.tileSheetGroupBox.Size = new System.Drawing.Size(610, 51);
             this.tileSheetGroupBox.TabIndex = 4;
@@ -294,7 +306,7 @@ namespace ProjectSandWindows
             this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsInput);
             this.tileDimensionsGroupBox.Controls.Add(this.tileDimensionsOutput);
             this.tileDimensionsGroupBox.Controls.Add(this.exportTileDimensionsCheckBox);
-            this.tileDimensionsGroupBox.Location = new System.Drawing.Point(12, 332);
+            this.tileDimensionsGroupBox.Location = new System.Drawing.Point(8, 527);
             this.tileDimensionsGroupBox.Name = "tileDimensionsGroupBox";
             this.tileDimensionsGroupBox.Size = new System.Drawing.Size(610, 184);
             this.tileDimensionsGroupBox.TabIndex = 5;
@@ -399,7 +411,7 @@ namespace ProjectSandWindows
             this.layerInformationGroupBox.Controls.Add(this.mapLayerCheckBoxTopLayer);
             this.layerInformationGroupBox.Controls.Add(this.mapLayerCheckBoxMiddleLayer);
             this.layerInformationGroupBox.Controls.Add(this.mapLayerCheckBoxBaseLayer);
-            this.layerInformationGroupBox.Location = new System.Drawing.Point(12, 523);
+            this.layerInformationGroupBox.Location = new System.Drawing.Point(8, 718);
             this.layerInformationGroupBox.Name = "layerInformationGroupBox";
             this.layerInformationGroupBox.Size = new System.Drawing.Size(610, 258);
             this.layerInformationGroupBox.TabIndex = 6;
@@ -569,12 +581,114 @@ namespace ProjectSandWindows
             this.mapLayerCheckBoxBaseLayer.UseVisualStyleBackColor = true;
             this.mapLayerCheckBoxBaseLayer.CheckedChanged += new System.EventHandler(this.mapLayerCheckBoxBaseLayer_CheckedChanged);
             // 
+            // exportXmlButton
+            // 
+            this.exportXmlButton.Location = new System.Drawing.Point(267, 19);
+            this.exportXmlButton.Name = "exportXmlButton";
+            this.exportXmlButton.Size = new System.Drawing.Size(75, 23);
+            this.exportXmlButton.TabIndex = 7;
+            this.exportXmlButton.Text = "Export XML";
+            this.exportXmlButton.UseVisualStyleBackColor = true;
+            this.exportXmlButton.Click += new System.EventHandler(this.exportXmlButton_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.exportXmlButton);
+            this.groupBox1.Location = new System.Drawing.Point(8, 982);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(610, 53);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Export";
+            // 
+            // xnaDataGroupBox
+            // 
+            this.xnaDataGroupBox.Controls.Add(this.xnaDataOutput);
+            this.xnaDataGroupBox.Controls.Add(this.label3);
+            this.xnaDataGroupBox.Controls.Add(this.label2);
+            this.xnaDataGroupBox.Controls.Add(this.label1);
+            this.xnaDataGroupBox.Controls.Add(this.projectMapClassInput);
+            this.xnaDataGroupBox.Controls.Add(this.projectDataNamespaceInput);
+            this.xnaDataGroupBox.Controls.Add(this.xmlFileNameInput);
+            this.xnaDataGroupBox.Location = new System.Drawing.Point(12, 46);
+            this.xnaDataGroupBox.Name = "xnaDataGroupBox";
+            this.xnaDataGroupBox.Size = new System.Drawing.Size(610, 175);
+            this.xnaDataGroupBox.TabIndex = 9;
+            this.xnaDataGroupBox.TabStop = false;
+            this.xnaDataGroupBox.Text = "XNA Data";
+            // 
+            // xnaDataOutput
+            // 
+            this.xnaDataOutput.AutoSize = true;
+            this.xnaDataOutput.Location = new System.Drawing.Point(230, 20);
+            this.xnaDataOutput.Name = "xnaDataOutput";
+            this.xnaDataOutput.Size = new System.Drawing.Size(298, 91);
+            this.xnaDataOutput.TabIndex = 6;
+            this.xnaDataOutput.Text = "Filename: filename.xml\r\n\r\n<XnaContent>\r\n     <Asset Type=\"ProjectDataNamespace.Pr" +
+                "ojectMapClass\">\r\n\r\n     </Asset>\r\n</XnaContent>";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(73, 121);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(128, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Projects Map Class Name";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(73, 66);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(129, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Projects Data namespace";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(72, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "XML Name";
+            // 
+            // projectMapClassInput
+            // 
+            this.projectMapClassInput.Location = new System.Drawing.Point(68, 137);
+            this.projectMapClassInput.Name = "projectMapClassInput";
+            this.projectMapClassInput.Size = new System.Drawing.Size(150, 20);
+            this.projectMapClassInput.TabIndex = 2;
+            this.projectMapClassInput.Text = "ProjectMapClass";
+            this.projectMapClassInput.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            // 
+            // projectDataNamespaceInput
+            // 
+            this.projectDataNamespaceInput.Location = new System.Drawing.Point(68, 82);
+            this.projectDataNamespaceInput.Name = "projectDataNamespaceInput";
+            this.projectDataNamespaceInput.Size = new System.Drawing.Size(150, 20);
+            this.projectDataNamespaceInput.TabIndex = 1;
+            this.projectDataNamespaceInput.Text = "ProjectDataNamespace";
+            this.projectDataNamespaceInput.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // xmlFileNameInput
+            // 
+            this.xmlFileNameInput.Location = new System.Drawing.Point(68, 32);
+            this.xmlFileNameInput.Name = "xmlFileNameInput";
+            this.xmlFileNameInput.Size = new System.Drawing.Size(150, 20);
+            this.xmlFileNameInput.TabIndex = 0;
+            this.xmlFileNameInput.Text = "filename";
+            this.xmlFileNameInput.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // ExporterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(647, 466);
+            this.Controls.Add(this.xnaDataGroupBox);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.layerInformationGroupBox);
             this.Controls.Add(this.tileDimensionsGroupBox);
             this.Controls.Add(this.tileSheetGroupBox);
@@ -602,6 +716,9 @@ namespace ProjectSandWindows
             this.layerInformationGroupBox.PerformLayout();
             this.mapLayersOutputTypeGroupBox.ResumeLayout(false);
             this.mapLayersOutputTypeGroupBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.xnaDataGroupBox.ResumeLayout(false);
+            this.xnaDataGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -653,6 +770,16 @@ namespace ProjectSandWindows
         private System.Windows.Forms.RadioButton mapLayersIndividualButton;
         private System.Windows.Forms.RadioButton mapLayersGroupedButton;
         private System.Windows.Forms.TextBox mapLayersBaseElement;
+        private System.Windows.Forms.Button exportXmlButton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox xnaDataGroupBox;
+        private System.Windows.Forms.TextBox xmlFileNameInput;
+        private System.Windows.Forms.Label xnaDataOutput;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox projectMapClassInput;
+        private System.Windows.Forms.TextBox projectDataNamespaceInput;
 
     }
 }
