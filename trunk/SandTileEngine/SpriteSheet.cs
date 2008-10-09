@@ -66,6 +66,14 @@ namespace SandTileEngine
             get { return spriteDefinitions[i]; }
         }
 
+        /// <summary>
+        /// Returns the number of key/value pairs in the sprite definitions
+        /// </summary>
+        public int Count
+        {
+            get { return spriteDefinitions.Count; }
+        }
+
         #endregion
 
         #region Constructors
@@ -117,7 +125,15 @@ namespace SandTileEngine
                 return false;
             }
 
-            rect = spriteDefinitions[i];
+            // Check to see if the key is within limit
+            if (spriteDefinitions.ContainsKey(i))
+                rect = spriteDefinitions[i];
+            else
+            {
+                // Create a blank rectangle
+                rect = new Rectangle();
+                return false;
+            }
 
             return true;
         }

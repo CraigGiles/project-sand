@@ -35,17 +35,17 @@ namespace ProjectSandWindows
             this.numTileHeight = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numHorizSpace = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.numVerticalSpace = new System.Windows.Forms.NumericUpDown();
+            this.numClipLeft = new System.Windows.Forms.NumericUpDown();
+            this.numClipTop = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblSizePosition = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -54,10 +54,10 @@ namespace ProjectSandWindows
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTileWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTileHeight)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHorizSpace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVerticalSpace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numClipLeft)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numClipTop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTilePreview)).BeginInit();
             this.SuspendLayout();
@@ -152,17 +152,17 @@ namespace ProjectSandWindows
             this.label3.TabIndex = 4;
             this.label3.Text = "Tile Height:";
             // 
-            // numericUpDown1
+            // numHorizSpace
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(337, 94);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.numHorizSpace.Location = new System.Drawing.Point(337, 94);
+            this.numHorizSpace.Maximum = new decimal(new int[] {
             256,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown1.TabIndex = 3;
+            this.numHorizSpace.Name = "numHorizSpace";
+            this.numHorizSpace.Size = new System.Drawing.Size(54, 20);
+            this.numHorizSpace.TabIndex = 3;
             // 
             // label4
             // 
@@ -196,41 +196,41 @@ namespace ProjectSandWindows
             this.vScrollBar1.Size = new System.Drawing.Size(19, 250);
             this.vScrollBar1.TabIndex = 6;
             // 
-            // numericUpDown2
+            // numVerticalSpace
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(337, 120);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.numVerticalSpace.Location = new System.Drawing.Point(337, 120);
+            this.numVerticalSpace.Maximum = new decimal(new int[] {
             256,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown2.TabIndex = 3;
+            this.numVerticalSpace.Name = "numVerticalSpace";
+            this.numVerticalSpace.Size = new System.Drawing.Size(54, 20);
+            this.numVerticalSpace.TabIndex = 3;
             // 
-            // numericUpDown3
+            // numClipLeft
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(337, 146);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
+            this.numClipLeft.Location = new System.Drawing.Point(337, 146);
+            this.numClipLeft.Maximum = new decimal(new int[] {
             256,
             0,
             0,
             0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown3.TabIndex = 3;
+            this.numClipLeft.Name = "numClipLeft";
+            this.numClipLeft.Size = new System.Drawing.Size(54, 20);
+            this.numClipLeft.TabIndex = 3;
             // 
-            // numericUpDown4
+            // numClipTop
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(337, 172);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
+            this.numClipTop.Location = new System.Drawing.Point(337, 172);
+            this.numClipTop.Maximum = new decimal(new int[] {
             256,
             0,
             0,
             0});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown4.TabIndex = 3;
+            this.numClipTop.Name = "numClipTop";
+            this.numClipTop.Size = new System.Drawing.Size(54, 20);
+            this.numClipTop.TabIndex = 3;
             // 
             // label6
             // 
@@ -250,14 +250,14 @@ namespace ProjectSandWindows
             this.label7.TabIndex = 4;
             this.label7.Text = "Clip from top:";
             // 
-            // label8
+            // lblSizePosition
             // 
-            this.label8.Location = new System.Drawing.Point(0, 269);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(208, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Size (400, 600), Position (25, 125)";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSizePosition.Location = new System.Drawing.Point(0, 269);
+            this.lblSizePosition.Name = "lblSizePosition";
+            this.lblSizePosition.Size = new System.Drawing.Size(208, 13);
+            this.lblSizePosition.TabIndex = 7;
+            this.lblSizePosition.Text = "Size (400, 600), Position (25, 125)";
+            this.lblSizePosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnOk
             // 
@@ -315,7 +315,7 @@ namespace ProjectSandWindows
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
-            this.Controls.Add(this.label8);
+            this.Controls.Add(this.lblSizePosition);
             this.Controls.Add(this.vScrollBar1);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.label9);
@@ -325,10 +325,10 @@ namespace ProjectSandWindows
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.numericUpDown4);
-            this.Controls.Add(this.numericUpDown3);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.numClipTop);
+            this.Controls.Add(this.numClipLeft);
+            this.Controls.Add(this.numVerticalSpace);
+            this.Controls.Add(this.numHorizSpace);
             this.Controls.Add(this.numTileHeight);
             this.Controls.Add(this.numTileWidth);
             this.Controls.Add(this.label1);
@@ -346,10 +346,10 @@ namespace ProjectSandWindows
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTileWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTileHeight)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHorizSpace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVerticalSpace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numClipLeft)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numClipTop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTilePreview)).EndInit();
             this.ResumeLayout(false);
@@ -366,17 +366,17 @@ namespace ProjectSandWindows
         private System.Windows.Forms.NumericUpDown numTileHeight;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numHorizSpace;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.HScrollBar hScrollBar1;
         private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown numVerticalSpace;
+        private System.Windows.Forms.NumericUpDown numClipLeft;
+        private System.Windows.Forms.NumericUpDown numClipTop;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblSizePosition;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.PictureBox pictureBox1;

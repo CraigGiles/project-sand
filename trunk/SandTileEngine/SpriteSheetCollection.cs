@@ -38,17 +38,11 @@ namespace SandTileEngine
         #region Public Methods
 
         /// <summary>
-        /// Add the loaded tile set texture into the collection
-        /// as well as the full path to the file that contained it
+        /// Add the loaded sprite sheet to the collection
         /// </summary>
-        /// <param name="texture">Loaded texture from the file</param>
-        /// <param name="filename">Full path to the file that contained the texutre</param>
-        public void AddSpriteSheet(Texture2D texture, string filename)
+        /// <param name="sheet">Fully loaded sprite sheet</param>
+        public void AddSpriteSheet(SpriteSheet sheet)
         {
-            SpriteSheet sheet = new SpriteSheet(texture, filename);
-
-            // TODO:  More processing?
-
             collection.Add(sheet);
         }
 
