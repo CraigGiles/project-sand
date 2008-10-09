@@ -42,9 +42,11 @@ namespace ProjectSandWindows
 
         // Basic data for the editor
         TileMapCollection tileMapData = new TileMapCollection();
+        SpriteSheetCollection spriteSheetData = new SpriteSheetCollection();
         // Current map being edited
         TileMap currentMap;
-        Camera camera = new Camera();
+        Camera mapCamera = new Camera();
+        Camera tileCamera = new Camera();
 
         // Current opened file
         string currentProjectFile = "";
@@ -53,6 +55,14 @@ namespace ProjectSandWindows
         Point lastMousePos;
         // True if we're in pan mode on the map
         bool inPanMode = false;
+
+        /// <summary>
+        /// Get the graphics device for this application
+        /// </summary>
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return tDisplay.GraphicsDevice; }
+        }
 
         #endregion
 
@@ -87,6 +97,10 @@ namespace ProjectSandWindows
             mapSizeStatusLabel.Text = "";
             mapLocationStatusLabel.Text = "";
 
+            // Initialize the Tile Display
+            tDisplay.SetScrollBars(hsbTileDisplay, vsbTileDisplay);
+            tDisplay.Camera = tileCamera;
+
             ExporterSettings.Initialize();
         }
 
@@ -113,7 +127,7 @@ namespace ProjectSandWindows
         {
             // Get the mouse position and calculate where to draw the highlighting square
             // Use the position to find the row and col of the current map
-            currentMap.SetMousePosition(e.X, e.Y, camera);
+            currentMap.SetMousePosition(e.X, e.Y, mapCamera);
 
             // Update the status at the bottom
             mapLocationStatusLabel.Text = "(" + currentMap.MouseTile.X + ", " + 
@@ -274,18 +288,40 @@ namespace ProjectSandWindows
             {
                 string filename = openFileDialog1.FileName;
 
-                /**
                 Texture2D texture = Texture2D.FromFile(GraphicsDevice, filename);
                 Image image = Image.FromFile(filename);
 
                 // Use this texture as a sprite sheet and open the tile sheet dialog
                 tileProperties.Texture = texture;
                 tileProperties.TextureImage = image;
-                */
-
+                
                 if (tileProperties.ShowDialog() == DialogResult.OK)
                 {
-                    // TODO:  Get the values from the form and load it into the classes
+                    // Create a new sheet
+                    SpriteSheet sheet = new SpriteSheet(texture, filename);
+
+                    // Use the values from the dialog box to generate the proper source rectangles
+                    int i = 0;
+                    for (int r = 0; r < tileProperties.TileSize.Y; r++)
+                    {
+                        for (int c = 0; c < tileProperties.TileSize.X; c++)
+                        {
+                            sheet.AddSourceSprite(i,
+                                new Rectangle((c * tileProperties.TileWidth),
+                                    (r * tileProperties.TileHeight),
+                                    tileProperties.TileWidth, tileProperties.TileHeight));
+                            i++;
+                        }
+                    }
+
+                    // Add the sprite sheet to the collection
+                    spriteSheetData.AddSpriteSheet(sheet);
+
+                    // Store these in the tile display
+                    tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
+                        tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
+                    tileCamera.position = Vector2.Zero;
+                    tDisplay.Camera = tileCamera;
                 }
             }
         }
@@ -304,8 +340,8 @@ namespace ProjectSandWindows
             if (mapTabControl.TabCount != 0)
             {
                 currentMap = tileMapData[currentTabIndex];
-                camera.position = Vector2.Zero;
-                currentMap.CameraChange(camera);
+                mapCamera.position = Vector2.Zero;
+                currentMap.CameraChange(mapCamera);
             }
             else
             {
@@ -410,7 +446,7 @@ namespace ProjectSandWindows
                 TileMap newMap = new TileMap(mapProperties.HorizontalTiles,
                     mapProperties.VerticalTiles, 
                     new Vector2(mapDisplay[currentTabIndex].Width, mapDisplay[currentTabIndex].Height),
-                    mapDisplay[currentTabIndex].GraphicsDevice);
+                    tDisplay.GridTexture);
                 newMap.Identifier = mapProperties.Identifier;
                 newMap.MapName = mapProperties.MapName;
 
@@ -436,8 +472,8 @@ namespace ProjectSandWindows
 
                 // Update the camera and map display
                 mapDisplay[currentTabIndex].Map = newMap;
-                camera.position = Vector2.Zero;
-                currentMap.CameraChange(camera);
+                mapCamera.position = Vector2.Zero;
+                currentMap.CameraChange(mapCamera);
             }
         }
 
@@ -530,9 +566,9 @@ namespace ProjectSandWindows
         /// <param name="e"></param>
         void UpdateCamera(object sender, EventArgs e)
         {
-            camera.position.X = hsbMapDisplay[currentTabIndex].Value;
-            camera.position.Y = vsbMapDisplay[currentTabIndex].Value;
-            currentMap.CameraChange(camera);
+            mapCamera.position.X = hsbMapDisplay[currentTabIndex].Value;
+            mapCamera.position.Y = vsbMapDisplay[currentTabIndex].Value;
+            currentMap.CameraChange(mapCamera);
         }
 
         /// <summary>
@@ -547,7 +583,7 @@ namespace ProjectSandWindows
                 // If the scroll bar is being dragged or stopped moving, update the position
                 if (e.Type == ScrollEventType.ThumbPosition || e.Type == ScrollEventType.ThumbTrack ||
                     e.Type == ScrollEventType.EndScroll)
-                    camera.position.X = e.NewValue;
+                    mapCamera.position.X = e.NewValue;
 
                 //Console.WriteLine("Horiz: " + e.NewValue.ToString());
             }
@@ -556,13 +592,13 @@ namespace ProjectSandWindows
                 // If the scroll bar is being dragged or stopped moving, update the position
                 if (e.Type == ScrollEventType.ThumbPosition || e.Type == ScrollEventType.ThumbTrack ||
                     e.Type == ScrollEventType.EndScroll)
-                    camera.position.Y = e.NewValue;
+                    mapCamera.position.Y = e.NewValue;
 
                 //Console.WriteLine("Vert: " + e.NewValue.ToString());
             }
 
             // Update the camera
-            currentMap.CameraChange(camera);
+            currentMap.CameraChange(mapCamera);
 
             // Force the display to update
             mapDisplay[currentTabIndex].Invalidate();

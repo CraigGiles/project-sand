@@ -55,7 +55,7 @@ namespace SandTileEngine
         SpriteSheet tileSheet;
         List<TileLayer> tileLayer = new List<TileLayer>(cMaxLayers);
         // Special grid layer for displaying over the layers
-        TileLayer gridLayer;
+        GridLayer gridLayer;
         // Grid texture (a white point for drawing)
         Texture2D whiteGrid;
 
@@ -240,15 +240,12 @@ namespace SandTileEngine
         /// <param name="width">Width in tiles</param>
         /// <param name="height">Height in tiles</param>
         /// <param name="displaySize">Display size of the window</param>
-        /// <param name="graphics">Graphics to the display for loading files</param>
-        public TileMap(int width, int height, Vector2 displaySize, GraphicsDevice graphics)
+        /// <param name="gridTexture">Texture used for displaying the grid</param>
+        public TileMap(int width, int height, Vector2 displaySize, Texture2D gridTexture)
             :this(width, height)
         {
-            // Load the grid lines (need another way of doing this?)
-            whiteGrid = Texture2D.FromFile(graphics, "Resources/whitepixel.png");
-
             // Add the grid layer
-            gridLayer = new TileLayer(width, height, whiteGrid, true);
+            gridLayer = new GridLayer(width, height, gridTexture);
 
             SetDisplaySize(displaySize);
         }
