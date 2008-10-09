@@ -137,6 +137,15 @@ namespace SandTileEngine
 
             return true;
         }
+
+        /// <summary>
+        /// Clears the sprite definitions
+        /// </summary>
+        public void Clear()
+        {
+            spriteDefinitions.Clear();
+        }
+
         #endregion
     }
 

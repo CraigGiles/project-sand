@@ -20,6 +20,7 @@ using SandTileEngine;
 namespace ProjectSandWindows
 {
     using Image = System.Drawing.Image;
+    using Bitmap = System.Drawing.Bitmap;
     using Keys = Microsoft.Xna.Framework.Input.Keys;
 
     public partial class MainForm : Form
@@ -158,6 +159,28 @@ namespace ProjectSandWindows
                     hsbMapDisplay[currentTabIndex].Value = newH;
                     vsbMapDisplay[currentTabIndex].Value = newV;
                 }
+                else
+                {
+                    // Put the currently selected tile(s) into the map
+                    if (tDisplay.TileSelection != Rectangle.Empty && lstLayers.SelectedIndex != -1 &&
+                        currentMap.MouseTile.X >= 0 && currentMap.MouseTile.Y >= 0)
+                    {
+                        Rectangle tiles = tDisplay.TileSelection;
+
+                        // Loop through all the tiles
+                        for (int r = currentMap.MouseTile.Y, i = 0;
+                            r < currentMap.MapHeight && i < tiles.Height; r++, i++)
+                        {
+                            for (int c = currentMap.MouseTile.X, j = 0;
+                                c < currentMap.MapWidth && j < tiles.Width; c++, j++)
+                            {
+                                // Place the tile in the correct layer(s)
+                                int index = (tiles.Y + i) * tDisplay.SheetWidth + (tiles.X + j);
+                                currentMap[2 - lstLayers.SelectedIndex].SetTile(r, c, index);
+                            }
+                        }
+                    }
+                }
             }
             else if (e.Button == MouseButtons.None && Keyboard.GetState().IsKeyUp(Keys.Space))
             {
@@ -183,7 +206,26 @@ namespace ProjectSandWindows
         {
             // TODO:  Do something with the clicks
             if (e.Button == MouseButtons.Left && !inPanMode)
-                Console.WriteLine("Left Click!");
+            {
+                // Put the currently selected tile(s) into the map
+                if (tDisplay.TileSelection != Rectangle.Empty && lstLayers.SelectedIndex != -1)
+                {
+                    Rectangle tiles = tDisplay.TileSelection;
+
+                    // Loop through all the tiles
+                    for (int r = currentMap.MouseTile.Y, i = 0; 
+                        r < currentMap.MapHeight && i < tiles.Height; r++, i++)
+                    {
+                        for (int c = currentMap.MouseTile.X, j = 0;
+                            c < currentMap.MapWidth && j < tiles.Width; c++, j++)
+                        {
+                            // Place the tile in the correct layer(s)
+                            int index = (tiles.Y + i) * tDisplay.SheetWidth + (tiles.X + j);
+                            currentMap[2 - lstLayers.SelectedIndex].SetTile(r, c, index);
+                        }
+                    }
+                }
+            }
             else if (e.Button == MouseButtons.Right)
                 Console.WriteLine("Right Click!");            
         }
@@ -281,22 +323,35 @@ namespace ProjectSandWindows
         /// <param name="e"></param>
         private void importTilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "JPG Image (*.jpg)|*.jpg|PNG Image (*.png)|*.png|BMP Image (*.bmp)|*.bmp|TGA Image (*.tga)|*.tga";
+            openFileDialog1.Filter = "Image Files (*.png, *.bmp, *.jpg, *.tga)|*.png; *.bmp; *.jpg; *.tga";
             //openFileDialog1.InitialDirectory = contentPathTextBox.Text;
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string filename = openFileDialog1.FileName;
 
-                Texture2D texture = Texture2D.FromFile(GraphicsDevice, filename);
-                Image image = Image.FromFile(filename);
+                Bitmap image = (Bitmap)Image.FromFile(filename);
 
                 // Use this texture as a sprite sheet and open the tile sheet dialog
-                tileProperties.Texture = texture;
                 tileProperties.TextureImage = image;
                 
                 if (tileProperties.ShowDialog() == DialogResult.OK)
                 {
+                    // Set the color key parameter
+                    // NOTE:  This method will only make one color transparent.  Do we want multiple color support?
+                    TextureCreationParameters textureParam = new TextureCreationParameters();
+                    textureParam.Width = image.Width;
+                    textureParam.Height = image.Height;
+                    textureParam.Depth = 0;
+                    textureParam.MipLevels = 0;
+                    textureParam.MipFilter = FilterOptions.None;
+                    textureParam.Filter = FilterOptions.None;
+                    textureParam.Format = SurfaceFormat.Unknown;
+                    textureParam.TextureUsage = TextureUsage.None;
+                    textureParam.ColorKey = tileProperties.TransparentColor;
+
+                    Texture2D texture = Texture2D.FromFile(GraphicsDevice, filename, textureParam);
+
                     // Create a new sheet
                     SpriteSheet sheet = new SpriteSheet(texture, filename);
 
@@ -320,6 +375,65 @@ namespace ProjectSandWindows
                     // Store these in the tile display
                     tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
                         tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
+                    tDisplay.SpriteImage = image;
+
+                    // Set the camera
+                    tileCamera.position = Vector2.Zero;
+                    tDisplay.Camera = tileCamera;
+
+                    // Enable the tile properties menu item
+                    tilePropertiesToolStripMenuItem.Enabled = true;
+
+                    // If a map is loaded, set the map to have this tile set
+                    if (currentMap != null)
+                        currentMap.SetSpriteSheet(tDisplay.Sheet);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Modifies the properties of the current tile set
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tilePropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Use this texture as a sprite sheet and open the tile sheet dialog
+            tileProperties.TextureImage = tDisplay.SpriteImage;
+            tileProperties.TileWidth = SpriteSheetLayer.TileWidth;
+            tileProperties.TileHeight = SpriteSheetLayer.TileHeight;
+
+            if (tileProperties.ShowDialog() == DialogResult.OK)
+            {
+                // If the properties changed, resize the everything
+                if (tileProperties.TileWidth != SpriteSheetLayer.TileWidth ||
+                    tileProperties.TileHeight != SpriteSheetLayer.TileHeight)
+                {
+                    // Get the current sprite sheet
+                    SpriteSheet sheet = tDisplay.Sheet;
+
+                    // Clear the sprite sheet and use the values from the dialog box to 
+                    // generate the proper source rectangles
+                    sheet.Clear();
+
+                    int i = 0;
+                    for (int r = 0; r < tileProperties.TileSize.Y; r++)
+                    {
+                        for (int c = 0; c < tileProperties.TileSize.X; c++)
+                        {
+                            sheet.AddSourceSprite(i,
+                                new Rectangle((c * tileProperties.TileWidth),
+                                    (r * tileProperties.TileHeight),
+                                    tileProperties.TileWidth, tileProperties.TileHeight));
+                            i++;
+                        }
+                    }
+
+                    // Store the updated values
+                    tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
+                        tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
+
+                    // Reset the camera
                     tileCamera.position = Vector2.Zero;
                     tDisplay.Camera = tileCamera;
                 }
@@ -452,6 +566,10 @@ namespace ProjectSandWindows
 
                 // Add the map to the collection
                 tileMapData.AddMap(newMap);
+
+                // If there's a tileset loaded, load the sheet into the map
+                if (tDisplay.Sheet != null)
+                    newMap.SetSpriteSheet(tDisplay.Sheet);
 
                 // Set as the current map
                 currentMap = newMap;
@@ -634,6 +752,5 @@ namespace ProjectSandWindows
             ExporterForm form = new ExporterForm();
             form.ShowDialog();
         }
-
     }
 }

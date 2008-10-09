@@ -137,7 +137,7 @@ namespace SandTileEngine
         /// </summary>
         protected Texture2D texture;
 
-        protected float alpha;
+        protected float alpha = 1.0f;
 
         /// <summary>
         /// Determines the opacity of the layer

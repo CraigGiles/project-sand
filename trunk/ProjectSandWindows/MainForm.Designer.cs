@@ -311,6 +311,7 @@ namespace ProjectSandWindows
             this.tilePropertiesToolStripMenuItem.Name = "tilePropertiesToolStripMenuItem";
             this.tilePropertiesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.tilePropertiesToolStripMenuItem.Text = "Tile Properties...";
+            this.tilePropertiesToolStripMenuItem.Click += new System.EventHandler(this.tilePropertiesToolStripMenuItem_Click);
             // 
             // mapPropertiesToolStripMenuItem
             // 
@@ -526,15 +527,13 @@ namespace ProjectSandWindows
             // 
             this.lstLayers.FormattingEnabled = true;
             this.lstLayers.Items.AddRange(new object[] {
-            "Atmosphere",
-            "Collision",
             "Top",
             "Middle",
             "Base"});
             this.lstLayers.Location = new System.Drawing.Point(6, 106);
             this.lstLayers.Name = "lstLayers";
             this.lstLayers.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstLayers.Size = new System.Drawing.Size(209, 69);
+            this.lstLayers.Size = new System.Drawing.Size(209, 43);
             this.lstLayers.TabIndex = 0;
             // 
             // groupBox1
@@ -546,7 +545,7 @@ namespace ProjectSandWindows
             this.groupBox1.Controls.Add(this.lstLayers);
             this.groupBox1.Location = new System.Drawing.Point(783, 53);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(221, 184);
+            this.groupBox1.Size = new System.Drawing.Size(221, 157);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Layers";
@@ -592,6 +591,7 @@ namespace ProjectSandWindows
             // hsbTileDisplay
             // 
             this.hsbTileDisplay.Enabled = false;
+            this.hsbTileDisplay.LargeChange = 50;
             this.hsbTileDisplay.Location = new System.Drawing.Point(783, 648);
             this.hsbTileDisplay.Name = "hsbTileDisplay";
             this.hsbTileDisplay.Size = new System.Drawing.Size(207, 18);
@@ -600,17 +600,19 @@ namespace ProjectSandWindows
             // vsbTileDisplay
             // 
             this.vsbTileDisplay.Enabled = false;
-            this.vsbTileDisplay.Location = new System.Drawing.Point(990, 243);
+            this.vsbTileDisplay.LargeChange = 50;
+            this.vsbTileDisplay.Location = new System.Drawing.Point(990, 216);
             this.vsbTileDisplay.Name = "vsbTileDisplay";
-            this.vsbTileDisplay.Size = new System.Drawing.Size(18, 405);
+            this.vsbTileDisplay.Size = new System.Drawing.Size(18, 432);
             this.vsbTileDisplay.TabIndex = 7;
             // 
             // tDisplay
             // 
             this.tDisplay.Camera = null;
-            this.tDisplay.Location = new System.Drawing.Point(782, 243);
+            this.tDisplay.Location = new System.Drawing.Point(782, 216);
             this.tDisplay.Name = "tDisplay";
-            this.tDisplay.Size = new System.Drawing.Size(207, 405);
+            this.tDisplay.Size = new System.Drawing.Size(207, 432);
+            this.tDisplay.SpriteImage = null;
             this.tDisplay.TabIndex = 4;
             this.tDisplay.Text = "tDisplay";
             // 
