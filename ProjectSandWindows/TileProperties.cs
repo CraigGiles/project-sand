@@ -8,30 +8,32 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ProjectSandWindows
 {
+    using Color = Microsoft.Xna.Framework.Graphics.Color;
+
     public partial class frmTileProperties : Form
     {
         #region Texture Properties
 
         // Local copy of the texture to be loaded in the properties
-        Texture2D texture;
-        Image image;
-
-        /// <summary>
-        /// Local copy of the texture to be loaded in the properties
-        /// </summary>
-        public Texture2D Texture
-        {
-            get { return texture; }
-            set { texture = value; }
-        }
+        Bitmap image;
 
         /// <summary>
         /// Local copy of the texture image for preview viewing
         /// </summary>
-        public Image TextureImage
+        public Bitmap TextureImage
         {
             get { return image; }
             set { image = value; }
+        }
+
+        Color transparentColor;
+
+        /// <summary>
+        /// Returns the transparent color key
+        /// </summary>
+        public Color TransparentColor
+        {
+            get { return transparentColor; }
         }
 
         #endregion
@@ -143,8 +145,8 @@ namespace ProjectSandWindows
             picPreview.Image = image;
 
             // Get the size of the texture
-            if (texture != null)
-                lblSizePosition.Text = "Size: (" + texture.Width + ", " + texture.Height + ")";
+            if (image != null)
+                lblSizePosition.Text = "Size: (" + image.Width + ", " + image.Height + ")";
             else
                 lblSizePosition.Text = "No Texture Loaded!!";
         }
@@ -152,6 +154,20 @@ namespace ProjectSandWindows
         private void frmTileSheetProperties_Load(object sender, EventArgs e)
         {
 
+        }
+
+        #endregion
+
+        #region Mouse Handling
+
+        void picPreview_MouseClick(object sender, MouseEventArgs e)
+        {
+            // Get the pixel color under the cursor and set that as the transparent color
+            System.Drawing.Color key = image.GetPixel(e.X, e.Y);
+            
+            // Set the transparent color
+            transparentColor = new Color(key.R, key.G, key.B);
+            picTransparent.BackColor = key;
         }
 
         #endregion

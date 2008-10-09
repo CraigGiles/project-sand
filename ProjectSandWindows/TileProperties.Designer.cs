@@ -48,7 +48,7 @@ namespace ProjectSandWindows
             this.lblSizePosition = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.picTransparent = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.picTilePreview = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
@@ -58,7 +58,7 @@ namespace ProjectSandWindows
             ((System.ComponentModel.ISupportInitialize)(this.numVerticalSpace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numClipLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numClipTop)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTransparent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTilePreview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,6 +70,7 @@ namespace ProjectSandWindows
             this.picPreview.Size = new System.Drawing.Size(208, 267);
             this.picPreview.TabIndex = 0;
             this.picPreview.TabStop = false;
+            this.picPreview.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picPreview_MouseClick);
             // 
             // txtTileName
             // 
@@ -105,7 +106,7 @@ namespace ProjectSandWindows
             0});
             this.numTileWidth.Name = "numTileWidth";
             this.numTileWidth.Size = new System.Drawing.Size(54, 20);
-            this.numTileWidth.TabIndex = 3;
+            this.numTileWidth.TabIndex = 2;
             this.numTileWidth.Value = new decimal(new int[] {
             32,
             0,
@@ -162,7 +163,7 @@ namespace ProjectSandWindows
             0});
             this.numHorizSpace.Name = "numHorizSpace";
             this.numHorizSpace.Size = new System.Drawing.Size(54, 20);
-            this.numHorizSpace.TabIndex = 3;
+            this.numHorizSpace.TabIndex = 4;
             // 
             // label4
             // 
@@ -206,7 +207,7 @@ namespace ProjectSandWindows
             0});
             this.numVerticalSpace.Name = "numVerticalSpace";
             this.numVerticalSpace.Size = new System.Drawing.Size(54, 20);
-            this.numVerticalSpace.TabIndex = 3;
+            this.numVerticalSpace.TabIndex = 5;
             // 
             // numClipLeft
             // 
@@ -218,7 +219,7 @@ namespace ProjectSandWindows
             0});
             this.numClipLeft.Name = "numClipLeft";
             this.numClipLeft.Size = new System.Drawing.Size(54, 20);
-            this.numClipLeft.TabIndex = 3;
+            this.numClipLeft.TabIndex = 6;
             // 
             // numClipTop
             // 
@@ -230,7 +231,7 @@ namespace ProjectSandWindows
             0});
             this.numClipTop.Name = "numClipTop";
             this.numClipTop.Size = new System.Drawing.Size(54, 20);
-            this.numClipTop.TabIndex = 3;
+            this.numClipTop.TabIndex = 7;
             // 
             // label6
             // 
@@ -274,19 +275,19 @@ namespace ProjectSandWindows
             this.btnCancel.Location = new System.Drawing.Point(94, 292);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 8;
+            this.btnCancel.TabIndex = 9;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // pictureBox1
+            // picTransparent
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(337, 200);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(54, 22);
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
+            this.picTransparent.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picTransparent.Location = new System.Drawing.Point(337, 200);
+            this.picTransparent.Name = "picTransparent";
+            this.picTransparent.Size = new System.Drawing.Size(54, 22);
+            this.picTransparent.TabIndex = 9;
+            this.picTransparent.TabStop = false;
             // 
             // label9
             // 
@@ -312,7 +313,7 @@ namespace ProjectSandWindows
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 327);
             this.Controls.Add(this.picTilePreview);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.picTransparent);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lblSizePosition);
@@ -350,7 +351,7 @@ namespace ProjectSandWindows
             ((System.ComponentModel.ISupportInitialize)(this.numVerticalSpace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numClipLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numClipTop)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTransparent)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTilePreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -379,7 +380,7 @@ namespace ProjectSandWindows
         private System.Windows.Forms.Label lblSizePosition;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox picTransparent;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.PictureBox picTilePreview;
     }

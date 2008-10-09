@@ -17,11 +17,23 @@ using SandTileEngine;
 
 namespace ProjectSandWindows
 {
+    using Image = System.Drawing.Image;
+    using Bitmap = System.Drawing.Bitmap;
+
     /// <summary>
     /// Main display for showing tile sheets
     /// </summary>
 	public class TileDisplay : GraphicsDeviceControl
     {
+        #region Constants
+
+        /// <summary>
+        /// Controls how fast to scroll the display when the mouse is out of the display
+        /// </summary>
+        const float cScrollFactor = 0.5f;
+
+        #endregion
+
         #region Fields
 
         // Display fields
@@ -29,6 +41,9 @@ namespace ProjectSandWindows
         SpriteSheetLayer sheetLayer;
         GridLayer gridLayer;
         Camera camera;
+
+        // Image file for displaying in the properties window
+        Bitmap spriteImage;
 
         // Grid texture (a white point for drawing)
         Texture2D whiteGrid;
@@ -41,7 +56,7 @@ namespace ProjectSandWindows
         bool isSelected = false;
         Point lastMousePos = new Point();
         Point currentTilePos = new Point();
-        // Note that the rectangle has X = col, Y = row instead of pixel positions
+        // Note that the rectangle has X = col, Y = row, width/height = tiles instead of pixel positions
         Rectangle tileSelection = Rectangle.Empty;
         Point beginSelection = new Point(-1, -1);
         Point endSelection = new Point();
@@ -53,9 +68,26 @@ namespace ProjectSandWindows
         // True if the mouse is currently selecting the tiles
         bool inSelection = false;
 
+        // Scroll bar variables
+        int maxWidth, maxHeight;
+
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Returns the sprite sheet this display is using
+        /// </summary>
+        public SpriteSheet Sheet
+        {
+            get 
+            {
+                if (sheetLayer != null)
+                    return sheetLayer.Sheet;
+                else
+                    return null;
+            }
+        }
 
         /// <summary>
         /// Camera used for viewing the tiles
@@ -72,6 +104,51 @@ namespace ProjectSandWindows
         public Texture2D GridTexture
         {
             get { return whiteGrid; }
+        }
+
+        /// <summary>
+        /// Windows image used to display the tile set in a window box
+        /// </summary>
+        public Bitmap SpriteImage
+        {
+            get { return spriteImage; }
+            set { spriteImage = value; }
+        }
+
+        /// <summary>
+        /// Returns the currently selected tiles
+        /// </summary>
+        public Rectangle TileSelection
+        {
+            get { return tileSelection; }
+        }
+
+        /// <summary>
+        /// Returns the width in tiles of the sheet layer
+        /// </summary>
+        public int SheetWidth
+        {
+            get
+            {
+                if (sheetLayer != null)
+                    return sheetLayer.Width;
+                else
+                    return -1;
+            }
+        }
+
+        /// <summary>
+        /// Returns the height in tiles of the sheet layer
+        /// </summary>
+        public int SheetHeight
+        {
+            get 
+            {
+                if (sheetLayer != null)
+                    return sheetLayer.Height;
+                else
+                    return -1;
+            }
         }
 
         #endregion
@@ -105,6 +182,12 @@ namespace ProjectSandWindows
         {
             hsbTileDisplay = hsb;
             vsbTileDisplay = vsb;
+
+            // Link the scroll bars to a function
+            hsbTileDisplay.Scroll += new ScrollEventHandler(UpdateCameraScroll);
+            vsbTileDisplay.Scroll += new ScrollEventHandler(UpdateCameraScroll);
+            hsbTileDisplay.ValueChanged += new EventHandler(UpdateCamera);
+            vsbTileDisplay.ValueChanged += new EventHandler(UpdateCamera);
         }
 
         #endregion
@@ -131,28 +214,11 @@ namespace ProjectSandWindows
             int width, height;
             int x, y;
 
-            // If the ending selection is less than the beginning, use that as the beginning
-            if (endSelection.X < beginSelection.X)
-            {
-                x = endSelection.X;
-                width = (beginSelection.X - endSelection.X + 1) * TileLayer.TileWidth;
-            }
-            else
-            {
-                x = beginSelection.X;
-                width = (endSelection.X - beginSelection.X + 1) * TileLayer.TileWidth;
-            }
-
-            if (endSelection.Y < beginSelection.Y)
-            {
-                y = endSelection.Y;
-                height = (beginSelection.Y - endSelection.Y + 1) * TileLayer.TileHeight;
-            }
-            else
-            {
-                y = beginSelection.Y;
-                height = (endSelection.Y - beginSelection.Y + 1) * TileLayer.TileHeight;
-            }
+            // Calculate the position and size of the selection
+            x = (int)Math.Min(beginSelection.X, endSelection.X);
+            y = (int)Math.Min(beginSelection.Y, endSelection.Y);
+            width = (int)Math.Abs(beginSelection.X - endSelection.X) + 1;
+            height = (int)Math.Abs(beginSelection.Y - endSelection.Y) + 1;
 
             tileSelection = new Rectangle(x, y, width, height);
         }
@@ -187,17 +253,24 @@ namespace ProjectSandWindows
                 // If the current mouse position is outside of the display, scroll
                 // the tile display to keep up with it
                 if (e.X > Width)
-                    dX = e.X - Width;
+                    dX = (int)((e.X - Width) * cScrollFactor);
+                if (e.X < 0)
+                    dX = (int)(e.X * cScrollFactor);
                 if (e.Y > Height)
-                    dY = e.Y - Height;
+                    dY = (int)((e.Y - Height) * cScrollFactor);
+                if (e.Y < 0)
+                    dY = (int)(e.Y * cScrollFactor);
 
                 int newH = (int)MathHelper.Clamp(hsbTileDisplay.Value + dX, 0,
                     hsbTileDisplay.Maximum - hsbTileDisplay.LargeChange + 1);
                 int newV = (int)MathHelper.Clamp(vsbTileDisplay.Value + dY, 0,
                     vsbTileDisplay.Maximum - vsbTileDisplay.LargeChange + 1);
 
-                hsbTileDisplay.Value = newH;
-                vsbTileDisplay.Value = newV;
+                // If the scroll bars are disabled, don't do anything
+                if (hsbTileDisplay.Enabled)
+                    hsbTileDisplay.Value = newH;
+                if (vsbTileDisplay.Enabled)
+                    vsbTileDisplay.Value = newV;
             }
             else if (e.Button == MouseButtons.None)
             {
@@ -236,8 +309,6 @@ namespace ProjectSandWindows
 
                 // Reset the beginning selection
                 beginSelection = new Point(-1, -1);
-
-                Console.WriteLine("Left Click!");
             }
             else if (e.Button == MouseButtons.Right)
             {
@@ -245,8 +316,6 @@ namespace ProjectSandWindows
                 inSelection = false;
                 beginSelection = new Point(-1, -1);
                 tileSelection = Rectangle.Empty;
-
-                Console.WriteLine("Right Click!");
             }
         }
 
@@ -286,8 +355,6 @@ namespace ProjectSandWindows
             {
                 sheetLayer = new SpriteSheetLayer(width, height, sheet);
                 sheetLayer.DisplaySize = new Vector2(Width, Height);
-                SpriteSheetLayer.TileWidth = tileWidth;
-                SpriteSheetLayer.TileHeight = tileHeight;
             }
             else
                 sheetLayer.ChangeSpriteSheet(width, height, sheet);
@@ -301,8 +368,103 @@ namespace ProjectSandWindows
             else
                 gridLayer.ResizeLayer(width, height);
 
+            // Store the tile sizes
+            SpriteSheetLayer.TileWidth = tileWidth;
+            SpriteSheetLayer.TileHeight = tileHeight;
+
             // Reset any selections made
             tileSelection = Rectangle.Empty;
+
+            // Resize the scroll bars
+            AdjustScrollBars();
+
+            // Reset the scroll bar values
+            hsbTileDisplay.Value = vsbTileDisplay.Value = 0;
+        }
+
+        #endregion
+
+        #region Scroll Bars
+
+        /// <summary>
+        /// Adjusts the scroll bars to have the correct values to match the selected map size by subtracting the
+        /// size of the display from the size of the map if the width or height is larger.
+        /// </summary>
+        private void AdjustScrollBars()
+        {
+            if (sheetLayer.WidthInPixels > Width)
+            {
+                maxWidth = (int)Math.Max(sheetLayer.WidthInPixels - Width, maxWidth);
+
+                hsbTileDisplay.Enabled = true;
+                hsbTileDisplay.Minimum = 0;
+                hsbTileDisplay.Maximum = (maxWidth + hsbTileDisplay.LargeChange) - 1;
+            }
+            else
+            {
+                maxWidth = 0;
+                hsbTileDisplay.Minimum = 0;
+                hsbTileDisplay.Maximum = 0;
+                hsbTileDisplay.Enabled = false;
+            }
+
+            if (sheetLayer.HeightInPixels > Height)
+            {
+                maxHeight = (int)Math.Max(sheetLayer.HeightInPixels - Height, maxHeight);
+
+                vsbTileDisplay.Enabled = true;
+                vsbTileDisplay.Minimum = 0;
+                vsbTileDisplay.Maximum = (maxHeight + vsbTileDisplay.LargeChange) - 1;
+            }
+            else
+            {
+                maxHeight = 0;
+                vsbTileDisplay.Minimum = 0;
+                vsbTileDisplay.Maximum = 0;
+                vsbTileDisplay.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Used mainly for direct values changes to the scroll bars
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void UpdateCamera(object sender, EventArgs e)
+        {
+            camera.position.X = hsbTileDisplay.Value;
+            camera.position.Y = vsbTileDisplay.Value;
+            
+            sheetLayer.CameraPosition = gridLayer.CameraPosition = camera.position;
+        }
+
+        /// <summary>
+        /// Updates the camera when the scroll bar is changing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void UpdateCameraScroll(object sender, ScrollEventArgs e)
+        {
+            if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+            {
+                // If the scroll bar is being dragged or stopped moving, update the position
+                if (e.Type == ScrollEventType.ThumbPosition || e.Type == ScrollEventType.ThumbTrack ||
+                    e.Type == ScrollEventType.EndScroll)
+                    camera.position.X = e.NewValue;
+            }
+            else
+            {
+                // If the scroll bar is being dragged or stopped moving, update the position
+                if (e.Type == ScrollEventType.ThumbPosition || e.Type == ScrollEventType.ThumbTrack ||
+                    e.Type == ScrollEventType.EndScroll)
+                    camera.position.Y = e.NewValue;
+            }
+
+            // Update the camera
+            sheetLayer.CameraPosition = gridLayer.CameraPosition = camera.position;
+
+            // Force the display to update
+            Invalidate();
         }
 
         #endregion

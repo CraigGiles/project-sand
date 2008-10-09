@@ -145,6 +145,7 @@ namespace SandTileEngine
         /// Draws the highlighted map tile based on the rectangle
         /// </summary>
         /// <param name="batch"></param>
+        /// <param name="selection">Rectangle selection in tiles</param>
         public void DrawHighlight(SpriteBatch batch, Rectangle selection)
         {
             //begin a batch of sprites to be drawn all at once
@@ -172,17 +173,17 @@ namespace SandTileEngine
             // For the highlight, draw a bounding box using the texture provided
             // (should be a white dot to be stretched into a line) and color it
             batch.Draw(texture,
-                new Rectangle((int)(position.X + selection.Width), (int)(position.Y),
-                    1, selection.Height), highlightColor);
+                new Rectangle((int)(position.X + (selection.Width * tileWidth)), (int)(position.Y),
+                    1, selection.Height * tileHeight), highlightColor);
             batch.Draw(texture,
-                new Rectangle((int)(position.X), (int)(position.Y + selection.Height),
-                selection.Width, 1), highlightColor);
-            batch.Draw(texture,
-                new Rectangle((int)(position.X), (int)(position.Y),
-                    1, selection.Height), highlightColor);
+                new Rectangle((int)(position.X), (int)(position.Y + (selection.Height * tileHeight)),
+                selection.Width * tileWidth, 1), highlightColor);
             batch.Draw(texture,
                 new Rectangle((int)(position.X), (int)(position.Y),
-                    selection.Width, 1), highlightColor);
+                    1, selection.Height * tileHeight), highlightColor);
+            batch.Draw(texture,
+                new Rectangle((int)(position.X), (int)(position.Y),
+                    selection.Width * tileWidth, 1), highlightColor);
 
             batch.End();
         }

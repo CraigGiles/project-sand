@@ -115,7 +115,7 @@ namespace SandTileEngine
                         if (validTile)
                             batch.Draw(sheet.Texture, position, sourceRect,
                                 new Color(255, 255, 255, (byte)(255 * alpha)),
-                                1f, Vector2.Zero, scale, SpriteEffects.None, 0.0f);
+                                0f, Vector2.Zero, scale, SpriteEffects.None, 0.0f);
                     }
                 }
             }
