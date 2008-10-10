@@ -809,7 +809,7 @@ namespace SandTileEngine
             }
 
             XmlElement element = xmlDoc.CreateElement(elementName);
-            element.InnerText = value.ToString();
+            element.InnerText = data;
             assetNode.AppendChild(element);
         }
 

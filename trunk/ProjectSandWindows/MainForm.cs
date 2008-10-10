@@ -749,7 +749,7 @@ namespace ProjectSandWindows
 
         private void exportXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ExporterForm form = new ExporterForm();
+            ExporterForm form = new ExporterForm(tileMapData[0]);
             form.ShowDialog();
         }
     }
