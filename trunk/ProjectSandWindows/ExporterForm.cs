@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using SandTileEngine;
+using System.IO;
+
 
 namespace ProjectSandWindows
 {
@@ -53,74 +55,55 @@ namespace ProjectSandWindows
         private void LoadExporterSettings()
         {
             ExporterSettings settings = ExporterSettings.Settings;
+            settings = settings.DeSerializeExporterSettings();
 
-            if (settings.XmlFileName != string.Empty)
-                xmlFileNameInput.Text = settings.XmlFileName.Replace(".xml", string.Empty);
+            xmlFileNameInput.Text = settings.XmlFileName.Replace(".xml", "");
+            projectDataNamespaceInput.Text = settings.ProjectDataNamespace;
+            projectMapClassInput.Text = settings.ProjectMapClassName;
 
-            if (settings.ProjectDataNamespace != string.Empty)
-                projectDataNamespaceInput.Text = settings.ProjectDataNamespace;
+            exportMapNameCheckBox.Checked = settings.ExportMapName;
+            mapNameInput.Text = settings.ElementMapName;
 
-            if (settings.ProjectMapClassName != string.Empty)
-                projectMapClassInput.Text = settings.ProjectMapClassName;
-
-            if (settings.ExportMapName)
-                exportMapNameCheckBox.Checked = true;
-
-            if (settings.ElementMapName != string.Empty)
-                mapNameInput.Text = settings.ElementMapName;
 
             if (settings.DataStyleMapDimensions == ExportDataStyle.Point)
-            {
                 mapDimensionsPointButton.Checked = true;
-                mapDimensionsCustomButton.Checked = false;
-            }
-            else
-            {
-                mapDimensionsPointButton.Checked = false;
+            else if (settings.DataStyleMapDimensions == ExportDataStyle.Custom)
                 mapDimensionsCustomButton.Checked = true;
-            }
 
-            if (settings.ExportMapDimensions)
-                exportMapDimensionsCheckBox.Checked = true;
+            exportMapDimensionsCheckBox.Checked = settings.ExportMapDimensions;
+            mapDimensionsInput.Text = settings.ElementMapDimensions;
+            mapDimensionsWidthInput.Text = settings.ElementMapWidth;
+            mapDimensionsHeightInput.Text = settings.ElementMapHeight;
+            exportTileSheetCheckBox.Checked = settings.ExportTileSheet;
+            tileSheetContentInput.Text = settings.ElementTileSheet;
 
-            if (settings.ElementMapDimensions != string.Empty)
-                mapDimensionsInput.Text = settings.ElementMapDimensions;
+            if (settings.DataStyleTileDimensions == ExportDataStyle.Point)
+                tileDimensionsPointButton.Checked = true;
+            else if (settings.DataStyleTileDimensions == ExportDataStyle.Custom)
+                tileDimensionsCustomButton.Checked = true;
 
-            if (settings.ElementMapWidth != string.Empty)
-                mapDimensionsWidthInput.Text = settings.ElementMapWidth;
+            exportTileDimensionsCheckBox.Checked = settings.ExportTileDimensions;
+            tileDimensionsInput.Text = settings.ElementTileDimensions;
+            tileDimensionsWidthInput.Text = settings.ElementTileWidth;
+            tileDimensionsHeightInput.Text = settings.ElementTileHeight;
 
-            if (settings.ElementMapHeight != string.Empty)
-                mapDimensionsHeightInput.Text = settings.ElementMapHeight;
+            if (settings.DataStyleMapLayers == ExportDataStyle.Grouped)
+                mapLayersGroupedButton.Checked = true;
+            else if (settings.DataStyleMapLayers == ExportDataStyle.Individual)
+                mapLayersIndividualButton.Checked = true;
 
+            mapLayerCheckBoxBaseLayer.Checked = settings.ExportBaseLayer;
+            mapLayerCheckBoxMiddleLayer.Checked = settings.ExportMiddleLayer;
+            mapLayerCheckBoxTopLayer.Checked = settings.ExportTopLayer;
+            mapLayerCheckBoxAtmosphereLayer.Checked = settings.ExportAtmosphereLayer;
+            mapLayerCheckBoxCollisionLayer.Checked = settings.ExportCollisionLayer;
 
-            //settings.ExportTileSheet = exportTileSheetCheckBox.Checked;
-            //settings.ElementTileSheet = tileSheetContentInput.Text;
+            baseLayerInput.Text = settings.ElementBaseLayer;
+            middleLayerInput.Text = settings.ElementMiddleLayer;
+            topLayerInput.Text = settings.ElementTopLayer;
+            atmosphereLayerInput.Text = settings.ElementAtmosphereLayer;
+            collisionLayerInput.Text = settings.ElementCollisionLayer;
 
-
-
-            //if (tileDimensionsPointButton.Checked)
-            //    settings.DataStyleTileDimensions = ExportDataStyle.Point;
-            //else if (tileDimensionsCustomButton.Checked)
-            //    settings.DataStyleTileDimensions = ExportDataStyle.Custom;
-
-            //settings.ExportTileDimensions = exportTileDimensionsCheckBox.Checked;
-            //settings.ElementTileDimensions = tileDimensionsInput.Text;
-            //settings.ElementTileWidth = tileDimensionsWidthInput.Text;
-            //settings.ElementTileHeight = tileDimensionsHeightInput.Text;
-
-
-
-
-            //if (mapLayersGroupedButton.Checked)
-            //    settings.DataStyleMapLayers = ExportDataStyle.Grouped;
-            //else if (mapLayersIndividualButton.Checked)
-            //    settings.DataStyleMapLayers = ExportDataStyle.Individual;
-
-            //settings.ExportBaseLayer = mapLayerCheckBoxBaseLayer.Checked;
-            //settings.ExportMiddleLayer = mapLayerCheckBoxMiddleLayer.Checked;
-            //settings.ExportTopLayer = mapLayerCheckBoxTopLayer.Checked;
-            //settings.ExportAtmosphereLayer = mapLayerCheckBoxAtmosphereLayer.Checked;
-            //settings.ExportCollisionLayer = mapLayerCheckBoxCollisionLayer.Checked;
         }
 
         #endregion
@@ -417,6 +400,7 @@ namespace ProjectSandWindows
         private void SetExportSettings()
         {
             ExporterSettings settings = ExporterSettings.Settings;
+            
 
             settings.XmlFileName = xmlFileNameInput.Text + ".xml";
             settings.ProjectDataNamespace = projectDataNamespaceInput.Text;
@@ -453,8 +437,6 @@ namespace ProjectSandWindows
             settings.ElementTileHeight = tileDimensionsHeightInput.Text;
 
 
-
-
             if (mapLayersGroupedButton.Checked)
                 settings.DataStyleMapLayers = ExportDataStyle.Grouped;
             else if (mapLayersIndividualButton.Checked)
@@ -472,13 +454,16 @@ namespace ProjectSandWindows
             settings.ElementAtmosphereLayer = atmosphereLayerInput.Text;
             settings.ElementCollisionLayer = collisionLayerInput.Text;
 
+            settings.SerializeExporterSettings();
         }
+
+
 
         private void exportXmlButton_Click(object sender, EventArgs e)
         {
             SetExportSettings();
             Exporter exporter = new Exporter();
-            exporter.ExportXml(tileMap);
+            exporter.ExportXml(tileMap);            
         }
     }
 }
