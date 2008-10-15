@@ -90,6 +90,12 @@ namespace ProjectSandWindows
             this.chkShow = new System.Windows.Forms.CheckBox();
             this.hsbTileDisplay = new System.Windows.Forms.HScrollBar();
             this.vsbTileDisplay = new System.Windows.Forms.VScrollBar();
+            this.rbtnPaint = new System.Windows.Forms.RadioButton();
+            this.rbtnErase = new System.Windows.Forms.RadioButton();
+            this.rbtnFill = new System.Windows.Forms.RadioButton();
+            this.rbtnCollision = new System.Windows.Forms.RadioButton();
+            this.rbtnEraseCollision = new System.Windows.Forms.RadioButton();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tDisplay = new ProjectSandWindows.TileDisplay();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -535,6 +541,7 @@ namespace ProjectSandWindows
             this.lstLayers.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lstLayers.Size = new System.Drawing.Size(209, 43);
             this.lstLayers.TabIndex = 0;
+            this.lstLayers.SelectedIndexChanged += new System.EventHandler(this.lstLayers_SelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -606,6 +613,85 @@ namespace ProjectSandWindows
             this.vsbTileDisplay.Size = new System.Drawing.Size(18, 432);
             this.vsbTileDisplay.TabIndex = 7;
             // 
+            // rbtnPaint
+            // 
+            this.rbtnPaint.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnPaint.Checked = true;
+            this.rbtnPaint.FlatAppearance.BorderSize = 0;
+            this.rbtnPaint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnPaint.Location = new System.Drawing.Point(12, 53);
+            this.rbtnPaint.Name = "rbtnPaint";
+            this.rbtnPaint.Size = new System.Drawing.Size(25, 25);
+            this.rbtnPaint.TabIndex = 9;
+            this.rbtnPaint.TabStop = true;
+            this.rbtnPaint.Tag = "";
+            this.rbtnPaint.Text = "P";
+            this.toolTip.SetToolTip(this.rbtnPaint, "Paint");
+            this.rbtnPaint.UseVisualStyleBackColor = true;
+            this.rbtnPaint.CheckedChanged += new System.EventHandler(this.rbtnPaint_CheckedChanged);
+            // 
+            // rbtnErase
+            // 
+            this.rbtnErase.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnErase.FlatAppearance.BorderSize = 0;
+            this.rbtnErase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnErase.Location = new System.Drawing.Point(37, 53);
+            this.rbtnErase.Name = "rbtnErase";
+            this.rbtnErase.Size = new System.Drawing.Size(25, 25);
+            this.rbtnErase.TabIndex = 9;
+            this.rbtnErase.Text = "E";
+            this.toolTip.SetToolTip(this.rbtnErase, "Erase");
+            this.rbtnErase.UseVisualStyleBackColor = true;
+            this.rbtnErase.CheckedChanged += new System.EventHandler(this.rbtnErase_CheckedChanged);
+            // 
+            // rbtnFill
+            // 
+            this.rbtnFill.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnFill.FlatAppearance.BorderSize = 0;
+            this.rbtnFill.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnFill.Location = new System.Drawing.Point(12, 77);
+            this.rbtnFill.Name = "rbtnFill";
+            this.rbtnFill.Size = new System.Drawing.Size(25, 25);
+            this.rbtnFill.TabIndex = 9;
+            this.rbtnFill.Text = "F";
+            this.toolTip.SetToolTip(this.rbtnFill, "Fill");
+            this.rbtnFill.UseVisualStyleBackColor = true;
+            this.rbtnFill.CheckedChanged += new System.EventHandler(this.rbtnFill_CheckedChanged);
+            // 
+            // rbtnCollision
+            // 
+            this.rbtnCollision.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnCollision.FlatAppearance.BorderSize = 0;
+            this.rbtnCollision.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnCollision.Location = new System.Drawing.Point(12, 102);
+            this.rbtnCollision.Name = "rbtnCollision";
+            this.rbtnCollision.Size = new System.Drawing.Size(25, 25);
+            this.rbtnCollision.TabIndex = 9;
+            this.rbtnCollision.Text = "C";
+            this.toolTip.SetToolTip(this.rbtnCollision, "Paint Collision");
+            this.rbtnCollision.UseVisualStyleBackColor = true;
+            this.rbtnCollision.CheckedChanged += new System.EventHandler(this.rbtnCollision_CheckedChanged);
+            // 
+            // rbtnEraseCollision
+            // 
+            this.rbtnEraseCollision.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnEraseCollision.FlatAppearance.BorderSize = 0;
+            this.rbtnEraseCollision.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnEraseCollision.Location = new System.Drawing.Point(37, 102);
+            this.rbtnEraseCollision.Name = "rbtnEraseCollision";
+            this.rbtnEraseCollision.Size = new System.Drawing.Size(25, 25);
+            this.rbtnEraseCollision.TabIndex = 9;
+            this.rbtnEraseCollision.Text = "R";
+            this.toolTip.SetToolTip(this.rbtnEraseCollision, "Erase Collision");
+            this.rbtnEraseCollision.UseVisualStyleBackColor = true;
+            this.rbtnEraseCollision.CheckedChanged += new System.EventHandler(this.rbtnEraseCollision_CheckedChanged);
+            // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 5000;
+            this.toolTip.InitialDelay = 1000;
+            this.toolTip.ReshowDelay = 100;
+            // 
             // tDisplay
             // 
             this.tDisplay.Camera = null;
@@ -621,7 +707,12 @@ namespace ProjectSandWindows
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 694);
+            this.Controls.Add(this.rbtnFill);
+            this.Controls.Add(this.rbtnEraseCollision);
+            this.Controls.Add(this.rbtnCollision);
+            this.Controls.Add(this.rbtnPaint);
             this.Controls.Add(this.vsbTileDisplay);
+            this.Controls.Add(this.rbtnErase);
             this.Controls.Add(this.hsbTileDisplay);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.mapTabControl);
@@ -712,6 +803,12 @@ namespace ProjectSandWindows
         private System.Windows.Forms.Label lblOpacity;
         private System.Windows.Forms.HScrollBar hsbTileDisplay;
         private System.Windows.Forms.VScrollBar vsbTileDisplay;
+        private System.Windows.Forms.RadioButton rbtnPaint;
+        private System.Windows.Forms.RadioButton rbtnErase;
+        private System.Windows.Forms.RadioButton rbtnFill;
+        private System.Windows.Forms.RadioButton rbtnCollision;
+        private System.Windows.Forms.RadioButton rbtnEraseCollision;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
 

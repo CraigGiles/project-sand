@@ -23,6 +23,15 @@ namespace ProjectSandWindows
     using Bitmap = System.Drawing.Bitmap;
     using Keys = Microsoft.Xna.Framework.Input.Keys;
 
+    public enum EditorTool : int
+    {
+        Paint = 0,
+        Erase,
+        Fill,
+        PaintCollision,
+        EraseCollision
+    }
+
     public partial class MainForm : Form
     {
         #region Constants
@@ -67,6 +76,21 @@ namespace ProjectSandWindows
 
         #endregion
 
+        #region Editor Tools
+
+        // Current tool selected
+        EditorTool currentTool = EditorTool.Paint;
+
+        /// <summary>
+        /// Returns the current selected tool
+        /// </summary>
+        public EditorTool CurrentTool
+        {
+            get { return currentTool; }
+        }
+
+        #endregion
+
         #region Tab Items
 
         // Map display for the tabs
@@ -98,6 +122,9 @@ namespace ProjectSandWindows
             mapSizeStatusLabel.Text = "";
             mapLocationStatusLabel.Text = "";
 
+            // Set the default selected layer (base layer)
+            lstLayers.SelectedIndex = 2;
+
             // Initialize the Tile Display
             tDisplay.SetScrollBars(hsbTileDisplay, vsbTileDisplay);
             tDisplay.Camera = tileCamera;
@@ -115,6 +142,58 @@ namespace ProjectSandWindows
         #region Display Handling
 
         #region Map/Tile Display
+
+        /// <summary>
+        /// Main function to handle changing tiles on the map
+        /// </summary>
+        void ModifyMapTile()
+        {
+            // Put the currently selected tile(s) into the map if in paint mode
+            if (currentTool == EditorTool.Paint)
+            {
+                Rectangle tiles = tDisplay.TileSelection;
+
+                // Loop through all the tiles
+                for (int r = currentMap.MouseTile.Y, i = 0;
+                    r < currentMap.MapHeight && i < tiles.Height; r++, i++)
+                {
+                    for (int c = currentMap.MouseTile.X, j = 0;
+                        c < currentMap.MapWidth && j < tiles.Width; c++, j++)
+                    {
+                        // Place the tile in the correct layer(s)
+                        int index = (tiles.Y + i) * tDisplay.SheetWidth + (tiles.X + j);
+                        currentMap[2 - lstLayers.SelectedIndex].SetTile(r, c, index);
+                    }
+                }
+            }
+            else if (currentTool == EditorTool.Erase)
+            {
+                // Erase the current current tile
+                currentMap[2 - lstLayers.SelectedIndex].SetTile(currentMap.MouseTile.Y, currentMap.MouseTile.X, -1);
+            }
+            else if (currentTool == EditorTool.Fill)
+            {
+                // TODO:  Fill the area with the selected tile(s)
+                // Requires developing an algorithm for this.
+            }
+            else if (currentTool == EditorTool.PaintCollision)
+            {
+                // TODO:  Paint the selected area with the collision/bounds
+            }
+            else if (currentTool == EditorTool.EraseCollision)
+            {
+                // TODO:  Remove the collision/bounds on the tile
+            }
+        }
+
+        /// <summary>
+        /// Does a bucket fill starting from the selected starting point and covers all tiles nearby that are
+        /// the same as the starting point.  For multiple tiles, tile the textures.
+        /// </summary>
+        void FillMapTile()
+        {
+            // TODO:  Algorithm
+        }
 
         void mapDisplay_MouseEnter(object sender, EventArgs e)
         {
@@ -161,24 +240,11 @@ namespace ProjectSandWindows
                 }
                 else
                 {
-                    // Put the currently selected tile(s) into the map
                     if (tDisplay.TileSelection != Rectangle.Empty && lstLayers.SelectedIndex != -1 &&
                         currentMap.MouseTile.X >= 0 && currentMap.MouseTile.Y >= 0)
                     {
-                        Rectangle tiles = tDisplay.TileSelection;
-
-                        // Loop through all the tiles
-                        for (int r = currentMap.MouseTile.Y, i = 0;
-                            r < currentMap.MapHeight && i < tiles.Height; r++, i++)
-                        {
-                            for (int c = currentMap.MouseTile.X, j = 0;
-                                c < currentMap.MapWidth && j < tiles.Width; c++, j++)
-                            {
-                                // Place the tile in the correct layer(s)
-                                int index = (tiles.Y + i) * tDisplay.SheetWidth + (tiles.X + j);
-                                currentMap[2 - lstLayers.SelectedIndex].SetTile(r, c, index);
-                            }
-                        }
+                        // If within bounds, change the map
+                        ModifyMapTile();
                     }
                 }
             }
@@ -207,24 +273,8 @@ namespace ProjectSandWindows
             // TODO:  Do something with the clicks
             if (e.Button == MouseButtons.Left && !inPanMode)
             {
-                // Put the currently selected tile(s) into the map
-                if (tDisplay.TileSelection != Rectangle.Empty && lstLayers.SelectedIndex != -1)
-                {
-                    Rectangle tiles = tDisplay.TileSelection;
-
-                    // Loop through all the tiles
-                    for (int r = currentMap.MouseTile.Y, i = 0; 
-                        r < currentMap.MapHeight && i < tiles.Height; r++, i++)
-                    {
-                        for (int c = currentMap.MouseTile.X, j = 0;
-                            c < currentMap.MapWidth && j < tiles.Width; c++, j++)
-                        {
-                            // Place the tile in the correct layer(s)
-                            int index = (tiles.Y + i) * tDisplay.SheetWidth + (tiles.X + j);
-                            currentMap[2 - lstLayers.SelectedIndex].SetTile(r, c, index);
-                        }
-                    }
-                }
+                // Modify the map
+                ModifyMapTile();
             }
             else if (e.Button == MouseButtons.Right)
                 Console.WriteLine("Right Click!");            
@@ -747,10 +797,50 @@ namespace ProjectSandWindows
 
         #endregion
 
+        #region Editor Tool States
+
+        private void rbtnErase_CheckedChanged(object sender, EventArgs e)
+        {
+            currentTool = EditorTool.Erase;
+        }
+
+        private void rbtnPaint_CheckedChanged(object sender, EventArgs e)
+        {
+            currentTool = EditorTool.Paint;
+        }
+
+        private void rbtnFill_CheckedChanged(object sender, EventArgs e)
+        {
+            currentTool = EditorTool.Fill;
+        }
+
+        private void rbtnCollision_CheckedChanged(object sender, EventArgs e)
+        {
+            currentTool = EditorTool.PaintCollision;
+        }
+
+        private void rbtnEraseCollision_CheckedChanged(object sender, EventArgs e)
+        {
+            currentTool = EditorTool.EraseCollision;
+        }
+
+        #endregion
+
         private void exportXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExporterForm form = new ExporterForm(tileMapData[0]);
             form.ShowDialog();
+        }
+
+        private void lstLayers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (mapDisplay != null && mapDisplay.Count > 0)
+            {
+                if (lstLayers.SelectedIndex == -1)
+                    mapDisplay[currentTabIndex].CurrentLayer = -1;
+                else
+                    mapDisplay[currentTabIndex].CurrentLayer = 2 - lstLayers.SelectedIndex;
+            }
         }
     }
 }
