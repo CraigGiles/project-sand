@@ -287,6 +287,19 @@ namespace SandTileEngine
         #region Public Methods
 
         /// <summary>
+        /// Sets all layers to the specified opacity
+        /// </summary>
+        /// <param name="alpha">Opacity from 0-1</param>
+        public void SetAlpha(float alpha)
+        {
+            // Goes through all the layers and sets the opacity
+            for (int i = 0; i < tileLayer.Count; i++)
+            {
+                tileLayer[i].Alpha = alpha;
+            }
+        }
+
+        /// <summary>
         /// Sets the tileset that the map will use
         /// </summary>
         /// <param name="sheet">Sheet containing the tileset</param>

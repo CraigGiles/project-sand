@@ -26,6 +26,9 @@ namespace ProjectSandWindows
         SpriteBatch spriteBatch;
         TileMap map;
 
+        // Currently selected layer
+        int currentLayer = 0;
+
         #endregion
 
         #region Properties
@@ -39,7 +42,22 @@ namespace ProjectSandWindows
             set { map = value; }
         }
 
+        /// <summary>
+        /// Currently selected layer on the map
+        /// </summary>
+        public int CurrentLayer
+        {
+            get { return currentLayer; }
+            set 
+            { 
+                currentLayer = value;
+                ChangeLayer();
+            }
+        }
+
         #endregion
+
+        #region Initialization
 
         /// <summary>
         /// Initialize the graphics
@@ -50,18 +68,46 @@ namespace ProjectSandWindows
 
             // Force the display to update when the window is idle
             Application.Idle += delegate { Invalidate(); };
-		}
+        }
+
+        #endregion
+
+        #region Layers
+
+        /// <summary>
+        /// Modifies the opacity of the layers based on the currently selected layer
+        /// </summary>
+        void ChangeLayer()
+        {
+            // If there's no layer selected (index will be -1), just show everything
+            if (currentLayer == -1)
+                map.SetAlpha(1f);
+            else
+            {
+                // Sets all layers to half opacity
+                map.SetAlpha(0.5f);
+
+                // Set the current layer to full opacity
+                map[currentLayer].Alpha = 1f;
+            }
+        }
+
+        #endregion
+
+        #region Drawing
 
         /// <summary>
         /// Draw the maps
         /// </summary>
-		protected override void Draw()
+        protected override void Draw()
 		{
             GraphicsDevice.Clear(Color.Black);
 
             // Draw the map
             if (map != null)
                 map.Draw(spriteBatch);
-		}
-	}
+        }
+
+        #endregion
+    }
 }
