@@ -45,7 +45,6 @@ namespace SandTileEngine
         public string ElementTileHeight = "Height";
 
 
-
         public bool ExportBaseLayer = true;
         public bool ExportMiddleLayer = true;
         public bool ExportTopLayer = true;

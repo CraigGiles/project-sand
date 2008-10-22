@@ -842,5 +842,11 @@ namespace ProjectSandWindows
                     mapDisplay[currentTabIndex].CurrentLayer = 2 - lstLayers.SelectedIndex;
             }
         }
+
+        private void xMLSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExporterSettingsForm form = new ExporterSettingsForm();
+            form.ShowDialog();
+        }
     }
 }
