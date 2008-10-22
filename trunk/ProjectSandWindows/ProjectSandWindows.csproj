@@ -43,6 +43,12 @@
     <Compile Include="ExporterForm.Designer.cs">
       <DependentUpon>ExporterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExporterSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExporterSettingsForm.Designer.cs">
+      <DependentUpon>ExporterSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapDisplay.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -73,6 +79,10 @@
     <EmbeddedResource Include="ExporterForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ExporterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExporterSettingsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExporterSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MapProperties.resx">
       <SubType>Designer</SubType>

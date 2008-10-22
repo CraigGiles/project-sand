@@ -117,4 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="mapLayerOutput.Text" xml:space="preserve">
+    <value>     &lt;BaseLayer&gt;layer info&lt;/BaseLayer&gt;
+     &lt;MiddleLayer&gt;layer info&lt;/MiddleLayer&gt;
+     &lt;TopLayer&gt;layer info&lt;/TopLayer&gt;
+     &lt;AtmosphereLayer&gt;layer info&lt;/AtmosphereLayer&gt;
+     &lt;CollisionLayer&gt;layer info&lt;/CollisionLayer&gt;</value>
+  </data>
 </root>
