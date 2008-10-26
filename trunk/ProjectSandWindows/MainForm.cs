@@ -178,11 +178,13 @@ namespace ProjectSandWindows
             }
             else if (currentTool == EditorTool.PaintCollision)
             {
-                // TODO:  Paint the selected area with the collision/bounds
+                // Paint the selected area with the collision/bounds
+                currentMap.ModifyCollision(1);
             }
             else if (currentTool == EditorTool.EraseCollision)
             {
-                // TODO:  Remove the collision/bounds on the tile
+                // Remove the collision/bounds on the tile
+                currentMap.ModifyCollision(-1);
             }
         }
 
@@ -240,8 +242,9 @@ namespace ProjectSandWindows
                 }
                 else
                 {
-                    if (tDisplay.TileSelection != Rectangle.Empty && lstLayers.SelectedIndex != -1 &&
-                        currentMap.MouseTile.X >= 0 && currentMap.MouseTile.Y >= 0)
+                    if ( (tDisplay.TileSelection != Rectangle.Empty || currentTool == EditorTool.PaintCollision ||
+                          currentTool == EditorTool.EraseCollision) && 
+                        lstLayers.SelectedIndex != -1 && currentMap.MouseTile.X >= 0 && currentMap.MouseTile.Y >= 0)
                     {
                         // If within bounds, change the map
                         ModifyMapTile();
@@ -284,6 +287,12 @@ namespace ProjectSandWindows
         {
             // Toggle whether to show the grid on the map
             currentMap.ShowGrid = showGridToolStripMenuItem.Checked;
+        }
+
+        private void showCollisionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Toggle whether or not to show the collision layer
+            UpdateMapDisplay();
         }
 
         #endregion
@@ -586,6 +595,7 @@ namespace ProjectSandWindows
                 mapPropertiesToolStripMenuItem.Enabled = false;
                 removeMapToolStripMenuItem.Enabled = false;
                 showGridToolStripMenuItem.Enabled = false;
+                showCollisionToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -634,6 +644,11 @@ namespace ProjectSandWindows
                 mapPropertiesToolStripMenuItem.Enabled = true;
                 removeMapToolStripMenuItem.Enabled = true;
                 showGridToolStripMenuItem.Enabled = true;
+                showCollisionToolStripMenuItem.Enabled = true;
+
+                // Update the map display
+                currentMap.ShowGrid = showGridToolStripMenuItem.Checked;
+                UpdateMapDisplay();
 
                 // Update the status at the bottom
                 UpdateStatus();
@@ -795,6 +810,25 @@ namespace ProjectSandWindows
             }
         }
 
+        /// <summary>
+        /// Updates the map display when selecting different tools.
+        /// </summary>
+        /// <remarks>Currently, this is mainly for the collision layer, but may be used
+        /// for something else later on</remarks>
+        private void UpdateMapDisplay()
+        {
+            // Check to see if the current map isn't null
+            if (currentMap != null)
+            {
+                // Toggles on and off the collision layer
+                if (currentTool == EditorTool.PaintCollision || currentTool == EditorTool.EraseCollision ||
+                    showCollisionToolStripMenuItem.Checked == true)
+                    currentMap.ShowCollision = true;
+                else
+                    currentMap.ShowCollision = false;
+            }
+        }
+
         #endregion
 
         #region Editor Tool States
@@ -802,26 +836,31 @@ namespace ProjectSandWindows
         private void rbtnErase_CheckedChanged(object sender, EventArgs e)
         {
             currentTool = EditorTool.Erase;
+            UpdateMapDisplay();
         }
 
         private void rbtnPaint_CheckedChanged(object sender, EventArgs e)
         {
             currentTool = EditorTool.Paint;
+            UpdateMapDisplay();
         }
 
         private void rbtnFill_CheckedChanged(object sender, EventArgs e)
         {
             currentTool = EditorTool.Fill;
+            UpdateMapDisplay();
         }
 
         private void rbtnCollision_CheckedChanged(object sender, EventArgs e)
         {
             currentTool = EditorTool.PaintCollision;
+            UpdateMapDisplay();
         }
 
         private void rbtnEraseCollision_CheckedChanged(object sender, EventArgs e)
         {
             currentTool = EditorTool.EraseCollision;
+            UpdateMapDisplay();
         }
 
         #endregion

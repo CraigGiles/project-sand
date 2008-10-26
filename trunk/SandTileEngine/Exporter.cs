@@ -251,8 +251,10 @@ namespace SandTileEngine
 
             if (ExporterSettings.Settings.ExportCollisionLayer)
             {
+                //ExportIntData(doc, assetNode, ExporterSettings.Settings.ElementCollisionLayer,
+                //    ArrayHelper.ConvertMultiToSingle(tileMap[(int)Layer.CollisionLayer].Map));
                 ExportIntData(doc, assetNode, ExporterSettings.Settings.ElementCollisionLayer,
-                    ArrayHelper.ConvertMultiToSingle(tileMap[(int)Layer.CollisionLayer].Map));
+                    ArrayHelper.ConvertMultiToSingle(tileMap.Collision.Map));
             }
         }
 
