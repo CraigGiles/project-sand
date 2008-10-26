@@ -56,7 +56,9 @@ namespace SandTileEngine
         List<TileLayer> tileLayer = new List<TileLayer>(cMaxLayers);
         // Special grid layer for displaying over the layers
         GridLayer gridLayer;
-        // Grid texture (a white point for drawing)
+        // Special collision layer for displaying and storing bounds
+        CollisionLayer collisionLayer;
+        // Grid/collision texture (a white point for drawing)
         Texture2D whiteGrid;
 
         // Animated sprites
@@ -75,6 +77,8 @@ namespace SandTileEngine
 
         // True if we're displaying a grid
         bool showGrid = true;
+        // True if the collision is showing
+        bool showCollision = false;
         // True if the mouse is valid and inside the grid
         bool mouseInMap = false;
         // Current mouse position in tile coordinates
@@ -93,6 +97,15 @@ namespace SandTileEngine
         {
             get { return showGrid; }
             set { showGrid = value; }
+        }
+
+        /// <summary>
+        /// Whether or not to show the collision layer over the map
+        /// </summary>
+        public bool ShowCollision
+        {
+            get { return showCollision; }
+            set { showCollision = value; }
         }
 
         /// <summary>
@@ -193,6 +206,14 @@ namespace SandTileEngine
         }
 
         /// <summary>
+        /// Returns the collision layer.
+        /// </summary>
+        public CollisionLayer Collision
+        {
+            get { return collisionLayer; }
+        }
+
+        /// <summary>
         /// Obtains the i-th layer of the map
         /// </summary>
         public TileLayer this[int i]
@@ -240,12 +261,15 @@ namespace SandTileEngine
         /// <param name="width">Width in tiles</param>
         /// <param name="height">Height in tiles</param>
         /// <param name="displaySize">Display size of the window</param>
-        /// <param name="gridTexture">Texture used for displaying the grid</param>
-        public TileMap(int width, int height, Vector2 displaySize, Texture2D gridTexture)
+        /// <param name="specialTexture">Texture used for displaying the grid/collision</param>
+        public TileMap(int width, int height, Vector2 displaySize, Texture2D specialTexture)
             :this(width, height)
         {
             // Add the grid layer
-            gridLayer = new GridLayer(width, height, gridTexture);
+            gridLayer = new GridLayer(width, height, specialTexture);
+
+            // Add the collision layer
+            collisionLayer = new CollisionLayer(width, height, specialTexture);
 
             SetDisplaySize(displaySize);
         }
@@ -265,8 +289,9 @@ namespace SandTileEngine
                 tileLayer[i].CameraPosition = camera.position;
                 tileLayer[i].CameraZoom = camera.Zoom;
             }
-            gridLayer.CameraPosition = camera.position;
-            gridLayer.CameraZoom = camera.Zoom;
+            gridLayer.CameraPosition = collisionLayer.CameraPosition = camera.position;
+            gridLayer.CameraZoom = collisionLayer.CameraZoom = camera.Zoom;
+            
         }
 
         /// <summary>
@@ -279,7 +304,7 @@ namespace SandTileEngine
             {
                 tileLayer[i].DisplaySize = displaySize;
             }
-            gridLayer.DisplaySize = displaySize;
+            gridLayer.DisplaySize = collisionLayer.DisplaySize = displaySize;
         }
 
         #endregion
@@ -297,6 +322,15 @@ namespace SandTileEngine
             {
                 tileLayer[i].Alpha = alpha;
             }
+        }
+
+        /// <summary>
+        /// Modifies the collision layer by placing the new bound number in the specified space
+        /// </summary>
+        /// <param name="bound">-1 for no collision, 1-15 if there is</param>
+        public void ModifyCollision(int bound)
+        {
+            collisionLayer.SetTile(mouseTile.Y, mouseTile.X, bound);
         }
 
         /// <summary>
@@ -376,6 +410,13 @@ namespace SandTileEngine
             if (mouseInMap)
             {
                 gridLayer.DrawHighlight(spriteBatch, mouseTile.Y, mouseTile.X);
+            }
+
+            // If the collision tool is selected or collision is selected to show, display
+            // the colliision layer
+            if (showCollision)
+            {
+                collisionLayer.Draw(spriteBatch);
             }
         }
 

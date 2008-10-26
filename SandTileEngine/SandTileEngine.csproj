@@ -57,6 +57,7 @@
     <Compile Include="Helpers\TextureHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\CollisionLayer.cs" />
     <Compile Include="Layers\GridLayer.cs" />
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Layers\SpriteSheetLayer.cs" />
