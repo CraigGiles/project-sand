@@ -75,7 +75,7 @@ namespace SandTileEngine
             try
             {
                 SaveSettings settings;
-                Stream stream = File.Open(projectFolder + "//SaveSettings//Settings.bin", FileMode.Open);
+                Stream stream = File.Open("//SaveSettings//Settings.bin", FileMode.Open);
                 BinaryFormatter bFormatter = new BinaryFormatter();
                 settings =
                    (SaveSettings)bFormatter.Deserialize(stream);
