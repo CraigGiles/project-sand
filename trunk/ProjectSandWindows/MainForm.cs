@@ -41,6 +41,11 @@ namespace ProjectSandWindows
         /// </summary>
         const int cScrollbarWidth = 18;
 
+        /// <summary>
+        /// Large change for scroll bars
+        /// </summary>
+        const int cLargeScrollChange = 25;
+
         #endregion
 
         #region Fields
@@ -105,7 +110,7 @@ namespace ProjectSandWindows
         int currentTabIndex = 0;
 
         // Sizes for the map scroll bars
-        int maxWidth = 0, maxHeight = 0;
+        //int maxWidth = 0, maxHeight = 0;
 
         #endregion
 
@@ -443,9 +448,22 @@ namespace ProjectSandWindows
                     // Enable the tile properties menu item
                     tilePropertiesToolStripMenuItem.Enabled = true;
 
+                    // NOTE:  This will set only one map to the tile set.  Since we're only using
+                    // one tile set for all maps, we'll set everything to have this tile.  For further
+                    // features, we might add the addition of multiple tile sets.
+                    /**
                     // If a map is loaded, set the map to have this tile set
                     if (currentMap != null)
                         currentMap.SetSpriteSheet(tDisplay.Sheet);
+                     */
+                    // If there are maps created already, set all maps to use this tile set
+                    for (int a = 0; a < tileMapData.Count; a++)
+                    {
+                        tileMapData[a].SetSpriteSheet(tDisplay.Sheet);
+
+                        // Adjust the scroll bars
+                        AdjustScrollBars(a);
+                    }
                 }
             }
         }
@@ -488,13 +506,22 @@ namespace ProjectSandWindows
                         }
                     }
 
-                    // Store the updated values
+                    // Store the updated values in the tile display
                     tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
                         tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
 
                     // Reset the camera
                     tileCamera.position = Vector2.Zero;
                     tDisplay.Camera = tileCamera;
+
+                    // If there are maps created already, set all maps to use this new property
+                    for (int a = 0; a < tileMapData.Count; a++)
+                    {
+                        tileMapData[a].SetSpriteSheet(tDisplay.Sheet);
+
+                        // Adjust the scroll bars
+                        AdjustScrollBars(a);
+                    }
                 }
             }
         }
@@ -554,7 +581,8 @@ namespace ProjectSandWindows
             hsbScroll.Width = display.Width;
             hsbScroll.Height = cScrollbarWidth;
             hsbScroll.SmallChange = 1;
-            hsbScroll.LargeChange = 25;
+            hsbScroll.LargeChange = cLargeScrollChange;
+            hsbScroll.Minimum = 0;
             hsbScroll.Location = new System.Drawing.Point(0, display.Height);
             hsbScroll.ValueChanged += new EventHandler(UpdateCamera);
             hsbScroll.Scroll += new ScrollEventHandler(UpdateCameraScroll);
@@ -565,7 +593,8 @@ namespace ProjectSandWindows
             vsbScroll.Width = cScrollbarWidth;
             vsbScroll.Height = display.Height;
             vsbScroll.SmallChange = 1;
-            vsbScroll.LargeChange = 25;
+            vsbScroll.LargeChange = cLargeScrollChange;
+            vsbScroll.Minimum = 0;
             vsbScroll.Location = new System.Drawing.Point(display.Width, 0);
             vsbScroll.ValueChanged += new EventHandler(UpdateCamera);
             vsbScroll.Scroll += new ScrollEventHandler(UpdateCameraScroll);
@@ -638,7 +667,7 @@ namespace ProjectSandWindows
                 mapTabControl.SelectedIndex = mapTabControl.TabCount - 1;
 
                 // Using the map size, resize the scroll bars
-                AdjustScrollBars();
+                AdjustScrollBars(currentTabIndex);
 
                 // Enable the map properties menu item if not already and map removal
                 mapPropertiesToolStripMenuItem.Enabled = true;
@@ -678,7 +707,7 @@ namespace ProjectSandWindows
                 currentMap.ResizeMap(mapProperties.HorizontalTiles, mapProperties.VerticalTiles);
 
                 // Using the map size, resize the scroll bars
-                AdjustScrollBars();
+                AdjustScrollBars(currentTabIndex);
 
                 // Update the status at the bottom
                 UpdateStatus();
@@ -689,38 +718,35 @@ namespace ProjectSandWindows
         /// Adjusts the scroll bars to have the correct values to match the selected map size by subtracting the
         /// size of the display from the size of the map if the width or height is larger.
         /// </summary>
-        private void AdjustScrollBars()
+        /// <param name="currentTab">Currently selected tab for adjusting the scroll bars</param>
+        private void AdjustScrollBars(int currentTab)
         {
-			if (currentMap.MapWidthInPixels > mapDisplay[currentTabIndex].Width)
-			{
-				maxWidth = (int)Math.Max(currentMap.MapWidthInPixels - mapDisplay[currentTabIndex].Width, maxWidth);
+            int maxWidth, maxHeight;
 
-                hsbMapDisplay[currentTabIndex].Enabled = true;
-                hsbMapDisplay[currentTabIndex].Minimum = 0;
-                hsbMapDisplay[currentTabIndex].Maximum = (maxWidth + hsbMapDisplay[currentTabIndex].LargeChange) - 1;
+			if (tileMapData[currentTab].MapWidthInPixels > mapDisplay[currentTab].Width)
+			{
+                maxWidth = tileMapData[currentTab].MapWidthInPixels - mapDisplay[currentTab].Width;
+
+                hsbMapDisplay[currentTab].Enabled = true;
+                hsbMapDisplay[currentTab].Maximum = (maxWidth + cLargeScrollChange) - 1;
 			}
 			else
 			{
-				maxWidth = 0;
-                hsbMapDisplay[currentTabIndex].Minimum = 0;
-                hsbMapDisplay[currentTabIndex].Maximum = 0;
-                hsbMapDisplay[currentTabIndex].Enabled = false;
+                hsbMapDisplay[currentTab].Maximum = 0;
+                hsbMapDisplay[currentTab].Enabled = false;
 			}
 
-            if (currentMap.MapHeightInPixels > mapDisplay[currentTabIndex].Height)
+            if (tileMapData[currentTab].MapHeightInPixels > mapDisplay[currentTab].Height)
 			{
-                maxHeight = (int)Math.Max(currentMap.MapHeightInPixels - mapDisplay[currentTabIndex].Height, maxHeight);
+                maxHeight = tileMapData[currentTab].MapHeightInPixels - mapDisplay[currentTab].Height;
 
-                vsbMapDisplay[currentTabIndex].Enabled = true;
-                vsbMapDisplay[currentTabIndex].Minimum = 0;
-                vsbMapDisplay[currentTabIndex].Maximum = (maxHeight + vsbMapDisplay[currentTabIndex].LargeChange) - 1;
+                vsbMapDisplay[currentTab].Enabled = true;
+                vsbMapDisplay[currentTab].Maximum = (maxHeight + cLargeScrollChange) - 1;
 			}
 			else
 			{
-				maxHeight = 0;
-                vsbMapDisplay[currentTabIndex].Minimum = 0;
-                vsbMapDisplay[currentTabIndex].Maximum = 0;
-                vsbMapDisplay[currentTabIndex].Enabled = false;
+                vsbMapDisplay[currentTab].Maximum = 0;
+                vsbMapDisplay[currentTab].Enabled = false;
 			}
         }
 
