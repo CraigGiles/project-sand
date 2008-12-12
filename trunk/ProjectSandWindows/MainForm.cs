@@ -135,6 +135,7 @@ namespace ProjectSandWindows
             tDisplay.Camera = tileCamera;
 
             ExporterSettings.Initialize();
+            SaveSettings.Initialize();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -331,6 +332,8 @@ namespace ProjectSandWindows
                 string filename = openFileDialog1.FileName;
 
                 // TODO:  Do something with the file
+                SaveSettings.Settings.DeSerializeSaveSettings(filename, tileMapData);
+
             }
         }
 
@@ -352,7 +355,11 @@ namespace ProjectSandWindows
                 saveAsToolStripMenuItem_Click(sender, e);
             else
             {
+
                 // TODO:  Save the file data to the current file
+                SaveSettings.Settings.SerializeSaveSettings(currentProjectFile, tileMapData);
+
+                
             }
         }
 
@@ -373,6 +380,8 @@ namespace ProjectSandWindows
                 currentProjectFile = saveFileDialog1.FileName;
 
                 // TODO:  Create and save the file
+                SaveSettings.Settings.SerializeSaveSettings(currentProjectFile, tileMapData);
+                
             }
         }
 

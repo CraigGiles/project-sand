@@ -83,14 +83,14 @@
     </Compile>
     <Compile Include="Layers\CollisionLayer.cs" />
     <Compile Include="Layers\GridLayer.cs" />
-    <Compile Include="Layers\Layer.cs" />
+    <Compile Include="Layers\BaseLayer.cs" />
     <Compile Include="Layers\SpriteSheetLayer.cs" />
-    <Compile Include="ExporterSettings.cs" />
+    <Compile Include="Serialize\ExporterSettings.cs" />
     <Compile Include="Helpers\ArrayHelper.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Helpers\ErrorLog.cs" />
     <Compile Include="Exporter.cs" />
-    <Compile Include="SaveSettings.cs" />
+    <Compile Include="Serialize\SaveSettings.cs" />
     <Compile Include="SpriteSheetCollection.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
