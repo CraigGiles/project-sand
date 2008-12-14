@@ -136,6 +136,31 @@ namespace ProjectSandWindows
 
             ExporterSettings.Initialize();
             SaveSettings.Initialize();
+
+            // Whenever idle, update the displays and screen
+            Application.Idle += delegate { UpdateScreen(); };
+        }
+
+        /// <summary>
+        /// Updates the window with the latest information pulled from the different modules and
+        /// forces a redraw to keep the screen fresh.
+        /// </summary>
+        private void UpdateScreen()
+        {
+            if (currentMap != null)
+            {
+                // Update the status bar at the bottom
+                if (currentMap.MouseInMap)
+                {
+                    mapLocationStatusLabel.Text = "(" + currentMap.MouseTile.X + ", " +
+                        currentMap.MouseTile.Y + ")";
+                }
+                else
+                    mapLocationStatusLabel.Text = "Invalid";
+            }
+
+            // Force the window to redraw
+            Invalidate();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -208,7 +233,6 @@ namespace ProjectSandWindows
             // TODO:  Set mouse position, or does this function need to be created since
             // move will trigger immediately after?
             currentMap.MouseInMap = true;
-            mapLocationStatusLabel.Text = "In!";
         }
 
         void mapDisplay_MouseMove(object sender, MouseEventArgs e)
@@ -216,10 +240,6 @@ namespace ProjectSandWindows
             // Get the mouse position and calculate where to draw the highlighting square
             // Use the position to find the row and col of the current map
             currentMap.SetMousePosition(e.X, e.Y, mapCamera);
-
-            // Update the status at the bottom
-            mapLocationStatusLabel.Text = "(" + currentMap.MouseTile.X + ", " + 
-                currentMap.MouseTile.Y + ")";
             
             // If the space bar is held down, pan the map depending on how the mouse is moved
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && 
@@ -273,14 +293,13 @@ namespace ProjectSandWindows
         {
             // When the moust leaves, reset the grid highlights
             // TODO:  Reset grid highlights
-            mapLocationStatusLabel.Text = "Invalid";
             currentMap.MouseInMap = false;
         }
 
         void display_MouseClick(object sender, MouseEventArgs e)
         {
             // TODO:  Do something with the clicks
-            if (e.Button == MouseButtons.Left && !inPanMode)
+            if (e.Button == MouseButtons.Left && !inPanMode && lstLayers.SelectedIndex != -1)
             {
                 // Modify the map
                 ModifyMapTile();
@@ -291,8 +310,9 @@ namespace ProjectSandWindows
 
         private void showGridToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Toggle whether to show the grid on the map
-            currentMap.ShowGrid = showGridToolStripMenuItem.Checked;
+            // Toggle whether to show the grid on any map
+            for (int i = 0; i < tileMapData.Count; i++)
+                tileMapData[i].ShowGrid = showGridToolStripMenuItem.Checked;
         }
 
         private void showCollisionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -407,7 +427,7 @@ namespace ProjectSandWindows
 
                 // Use this texture as a sprite sheet and open the tile sheet dialog
                 tileProperties.TextureImage = image;
-                
+
                 if (tileProperties.ShowDialog() == DialogResult.OK)
                 {
                     // Set the color key parameter
@@ -428,51 +448,15 @@ namespace ProjectSandWindows
                     // Create a new sheet
                     SpriteSheet sheet = new SpriteSheet(texture, filename);
 
-                    // Use the values from the dialog box to generate the proper source rectangles
-                    int i = 0;
-                    for (int r = 0; r < tileProperties.TileSize.Y; r++)
-                    {
-                        for (int c = 0; c < tileProperties.TileSize.X; c++)
-                        {
-                            sheet.AddSourceSprite(i,
-                                new Rectangle((c * tileProperties.TileWidth),
-                                    (r * tileProperties.TileHeight),
-                                    tileProperties.TileWidth, tileProperties.TileHeight));
-                            i++;
-                        }
-                    }
-
-                    // Add the sprite sheet to the collection
-                    spriteSheetData.AddSpriteSheet(sheet);
-
-                    // Store these in the tile display
-                    tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
-                        tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
+                    // Store the image in the tile display window
                     tDisplay.SpriteImage = image;
 
-                    // Set the camera
-                    tileCamera.position = Vector2.Zero;
-                    tDisplay.Camera = tileCamera;
-
-                    // Enable the tile properties menu item
+                    // Enable the tile properties button on the menu strip
                     tilePropertiesToolStripMenuItem.Enabled = true;
 
-                    // NOTE:  This will set only one map to the tile set.  Since we're only using
-                    // one tile set for all maps, we'll set everything to have this tile.  For further
-                    // features, we might add the addition of multiple tile sets.
-                    /**
-                    // If a map is loaded, set the map to have this tile set
-                    if (currentMap != null)
-                        currentMap.SetSpriteSheet(tDisplay.Sheet);
-                     */
-                    // If there are maps created already, set all maps to use this tile set
-                    for (int a = 0; a < tileMapData.Count; a++)
-                    {
-                        tileMapData[a].SetSpriteSheet(tDisplay.Sheet);
-
-                        // Adjust the scroll bars
-                        AdjustScrollBars(a);
-                    }
+                    // Use the properties to adjust the sprite sheets, add them to the collection,
+                    // and modify any open maps
+                    ModifyTileProperties(sheet);
                 }
             }
         }
@@ -497,41 +481,62 @@ namespace ProjectSandWindows
                 {
                     // Get the current sprite sheet
                     SpriteSheet sheet = tDisplay.Sheet;
-
-                    // Clear the sprite sheet and use the values from the dialog box to 
-                    // generate the proper source rectangles
                     sheet.Clear();
 
-                    int i = 0;
-                    for (int r = 0; r < tileProperties.TileSize.Y; r++)
-                    {
-                        for (int c = 0; c < tileProperties.TileSize.X; c++)
-                        {
-                            sheet.AddSourceSprite(i,
-                                new Rectangle((c * tileProperties.TileWidth),
-                                    (r * tileProperties.TileHeight),
-                                    tileProperties.TileWidth, tileProperties.TileHeight));
-                            i++;
-                        }
-                    }
-
-                    // Store the updated values in the tile display
-                    tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
-                        tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
-
-                    // Reset the camera
-                    tileCamera.position = Vector2.Zero;
-                    tDisplay.Camera = tileCamera;
-
-                    // If there are maps created already, set all maps to use this new property
-                    for (int a = 0; a < tileMapData.Count; a++)
-                    {
-                        tileMapData[a].SetSpriteSheet(tDisplay.Sheet);
-
-                        // Adjust the scroll bars
-                        AdjustScrollBars(a);
-                    }
+                    // Adjust the sprite sheets based on the new properties
+                    ModifyTileProperties(sheet);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Handles organizing and processing the data for the tile set to adjust the sprite sheet,
+        /// add it to the collection, and reload the tile information in any loaded maps.
+        /// </summary>
+        /// <param name="sheet">SpriteSheet with the tile set information</param>
+        public void ModifyTileProperties(SpriteSheet sheet)
+        {
+            // Use the values from the dialog box to generate the proper source rectangles
+            int i = 0;
+            for (int r = 0; r < tileProperties.TileSize.Y; r++)
+            {
+                for (int c = 0; c < tileProperties.TileSize.X; c++)
+                {
+                    sheet.AddSourceSprite(i,
+                        new Rectangle((c * tileProperties.TileWidth),
+                            (r * tileProperties.TileHeight),
+                            tileProperties.TileWidth, tileProperties.TileHeight));
+                    i++;
+                }
+            }
+
+            // Add the sprite sheet to the collection
+            spriteSheetData.AddSpriteSheet(sheet);
+
+            // Store these in the tile display
+            tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
+                tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
+
+            // Set the camera
+            tileCamera.position = Vector2.Zero;
+            tDisplay.Camera = tileCamera;
+
+            // Enable the tile properties menu item
+            // NOTE:  This will set only one map to the tile set.  Since we're only using
+            // one tile set for all maps, we'll set everything to have this tile.  For further
+            // features, we might add the addition of multiple tile sets.
+            /**
+            // If a map is loaded, set the map to have this tile set
+            if (currentMap != null)
+                currentMap.SetSpriteSheet(tDisplay.Sheet);
+             */
+            // If there are maps created already, set all maps to use this tile set
+            for (int a = 0; a < tileMapData.Count; a++)
+            {
+                tileMapData[a].SetSpriteSheet(tDisplay.Sheet);
+
+                // Adjust the scroll bars
+                AdjustScrollBars(a);
             }
         }
 
@@ -921,6 +926,27 @@ namespace ProjectSandWindows
         {
             ExporterSettingsForm form = new ExporterSettingsForm();
             form.ShowDialog();
+        }
+
+        private void debugButton_Click(object sender, EventArgs e)
+        {
+            // DEBUG!  A generic button use to debug certain functions.  Used for testing purposes and
+            // can crash the program.
+            // For this test, just testing copying data to a map (if on exists)
+            if (tileMapData.Count > 0)
+            {
+                int height = tileMapData[0].MapHeight;
+                int width = tileMapData[0].MapWidth;
+
+                // Create a dummy data to replace
+                int[,] dummyData = new int[height, width];
+                for (int i = 0; i < height; i++)
+                    for (int j = 0; j < width; j++)
+                        dummyData[i, j] = 10;
+
+                // Replace the map data
+                tileMapData[0].SetMap(dummyData, 0);
+            }
         }
     }
 }
