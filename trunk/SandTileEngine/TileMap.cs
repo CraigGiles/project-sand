@@ -375,6 +375,40 @@ namespace SandTileEngine
         }
 
         /// <summary>
+        /// Sets the current map data on the specified layer to the new map data.
+        /// </summary>
+        /// <param name="newMap">Map data for the layer</param>
+        /// <param name="layer">Layer to replace the data</param>
+        /// <returns>True if everythins was set correctly, false otherwise</returns>
+        public bool SetMap(int[,] newMap, int layer)
+        {
+            // First, check the layer bound
+            if (layer < 0 || layer > cMaxLayers)
+            {
+                Console.WriteLine("TileMap::SetMap -> layer {0} is not a valid layer number", layer);
+                return false;
+            }
+
+            // If it's the first three layers, modify one of those.  If it's the collision layer or 
+            // atmosphere layer, specifically modify those.
+            if (layer >= (int)Layer.BaseLayer && layer <= (int)Layer.TopLayer)
+            {
+                tileLayer[layer].SetLayer(newMap);
+            }
+            else if (layer == (int)Layer.CollisionLayer)
+            {
+                collisionLayer.SetLayer(newMap);
+            }
+            else if (layer == (int)Layer.Atmosphere)
+            {
+                // NOTE:  Don't do anything for now. Atmosphere should probably be a special layer that's
+                // not tiled.
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Sets where the mouse is currently hovering over
         /// </summary>
         /// <param name="x">X coordinate with respect to the top-left corner</param>

@@ -67,6 +67,7 @@ namespace ProjectSandWindows
             this.removeMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCollisionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.codeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.xMLSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +77,7 @@ namespace ProjectSandWindows
             this.newProjectButton = new System.Windows.Forms.ToolStripButton();
             this.openProjectButton = new System.Windows.Forms.ToolStripButton();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
+            this.debugButton = new System.Windows.Forms.ToolStripButton();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.mapTabControl = new System.Windows.Forms.TabControl();
@@ -98,7 +100,6 @@ namespace ProjectSandWindows
             this.rbtnEraseCollision = new System.Windows.Forms.RadioButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tDisplay = new ProjectSandWindows.TileDisplay();
-            this.showCollisionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -395,7 +396,7 @@ namespace ProjectSandWindows
             // newMapToolStripMenuItem
             // 
             this.newMapToolStripMenuItem.Name = "newMapToolStripMenuItem";
-            this.newMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newMapToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.newMapToolStripMenuItem.Text = "New Map...";
             this.newMapToolStripMenuItem.Click += new System.EventHandler(this.newMapToolStripMenuItem_Click);
             // 
@@ -403,14 +404,14 @@ namespace ProjectSandWindows
             // 
             this.removeMapToolStripMenuItem.Enabled = false;
             this.removeMapToolStripMenuItem.Name = "removeMapToolStripMenuItem";
-            this.removeMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeMapToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.removeMapToolStripMenuItem.Text = "Remove Map";
             this.removeMapToolStripMenuItem.Click += new System.EventHandler(this.removeMapToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(138, 6);
             // 
             // showGridToolStripMenuItem
             // 
@@ -419,9 +420,18 @@ namespace ProjectSandWindows
             this.showGridToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showGridToolStripMenuItem.Enabled = false;
             this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
-            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.showGridToolStripMenuItem.Text = "Show Grid";
             this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showGridToolStripMenuItem_Click);
+            // 
+            // showCollisionToolStripMenuItem
+            // 
+            this.showCollisionToolStripMenuItem.CheckOnClick = true;
+            this.showCollisionToolStripMenuItem.Enabled = false;
+            this.showCollisionToolStripMenuItem.Name = "showCollisionToolStripMenuItem";
+            this.showCollisionToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.showCollisionToolStripMenuItem.Text = "Show Collision";
+            this.showCollisionToolStripMenuItem.Click += new System.EventHandler(this.showCollisionToolStripMenuItem_Click);
             // 
             // codeToolStripMenuItem
             // 
@@ -466,7 +476,8 @@ namespace ProjectSandWindows
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newProjectButton,
             this.openProjectButton,
-            this.saveButton});
+            this.saveButton,
+            this.debugButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 0, 1, 0);
@@ -504,6 +515,16 @@ namespace ProjectSandWindows
             this.saveButton.Size = new System.Drawing.Size(23, 22);
             this.saveButton.Text = "Save";
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // debugButton
+            // 
+            this.debugButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.debugButton.Image = ((System.Drawing.Image)(resources.GetObject("debugButton.Image")));
+            this.debugButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.debugButton.Name = "debugButton";
+            this.debugButton.Size = new System.Drawing.Size(48, 22);
+            this.debugButton.Text = "DEBUG!";
+            this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
             // 
             // mapTabControl
             // 
@@ -632,13 +653,13 @@ namespace ProjectSandWindows
             this.rbtnPaint.Checked = true;
             this.rbtnPaint.FlatAppearance.BorderSize = 0;
             this.rbtnPaint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnPaint.Image = ((System.Drawing.Image)(resources.GetObject("rbtnPaint.Image")));
             this.rbtnPaint.Location = new System.Drawing.Point(12, 53);
             this.rbtnPaint.Name = "rbtnPaint";
             this.rbtnPaint.Size = new System.Drawing.Size(25, 25);
             this.rbtnPaint.TabIndex = 9;
             this.rbtnPaint.TabStop = true;
             this.rbtnPaint.Tag = "";
-            this.rbtnPaint.Text = "P";
             this.toolTip.SetToolTip(this.rbtnPaint, "Paint");
             this.rbtnPaint.UseVisualStyleBackColor = true;
             this.rbtnPaint.CheckedChanged += new System.EventHandler(this.rbtnPaint_CheckedChanged);
@@ -648,11 +669,11 @@ namespace ProjectSandWindows
             this.rbtnErase.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbtnErase.FlatAppearance.BorderSize = 0;
             this.rbtnErase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnErase.Image = ((System.Drawing.Image)(resources.GetObject("rbtnErase.Image")));
             this.rbtnErase.Location = new System.Drawing.Point(37, 53);
             this.rbtnErase.Name = "rbtnErase";
             this.rbtnErase.Size = new System.Drawing.Size(25, 25);
             this.rbtnErase.TabIndex = 9;
-            this.rbtnErase.Text = "E";
             this.toolTip.SetToolTip(this.rbtnErase, "Erase");
             this.rbtnErase.UseVisualStyleBackColor = true;
             this.rbtnErase.CheckedChanged += new System.EventHandler(this.rbtnErase_CheckedChanged);
@@ -662,11 +683,11 @@ namespace ProjectSandWindows
             this.rbtnFill.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbtnFill.FlatAppearance.BorderSize = 0;
             this.rbtnFill.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnFill.Image = ((System.Drawing.Image)(resources.GetObject("rbtnFill.Image")));
             this.rbtnFill.Location = new System.Drawing.Point(12, 77);
             this.rbtnFill.Name = "rbtnFill";
             this.rbtnFill.Size = new System.Drawing.Size(25, 25);
             this.rbtnFill.TabIndex = 9;
-            this.rbtnFill.Text = "F";
             this.toolTip.SetToolTip(this.rbtnFill, "Fill");
             this.rbtnFill.UseVisualStyleBackColor = true;
             this.rbtnFill.CheckedChanged += new System.EventHandler(this.rbtnFill_CheckedChanged);
@@ -676,11 +697,12 @@ namespace ProjectSandWindows
             this.rbtnCollision.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbtnCollision.FlatAppearance.BorderSize = 0;
             this.rbtnCollision.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnCollision.Image = ((System.Drawing.Image)(resources.GetObject("rbtnCollision.Image")));
+            this.rbtnCollision.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rbtnCollision.Location = new System.Drawing.Point(12, 102);
             this.rbtnCollision.Name = "rbtnCollision";
             this.rbtnCollision.Size = new System.Drawing.Size(25, 25);
             this.rbtnCollision.TabIndex = 9;
-            this.rbtnCollision.Text = "C";
             this.toolTip.SetToolTip(this.rbtnCollision, "Paint Collision");
             this.rbtnCollision.UseVisualStyleBackColor = true;
             this.rbtnCollision.CheckedChanged += new System.EventHandler(this.rbtnCollision_CheckedChanged);
@@ -690,11 +712,11 @@ namespace ProjectSandWindows
             this.rbtnEraseCollision.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbtnEraseCollision.FlatAppearance.BorderSize = 0;
             this.rbtnEraseCollision.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnEraseCollision.Image = ((System.Drawing.Image)(resources.GetObject("rbtnEraseCollision.Image")));
             this.rbtnEraseCollision.Location = new System.Drawing.Point(37, 102);
             this.rbtnEraseCollision.Name = "rbtnEraseCollision";
             this.rbtnEraseCollision.Size = new System.Drawing.Size(25, 25);
             this.rbtnEraseCollision.TabIndex = 9;
-            this.rbtnEraseCollision.Text = "R";
             this.toolTip.SetToolTip(this.rbtnEraseCollision, "Erase Collision");
             this.rbtnEraseCollision.UseVisualStyleBackColor = true;
             this.rbtnEraseCollision.CheckedChanged += new System.EventHandler(this.rbtnEraseCollision_CheckedChanged);
@@ -714,15 +736,6 @@ namespace ProjectSandWindows
             this.tDisplay.SpriteImage = null;
             this.tDisplay.TabIndex = 4;
             this.tDisplay.Text = "tDisplay";
-            // 
-            // showCollisionToolStripMenuItem
-            // 
-            this.showCollisionToolStripMenuItem.CheckOnClick = true;
-            this.showCollisionToolStripMenuItem.Enabled = false;
-            this.showCollisionToolStripMenuItem.Name = "showCollisionToolStripMenuItem";
-            this.showCollisionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.showCollisionToolStripMenuItem.Text = "Show Collision";
-            this.showCollisionToolStripMenuItem.Click += new System.EventHandler(this.showCollisionToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -832,7 +845,8 @@ namespace ProjectSandWindows
         private System.Windows.Forms.RadioButton rbtnCollision;
         private System.Windows.Forms.RadioButton rbtnEraseCollision;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.ToolStripMenuItem showCollisionToolStripMenuItem;        
+        private System.Windows.Forms.ToolStripMenuItem showCollisionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton debugButton;        
     }
 }
 

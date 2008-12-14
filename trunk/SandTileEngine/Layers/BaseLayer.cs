@@ -406,6 +406,7 @@ namespace SandTileEngine
             int copyCols = Math.Min(width, Width);
 
             // Copies what it can from the previous map
+            // NOTE:  Perhaps can be replayed with Array.Copy?
             for (int r = 0; r < copyRows; r++)
             {
                 for (int c = 0; c < copyCols; c++)
@@ -416,6 +417,22 @@ namespace SandTileEngine
 
             // Replace the old map with the new
             map = newMap;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the layer map information with the new provided layer map
+        /// </summary>
+        /// <param name="newLayer">2D array of the new map to copy</param>
+        /// <returns>True if the copy was successful, false otherwise</returns>
+        public bool SetLayer(int[,] newLayer)
+        {
+            // Clear the array to prevent any old data
+            Array.Clear(map, 0, map.Length);
+
+            // Copy the new layer information to the current map
+            Array.Copy(newLayer, map, newLayer.Length);
 
             return true;
         }
