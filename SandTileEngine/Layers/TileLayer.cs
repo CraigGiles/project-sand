@@ -23,6 +23,7 @@ namespace SandTileEngine
     /// </summary>
     public class TileLayer : BaseLayer
     {
+
         #region Fields
 
         // Name of the layer displayed on the editor and in a dictionary

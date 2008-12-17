@@ -81,9 +81,9 @@
     <Compile Include="Helpers\TextureHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Layers\BaseLayer.cs" />
     <Compile Include="Layers\CollisionLayer.cs" />
     <Compile Include="Layers\GridLayer.cs" />
-    <Compile Include="Layers\BaseLayer.cs" />
     <Compile Include="Layers\SpriteSheetLayer.cs" />
     <Compile Include="Serialize\ExporterSettings.cs" />
     <Compile Include="Helpers\ArrayHelper.cs" />
