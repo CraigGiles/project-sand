@@ -566,6 +566,9 @@ namespace ProjectSandWindows
 
                 // Update the status at the bottom
                 UpdateStatus();
+
+                // Refresh the view on the map display
+                mapDisplay[currentTabIndex].Refresh();
             }
         }
 
