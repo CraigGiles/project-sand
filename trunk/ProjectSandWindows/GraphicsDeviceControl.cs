@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
+using SandTileEngine;
 #endregion
 
 namespace ProjectSandWindows
@@ -86,6 +87,9 @@ namespace ProjectSandWindows
 
                 // Give derived classes a chance to initialize themselves.
                 Initialize();
+
+                // Initialize the TextureHelper with the GraphicsDevice
+                TextureHelper.SetGraphics(GraphicsDevice);
             }
 
             base.OnCreateControl();

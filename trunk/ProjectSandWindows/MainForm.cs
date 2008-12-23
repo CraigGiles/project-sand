@@ -55,21 +55,8 @@ namespace ProjectSandWindows
         // Map properties window
         frmMapProperties mapProperties = new frmMapProperties();
 
-        // Basic data for the editor
-        TileMapCollection tileMapData = new TileMapCollection();
-        SpriteSheetCollection spriteSheetData = new SpriteSheetCollection();
-        // Current map being edited
-        TileMap currentMap;
-        Camera mapCamera = new Camera();
-        Camera tileCamera = new Camera();
-
-        // Current opened file
-        string currentProjectFile = "";
-
-        // Last mouse position
-        Point lastMousePos;
-        // True if we're in pan mode on the map
-        bool inPanMode = false;
+        // Map and tile cameras for display
+        //Camera mapCamera = new Camera();
 
         /// <summary>
         /// Get the graphics device for this application
@@ -83,13 +70,14 @@ namespace ProjectSandWindows
 
         #region Editor Tools
 
-        // Current tool selected
-        EditorTool currentTool = EditorTool.Paint;
+        // Current tool selected.  Note that it's static so other classes can access the value
+        // and do different actions based on which tool is currently selected
+        static EditorTool currentTool = EditorTool.Paint;
 
         /// <summary>
-        /// Returns the current selected tool
+        /// Returns the currently selected tool
         /// </summary>
-        public EditorTool CurrentTool
+        public static EditorTool CurrentTool
         {
             get { return currentTool; }
         }
@@ -108,9 +96,6 @@ namespace ProjectSandWindows
 
         // Current selected tab index
         int currentTabIndex = 0;
-
-        // Sizes for the map scroll bars
-        //int maxWidth = 0, maxHeight = 0;
 
         #endregion
 
@@ -132,10 +117,13 @@ namespace ProjectSandWindows
 
             // Initialize the Tile Display
             tDisplay.SetScrollBars(hsbTileDisplay, vsbTileDisplay);
-            tDisplay.Camera = tileCamera;
 
+            // Initialize the exporter and save class
             ExporterSettings.Initialize();
             SaveSettings.Initialize();
+
+            // Initialize a project
+            ProjectSession.NewSession();
 
             // Whenever idle, update the displays and screen
             Application.Idle += delegate { UpdateScreen(); };
@@ -147,16 +135,23 @@ namespace ProjectSandWindows
         /// </summary>
         private void UpdateScreen()
         {
-            if (currentMap != null)
+            if (ProjectSession.CurrentMap != null)
             {
                 // Update the status bar at the bottom
-                if (currentMap.MouseInMap)
+                if (ProjectSession.CurrentMap.MouseInMap)
                 {
-                    mapLocationStatusLabel.Text = "(" + currentMap.MouseTile.X + ", " +
-                        currentMap.MouseTile.Y + ")";
+                    mapLocationStatusLabel.Text = "(" + ProjectSession.CurrentMap.MouseTile.X + ", " +
+                        ProjectSession.CurrentMap.MouseTile.Y + ")";
                 }
                 else
                     mapLocationStatusLabel.Text = "Invalid";
+            }
+
+            // Update the selection status of the tile sheet for the map display and tile width
+            if (mapDisplay.Count > 0 && currentTabIndex >= 0)
+            {
+                mapDisplay[currentTabIndex].TileSelection = tDisplay.TileSelection;
+                mapDisplay[currentTabIndex].TileWidth = tDisplay.SheetWidth;
             }
 
             // Force the window to redraw
@@ -171,148 +166,15 @@ namespace ProjectSandWindows
         #endregion
 
         #region Display Handling
-
-        #region Map/Tile Display
-
-        /// <summary>
-        /// Main function to handle changing tiles on the map
-        /// </summary>
-        void ModifyMapTile()
-        {
-            // Put the currently selected tile(s) into the map if in paint mode
-            if (currentTool == EditorTool.Paint)
-            {
-                Rectangle tiles = tDisplay.TileSelection;
-
-                // Loop through all the tiles
-                for (int r = currentMap.MouseTile.Y, i = 0;
-                    r < currentMap.MapHeight && i < tiles.Height; r++, i++)
-                {
-                    for (int c = currentMap.MouseTile.X, j = 0;
-                        c < currentMap.MapWidth && j < tiles.Width; c++, j++)
-                    {
-                        // Place the tile in the correct layer(s)
-                        int index = (tiles.Y + i) * tDisplay.SheetWidth + (tiles.X + j);
-                        currentMap[2 - lstLayers.SelectedIndex].SetTile(r, c, index);
-                    }
-                }
-            }
-            else if (currentTool == EditorTool.Erase)
-            {
-                // Erase the current current tile
-                currentMap[2 - lstLayers.SelectedIndex].SetTile(currentMap.MouseTile.Y, currentMap.MouseTile.X, -1);
-            }
-            else if (currentTool == EditorTool.Fill)
-            {
-                // TODO:  Fill the area with the selected tile(s)
-                // Requires developing an algorithm for this.
-            }
-            else if (currentTool == EditorTool.PaintCollision)
-            {
-                // Paint the selected area with the collision/bounds
-                currentMap.ModifyCollision(1);
-            }
-            else if (currentTool == EditorTool.EraseCollision)
-            {
-                // Remove the collision/bounds on the tile
-                currentMap.ModifyCollision(-1);
-            }
-        }
-
-        /// <summary>
-        /// Does a bucket fill starting from the selected starting point and covers all tiles nearby that are
-        /// the same as the starting point.  For multiple tiles, tile the textures.
-        /// </summary>
-        void FillMapTile()
-        {
-            // TODO:  Algorithm
-        }
-
-        void mapDisplay_MouseEnter(object sender, EventArgs e)
-        {
-            // TODO:  Set mouse position, or does this function need to be created since
-            // move will trigger immediately after?
-            currentMap.MouseInMap = true;
-        }
-
-        void mapDisplay_MouseMove(object sender, MouseEventArgs e)
-        {
-            // Get the mouse position and calculate where to draw the highlighting square
-            // Use the position to find the row and col of the current map
-            currentMap.SetMousePosition(e.X, e.Y, mapCamera);
-            
-            // If the space bar is held down, pan the map depending on how the mouse is moved
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && 
-                (hsbMapDisplay[currentTabIndex].Enabled || vsbMapDisplay[currentTabIndex].Enabled))
-            {
-                inPanMode = true;
-                currentMap.MouseInMap = false;
-            }
-
-            // Check to see if the user was dragging the mouse
-            if (e.Button == MouseButtons.Left)
-            {
-                // If we're panning, move the map depending on how the mouse is moved
-                if (inPanMode)
-                {
-                    int dX = e.X - lastMousePos.X;
-                    int dY = e.Y - lastMousePos.Y;
-
-                    int newH = (int)MathHelper.Clamp(hsbMapDisplay[currentTabIndex].Value + dX, 0,
-                        hsbMapDisplay[currentTabIndex].Maximum - hsbMapDisplay[currentTabIndex].LargeChange + 1);
-                    int newV = (int)MathHelper.Clamp(vsbMapDisplay[currentTabIndex].Value + dY, 0,
-                        vsbMapDisplay[currentTabIndex].Maximum - vsbMapDisplay[currentTabIndex].LargeChange + 1);
-
-                    hsbMapDisplay[currentTabIndex].Value = newH;
-                    vsbMapDisplay[currentTabIndex].Value = newV;
-                }
-                else
-                {
-                    if ( (tDisplay.TileSelection != Rectangle.Empty || currentTool == EditorTool.PaintCollision ||
-                          currentTool == EditorTool.EraseCollision) && 
-                        lstLayers.SelectedIndex != -1 && currentMap.MouseTile.X >= 0 && currentMap.MouseTile.Y >= 0)
-                    {
-                        // If within bounds, change the map
-                        ModifyMapTile();
-                    }
-                }
-            }
-            else if (e.Button == MouseButtons.None && Keyboard.GetState().IsKeyUp(Keys.Space))
-            {
-                // If the mouse doesn't have any buttons press, disable any modes
-                inPanMode = false;
-                currentMap.MouseInMap = true;
-            }
-
-            // Store the position for later
-            lastMousePos.X = e.X;
-            lastMousePos.Y = e.Y;
-        }
-
-        void mapDisplay_MouseLeave(object sender, EventArgs e)
-        {
-            // When the moust leaves, reset the grid highlights
-            // TODO:  Reset grid highlights
-            currentMap.MouseInMap = false;
-        }
-
-        void display_MouseClick(object sender, MouseEventArgs e)
-        {
-            // TODO:  Do something with the clicks
-            if (e.Button == MouseButtons.Left && !inPanMode && lstLayers.SelectedIndex != -1)
-            {
-                // Modify the map
-                ModifyMapTile();
-            }
-            else if (e.Button == MouseButtons.Right)
-                Console.WriteLine("Right Click!");            
-        }
-
+        
         private void showGridToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Toggle whether to show the grid on any map
+            /**
             for (int i = 0; i < tileMapData.Count; i++)
                 tileMapData[i].ShowGrid = showGridToolStripMenuItem.Checked;
+             */
+            ProjectSession.ToggleGrid(showGridToolStripMenuItem.Checked);
         }
 
         private void showCollisionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -323,13 +185,12 @@ namespace ProjectSandWindows
 
         #endregion
 
-        #endregion
-
         #region New Project
 
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // TODO: Close down the current project and start a blank project
+            // ProjectSession.NewSession();
         }
 
         private void newProjectButton_Click(object sender, EventArgs e)
@@ -352,7 +213,7 @@ namespace ProjectSandWindows
                 string filename = openFileDialog1.FileName;
 
                 // TODO:  Do something with the file
-                SaveSettings.Settings.DeSerializeSaveSettings(filename, tileMapData);
+                //SaveSettings.Settings.DeSerializeSaveSettings(filename, tileMapData);
 
             }
         }
@@ -371,15 +232,12 @@ namespace ProjectSandWindows
         {
             // If the project is a new file that hasn't been saved yet, load the 
             // save as dialog instead of saving
-            if (currentProjectFile == String.Empty)
+            if (ProjectSession.CurrentProjectFile == string.Empty)
                 saveAsToolStripMenuItem_Click(sender, e);
             else
             {
-
                 // TODO:  Save the file data to the current file
-                SaveSettings.Settings.SerializeSaveSettings(currentProjectFile, tileMapData);
-
-                
+                //SaveSettings.Settings.SerializeSaveSettings(currentProjectFile, tileMapData);            
             }
         }
 
@@ -392,15 +250,15 @@ namespace ProjectSandWindows
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Current project file is the default name
-            saveFileDialog1.FileName = currentProjectFile;
+            saveFileDialog1.FileName = ProjectSession.CurrentProjectFile;
             saveFileDialog1.Filter = "Sand Tile Editor file (*.ste)|*.ste";
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                currentProjectFile = saveFileDialog1.FileName;
+                ProjectSession.CurrentProjectFile = saveFileDialog1.FileName;
 
                 // TODO:  Create and save the file
-                SaveSettings.Settings.SerializeSaveSettings(currentProjectFile, tileMapData);
+                //SaveSettings.Settings.SerializeSaveSettings(currentProjectFile, tileMapData);
                 
             }
         }
@@ -430,23 +288,13 @@ namespace ProjectSandWindows
 
                 if (tileProperties.ShowDialog() == DialogResult.OK)
                 {
-                    // Set the color key parameter
-                    // NOTE:  This method will only make one color transparent.  Do we want multiple color support?
-                    TextureCreationParameters textureParam = new TextureCreationParameters();
-                    textureParam.Width = image.Width;
-                    textureParam.Height = image.Height;
-                    textureParam.Depth = 0;
-                    textureParam.MipLevels = 0;
-                    textureParam.MipFilter = FilterOptions.None;
-                    textureParam.Filter = FilterOptions.None;
-                    textureParam.Format = SurfaceFormat.Unknown;
-                    textureParam.TextureUsage = TextureUsage.None;
-                    textureParam.ColorKey = tileProperties.TransparentColor;
+                    // Loads the sprite sheet
+                    SpriteSheet sheet = TextureHelper.CreateTileSheet(filename,
+                        tileProperties.TransparentColor);
 
-                    Texture2D texture = Texture2D.FromFile(GraphicsDevice, filename, textureParam);
-
-                    // Create a new sheet
-                    SpriteSheet sheet = new SpriteSheet(texture, filename);
+                    // Add the sprite sheet to the collection
+                    ProjectSession.AddSpriteSheet(sheet);
+                    //spriteSheetData.AddSpriteSheet(sheet);
 
                     // Store the image in the tile display window
                     tDisplay.SpriteImage = image;
@@ -510,30 +358,16 @@ namespace ProjectSandWindows
                 }
             }
 
-            // Add the sprite sheet to the collection
-            spriteSheetData.AddSpriteSheet(sheet);
-
             // Store these in the tile display
             tDisplay.LoadTileSheet(tileProperties.TileWidth, tileProperties.TileHeight,
                 tileProperties.TileSize.X, tileProperties.TileSize.Y, sheet);
 
-            // Set the camera
-            tileCamera.position = Vector2.Zero;
-            tDisplay.Camera = tileCamera;
-
-            // Enable the tile properties menu item
-            // NOTE:  This will set only one map to the tile set.  Since we're only using
-            // one tile set for all maps, we'll set everything to have this tile.  For further
+            // NOTE:  This will set all maps to the tile set.  For further
             // features, we might add the addition of multiple tile sets.
-            /**
-            // If a map is loaded, set the map to have this tile set
-            if (currentMap != null)
-                currentMap.SetSpriteSheet(tDisplay.Sheet);
-             */
-            // If there are maps created already, set all maps to use this tile set
-            for (int a = 0; a < tileMapData.Count; a++)
+            ProjectSession.SetSpriteSheet(tDisplay.Sheet);
+            for (int a = 0; a < ProjectSession.MapCount; a++)
             {
-                tileMapData[a].SetSpriteSheet(tDisplay.Sheet);
+                //tileMapData[a].SetSpriteSheet(tDisplay.Sheet);
 
                 // Adjust the scroll bars
                 AdjustScrollBars(a);
@@ -553,13 +387,14 @@ namespace ProjectSandWindows
             // Update the camera view and map display
             if (mapTabControl.TabCount != 0)
             {
-                currentMap = tileMapData[currentTabIndex];
-                mapCamera.position = Vector2.Zero;
-                currentMap.CameraChange(mapCamera);
+                //currentMap = tileMapData[currentTabIndex];
+                ProjectSession.SelectMap(currentTabIndex);
+                //mapCamera.position = Vector2.Zero;
+                //ProjectSession.UpdateMapCamera(mapCamera);
             }
             else
             {
-                currentMap = null;
+                //currentMap = null;
             }
 
             UpdateStatus();
@@ -583,12 +418,6 @@ namespace ProjectSandWindows
             display.Location = new System.Drawing.Point(0, 0);
             tab.Controls.Add(display);
             mapDisplay.Add(display);
-            
-            // Connect the events to the functions
-            display.MouseLeave += new EventHandler(mapDisplay_MouseLeave);
-            display.MouseMove += new MouseEventHandler(mapDisplay_MouseMove);
-            display.MouseEnter += new EventHandler(mapDisplay_MouseEnter);
-            display.MouseClick += new MouseEventHandler(display_MouseClick);
 
             // Add the scroll bars
             HScrollBar hsbScroll = new HScrollBar();
@@ -598,8 +427,6 @@ namespace ProjectSandWindows
             hsbScroll.LargeChange = cLargeScrollChange;
             hsbScroll.Minimum = 0;
             hsbScroll.Location = new System.Drawing.Point(0, display.Height);
-            hsbScroll.ValueChanged += new EventHandler(UpdateCamera);
-            hsbScroll.Scroll += new ScrollEventHandler(UpdateCameraScroll);
             tab.Controls.Add(hsbScroll);
             hsbMapDisplay.Add(hsbScroll);
 
@@ -610,10 +437,11 @@ namespace ProjectSandWindows
             vsbScroll.LargeChange = cLargeScrollChange;
             vsbScroll.Minimum = 0;
             vsbScroll.Location = new System.Drawing.Point(display.Width, 0);
-            vsbScroll.ValueChanged += new EventHandler(UpdateCamera);
-            vsbScroll.Scroll += new ScrollEventHandler(UpdateCameraScroll);
             tab.Controls.Add(vsbScroll);
             vsbMapDisplay.Add(vsbScroll);
+
+            // Add the scroll bars to the MapDisplay so it can control it
+            display.SetScrollBars(hsbScroll, vsbScroll);
         }
 
         /// <summary>
@@ -622,12 +450,13 @@ namespace ProjectSandWindows
         private void RemoveTab()
         {
             // Locate the tab name in the lists and remove them
-            int index = tileMapData.FindIndex(mapTabControl.SelectedTab.Text);
+            int index = ProjectSession.FindMapIndex(mapTabControl.SelectedTab.Text);
 
             mapDisplay.RemoveAt(index);
             hsbMapDisplay.RemoveAt(index);
             vsbMapDisplay.RemoveAt(index);
-            tileMapData.RemoveMap(mapTabControl.SelectedTab.Text);
+            //tileMapData.RemoveMap(mapTabControl.SelectedTab.Text);
+            ProjectSession.RemoveMap(mapTabControl.SelectedTab.Text);
 
             // Remove the tab
             mapTabControl.TabPages.Remove(mapTabControl.SelectedTab);
@@ -646,10 +475,15 @@ namespace ProjectSandWindows
 
         #region Map Properties
 
+        /// <summary>
+        /// Handles clicking the new map menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the necessary information
-            int num = tileMapData.Count + 1;
+            int num = ProjectSession.MapCount + 1;
             mapProperties.ClearForm();
             mapProperties.Identifier = "Map" + num.ToString();
 
@@ -668,6 +502,7 @@ namespace ProjectSandWindows
                 newMap.MapName = mapProperties.MapName;
 
                 // Add the map to the collection
+                /*
                 tileMapData.AddMap(newMap);
 
                 // If there's a tileset loaded, load the sheet into the map
@@ -676,6 +511,8 @@ namespace ProjectSandWindows
 
                 // Set as the current map
                 currentMap = newMap;
+                */
+                ProjectSession.AddMap(newMap);
 
                 // Switch to the new tab, which will be at the end
                 mapTabControl.SelectedIndex = mapTabControl.TabCount - 1;
@@ -690,35 +527,39 @@ namespace ProjectSandWindows
                 showCollisionToolStripMenuItem.Enabled = true;
 
                 // Update the map display
-                currentMap.ShowGrid = showGridToolStripMenuItem.Checked;
+                ProjectSession.ToggleGrid(showGridToolStripMenuItem.Checked);
+                //currentMap.ShowGrid = showGridToolStripMenuItem.Checked;
                 UpdateMapDisplay();
 
                 // Update the status at the bottom
                 UpdateStatus();
 
-                // Update the camera and map display
+                // Update the map display
                 mapDisplay[currentTabIndex].Map = newMap;
-                mapCamera.position = Vector2.Zero;
-                currentMap.CameraChange(mapCamera);
             }
         }
 
+        /// <summary>
+        /// Handles the map properties menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mapPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Fill in map properties with the current information on the map selected
             mapProperties.ClearForm();
             mapProperties.Identifier = mapTabControl.SelectedTab.Text;
-            mapProperties.HorizontalTiles = currentMap.MapWidth;
-            mapProperties.VerticalTiles = currentMap.MapHeight;
-            mapProperties.MapName = currentMap.MapName;
+            mapProperties.HorizontalTiles = ProjectSession.CurrentMap.MapWidth;
+            mapProperties.VerticalTiles = ProjectSession.CurrentMap.MapHeight;
+            mapProperties.MapName = ProjectSession.CurrentMap.MapName;
 
             if (mapProperties.ShowDialog() == DialogResult.OK)
             {
                 // Change the properties of the map and resize if necessary
-                currentMap.Identifier = mapProperties.Identifier;
+                ProjectSession.CurrentMap.Identifier = mapProperties.Identifier;
                 mapTabControl.SelectedTab.Text = mapProperties.Identifier;
-                currentMap.MapName = mapProperties.MapName;
-                currentMap.ResizeMap(mapProperties.HorizontalTiles, mapProperties.VerticalTiles);
+                ProjectSession.CurrentMap.MapName = mapProperties.MapName;
+                ProjectSession.CurrentMap.ResizeMap(mapProperties.HorizontalTiles, mapProperties.VerticalTiles);
 
                 // Using the map size, resize the scroll bars
                 AdjustScrollBars(currentTabIndex);
@@ -737,9 +578,9 @@ namespace ProjectSandWindows
         {
             int maxWidth, maxHeight;
 
-			if (tileMapData[currentTab].MapWidthInPixels > mapDisplay[currentTab].Width)
+			if (ProjectSession.GetMap(currentTab).MapWidthInPixels > mapDisplay[currentTab].Width)
 			{
-                maxWidth = tileMapData[currentTab].MapWidthInPixels - mapDisplay[currentTab].Width;
+                maxWidth = ProjectSession.GetMap(currentTab).MapWidthInPixels - mapDisplay[currentTab].Width;
 
                 hsbMapDisplay[currentTab].Enabled = true;
                 hsbMapDisplay[currentTab].Maximum = (maxWidth + cLargeScrollChange) - 1;
@@ -750,9 +591,9 @@ namespace ProjectSandWindows
                 hsbMapDisplay[currentTab].Enabled = false;
 			}
 
-            if (tileMapData[currentTab].MapHeightInPixels > mapDisplay[currentTab].Height)
+            if (ProjectSession.GetMap(currentTab).MapHeightInPixels > mapDisplay[currentTab].Height)
 			{
-                maxHeight = tileMapData[currentTab].MapHeightInPixels - mapDisplay[currentTab].Height;
+                maxHeight = ProjectSession.GetMap(currentTab).MapHeightInPixels - mapDisplay[currentTab].Height;
 
                 vsbMapDisplay[currentTab].Enabled = true;
                 vsbMapDisplay[currentTab].Maximum = (maxHeight + cLargeScrollChange) - 1;
@@ -782,49 +623,15 @@ namespace ProjectSandWindows
             RemoveTab();
         }
 
-        /// <summary>
-        /// Used mainly for direct values changes to the scroll bars
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void UpdateCamera(object sender, EventArgs e)
+        private void lstLayers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mapCamera.position.X = hsbMapDisplay[currentTabIndex].Value;
-            mapCamera.position.Y = vsbMapDisplay[currentTabIndex].Value;
-            currentMap.CameraChange(mapCamera);
-        }
-
-        /// <summary>
-        /// Updates the camera when the scroll bar is changing
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void UpdateCameraScroll(object sender, ScrollEventArgs e)
-        {
-            if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+            if (mapDisplay != null && mapDisplay.Count > 0)
             {
-                // If the scroll bar is being dragged or stopped moving, update the position
-                if (e.Type == ScrollEventType.ThumbPosition || e.Type == ScrollEventType.ThumbTrack ||
-                    e.Type == ScrollEventType.EndScroll)
-                    mapCamera.position.X = e.NewValue;
-
-                //Console.WriteLine("Horiz: " + e.NewValue.ToString());
+                if (lstLayers.SelectedIndex == -1)
+                    mapDisplay[currentTabIndex].CurrentLayer = -1;
+                else
+                    mapDisplay[currentTabIndex].CurrentLayer = 2 - lstLayers.SelectedIndex;
             }
-            else
-            {
-                // If the scroll bar is being dragged or stopped moving, update the position
-                if (e.Type == ScrollEventType.ThumbPosition || e.Type == ScrollEventType.ThumbTrack ||
-                    e.Type == ScrollEventType.EndScroll)
-                    mapCamera.position.Y = e.NewValue;
-
-                //Console.WriteLine("Vert: " + e.NewValue.ToString());
-            }
-
-            // Update the camera
-            currentMap.CameraChange(mapCamera);
-
-            // Force the display to update
-            mapDisplay[currentTabIndex].Invalidate();
         }
 
         #endregion
@@ -845,8 +652,8 @@ namespace ProjectSandWindows
             else
             {
                 // Update the status at the bottom
-                mapSizeStatusLabel.Text = "Size: (" + currentMap.MapWidth + ", " +
-                   currentMap.MapHeight + ")";
+                mapSizeStatusLabel.Text = "Size: (" + ProjectSession.MapWidth + ", " +
+                   ProjectSession.MapHeight + ")";
             }
         }
 
@@ -858,14 +665,12 @@ namespace ProjectSandWindows
         private void UpdateMapDisplay()
         {
             // Check to see if the current map isn't null
-            if (currentMap != null)
+            if (ProjectSession.CurrentMap != null)
             {
                 // Toggles on and off the collision layer
-                if (currentTool == EditorTool.PaintCollision || currentTool == EditorTool.EraseCollision ||
-                    showCollisionToolStripMenuItem.Checked == true)
-                    currentMap.ShowCollision = true;
-                else
-                    currentMap.ShowCollision = false;
+                bool flag = (currentTool == EditorTool.PaintCollision || currentTool == EditorTool.EraseCollision ||
+                    showCollisionToolStripMenuItem.Checked == true);
+                ProjectSession.ToggleCollisionView(flag);
             }
         }
 
@@ -907,19 +712,8 @@ namespace ProjectSandWindows
 
         private void exportXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ExporterForm form = new ExporterForm(tileMapData[0]);
+            ExporterForm form = new ExporterForm(ProjectSession.GetMap(0));
             form.ShowDialog();
-        }
-
-        private void lstLayers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (mapDisplay != null && mapDisplay.Count > 0)
-            {
-                if (lstLayers.SelectedIndex == -1)
-                    mapDisplay[currentTabIndex].CurrentLayer = -1;
-                else
-                    mapDisplay[currentTabIndex].CurrentLayer = 2 - lstLayers.SelectedIndex;
-            }
         }
 
         private void xMLSettingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -933,10 +727,10 @@ namespace ProjectSandWindows
             // DEBUG!  A generic button use to debug certain functions.  Used for testing purposes and
             // can crash the program.
             // For this test, just testing copying data to a map (if on exists)
-            if (tileMapData.Count > 0)
+            if (ProjectSession.MapCount > 0)
             {
-                int height = tileMapData[0].MapHeight;
-                int width = tileMapData[0].MapWidth;
+                int height = ProjectSession.GetMap(0).MapHeight;
+                int width = ProjectSession.GetMap(0).MapWidth;
 
                 // Create a dummy data to replace
                 int[,] dummyData = new int[height, width];
@@ -945,7 +739,7 @@ namespace ProjectSandWindows
                         dummyData[i, j] = 10;
 
                 // Replace the map data
-                tileMapData[0].SetMap(dummyData, 0);
+                ProjectSession.GetMap(0).SetMap(dummyData, 0);
             }
         }
     }

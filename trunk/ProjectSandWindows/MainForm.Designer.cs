@@ -362,7 +362,7 @@ namespace ProjectSandWindows
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
             this.zoomInToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
             this.zoomInToolStripMenuItem.ShowShortcutKeys = false;
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             // 
             // zoomOutToolStripMenuItem
@@ -370,7 +370,7 @@ namespace ProjectSandWindows
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
             this.zoomOutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
             this.zoomOutToolStripMenuItem.ShowShortcutKeys = false;
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             // 
             // actualSizeToolStripMenuItem
@@ -378,7 +378,7 @@ namespace ProjectSandWindows
             this.actualSizeToolStripMenuItem.Name = "actualSizeToolStripMenuItem";
             this.actualSizeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
             this.actualSizeToolStripMenuItem.ShowShortcutKeys = false;
-            this.actualSizeToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.actualSizeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.actualSizeToolStripMenuItem.Text = "Actual Size";
             // 
             // mapToolStripMenuItem
@@ -396,7 +396,7 @@ namespace ProjectSandWindows
             // newMapToolStripMenuItem
             // 
             this.newMapToolStripMenuItem.Name = "newMapToolStripMenuItem";
-            this.newMapToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.newMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newMapToolStripMenuItem.Text = "New Map...";
             this.newMapToolStripMenuItem.Click += new System.EventHandler(this.newMapToolStripMenuItem_Click);
             // 
@@ -404,14 +404,14 @@ namespace ProjectSandWindows
             // 
             this.removeMapToolStripMenuItem.Enabled = false;
             this.removeMapToolStripMenuItem.Name = "removeMapToolStripMenuItem";
-            this.removeMapToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.removeMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.removeMapToolStripMenuItem.Text = "Remove Map";
             this.removeMapToolStripMenuItem.Click += new System.EventHandler(this.removeMapToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(138, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(149, 6);
             // 
             // showGridToolStripMenuItem
             // 
@@ -420,7 +420,7 @@ namespace ProjectSandWindows
             this.showGridToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showGridToolStripMenuItem.Enabled = false;
             this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
-            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showGridToolStripMenuItem.Text = "Show Grid";
             this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showGridToolStripMenuItem_Click);
             // 
@@ -429,7 +429,7 @@ namespace ProjectSandWindows
             this.showCollisionToolStripMenuItem.CheckOnClick = true;
             this.showCollisionToolStripMenuItem.Enabled = false;
             this.showCollisionToolStripMenuItem.Name = "showCollisionToolStripMenuItem";
-            this.showCollisionToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.showCollisionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showCollisionToolStripMenuItem.Text = "Show Collision";
             this.showCollisionToolStripMenuItem.Click += new System.EventHandler(this.showCollisionToolStripMenuItem_Click);
             // 
@@ -508,7 +508,6 @@ namespace ProjectSandWindows
             // saveButton
             // 
             this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveButton.Enabled = false;
             this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
             this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveButton.Name = "saveButton";
@@ -729,7 +728,6 @@ namespace ProjectSandWindows
             // 
             // tDisplay
             // 
-            this.tDisplay.Camera = null;
             this.tDisplay.Location = new System.Drawing.Point(782, 216);
             this.tDisplay.Name = "tDisplay";
             this.tDisplay.Size = new System.Drawing.Size(207, 432);
