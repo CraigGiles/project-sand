@@ -298,10 +298,8 @@ namespace SandTileEngine
         /// <param name="index">Index of the map</param>
         public static void SelectMap(int index)
         {
-            CheckBounds(index);
-
-            // Selected map is now the curent map
-            singleton.currentMap = MapData[index];
+            if (CheckBounds(index))
+                singleton.currentMap = MapData[index];
         }
 
         /// <summary>
@@ -311,10 +309,10 @@ namespace SandTileEngine
         /// <returns>TileMap of the selected index</returns>
         public static TileMap GetMap(int index)
         {
-            CheckBounds(index);
-
-            // Return the selected map
-            return MapData[index];
+            if (CheckBounds(index))
+                return MapData[index];
+            else
+                return null;
         }
 
         /// <summary>
@@ -397,7 +395,7 @@ namespace SandTileEngine
                 {
                     // Place the tile in the correct layer(s)
                     int index = (tiles.Y + i) * width + (tiles.X + j);
-                    CurrentMap[2 - layerIndex].SetTile(r, c, index);
+                    CurrentMap[layerIndex].SetTile(r, c, index);
                 }
             }
         }

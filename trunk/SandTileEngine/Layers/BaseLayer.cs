@@ -373,7 +373,7 @@ namespace SandTileEngine
         /// <param name="tile">Tile index number to use</param>
         public void SetTile(int row, int col, int tile)
         {
-            if (row >= 0 && row < Width && col >= 0 && col < Height)
+            if (row >= 0 && row < Height && col >= 0 && col < Width)
                 map[row, col] = tile;
         }
 
@@ -400,6 +400,11 @@ namespace SandTileEngine
 
             // Creates a new array with the dimenions
             int[,] newMap = new int[height, width];
+
+            // Set all the tiles in the new map as invalid
+            for (int i = 0; i < height; i++)
+                for (int j = 0; j < width; j++)
+                    newMap[i, j] = -1;
 
             // Determines the smaller grid and loops over what is necessary
             int copyRows = Math.Min(height, Height);

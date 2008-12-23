@@ -368,6 +368,10 @@ namespace SandTileEngine
                 // Goes through each layer and resizes them
                 for (int i = 0; i < tileLayer.Count; i++)
                     tileLayer[i].ResizeLayer(width, height);
+
+                // Resizes the grid layer and collision layer
+                gridLayer.ResizeLayer(width, height);
+                collisionLayer.ResizeLayer(width, height);
             }
 
             return true;
