@@ -1,8 +1,8 @@
 #region File Description
 //-----------------------------------------------------------------------------
-// SandTileEngine.cs
+// TileMap.cs
 //
-// Copyright (C) David Hsu
+// Copyright (C) Project Sand
 //-----------------------------------------------------------------------------
 #endregion
 
@@ -290,8 +290,7 @@ namespace SandTileEngine
                 tileLayer[i].CameraZoom = camera.Zoom;
             }
             gridLayer.CameraPosition = collisionLayer.CameraPosition = camera.position;
-            gridLayer.CameraZoom = collisionLayer.CameraZoom = camera.Zoom;
-            
+            gridLayer.CameraZoom = collisionLayer.CameraZoom = camera.Zoom;    
         }
 
         /// <summary>

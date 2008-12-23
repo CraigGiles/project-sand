@@ -33,6 +33,14 @@ namespace SandTileEngine
             get { return collection[i]; }
         }
 
+        /// <summary>
+        /// Returns the number of sprite sheets currently in the collection
+        /// </summary>
+        public int Count
+        {
+            get { return collection.Count; }
+        }
+
         #endregion
 
         #region Public Methods

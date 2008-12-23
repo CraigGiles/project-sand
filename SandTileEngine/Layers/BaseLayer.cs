@@ -373,7 +373,7 @@ namespace SandTileEngine
         /// <param name="tile">Tile index number to use</param>
         public void SetTile(int row, int col, int tile)
         {
-            if (row >= 0 && row < tileWidth && col >= 0 && col < tileHeight)
+            if (row >= 0 && row < Width && col >= 0 && col < Height)
                 map[row, col] = tile;
         }
 

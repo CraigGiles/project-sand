@@ -7,14 +7,38 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SandTileEngine
 {
+    using Image = System.Drawing.Image;
+    using Bitmap = System.Drawing.Bitmap;
+
     /// <summary>
-    /// Helper class to create transparent key tiles based on a provided color key.  Note that supposedly,
-    /// XNA 3.0 has this support built in so this will not be necessary when we upgrade, but will be useful
-    /// for XNA 2.0 functions.
+    /// Helper class to create transparent key tiles based on a provided color key (may not be needed for
+    /// XNA 3.0) and provide loading procedures for loading tile sheets from a file.
     /// </summary>
     public class TextureHelper
     {
-        // Sets the colour key to be used for a Texture2D object
+        #region Fields
+
+        // This is needed in order to create Texture2D.  Should be initialized from the main form.
+        private static GraphicsDevice graphics;
+
+        #endregion
+
+        /// <summary>
+        /// Sets the graphics device for this class.  Should be set in the main form when initializing
+        /// and is needed to load Texture2D objects.
+        /// </summary>
+        /// <param name="device">Graphics device to use</param>
+        public static void SetGraphics(GraphicsDevice device)
+        {
+            graphics = device;
+        }
+
+        /// <summary>
+        /// Sets the colour key to be used for a Texture2D object
+        /// </summary>
+        /// <param name="texture">Texture to modify</param>
+        /// <param name="colourKey">Color to be transparent in the texture</param>
+        /// <returns>Texture2D with the specified color transparent</returns>
         public static Texture2D SetColourKey(Texture2D texture, Color colourKey)
         {
             // Make sure the texture has been loaded
@@ -47,6 +71,44 @@ namespace SandTileEngine
 
             // Return the results
             return texture;
+        }
+
+        /// <summary>
+        /// Creates a sprite sheet with the provided filename of the texture and
+        /// the transparency color
+        /// </summary>
+        /// <param name="filename">Location of the texture file</param>
+        /// <param name="transparentColor">Color to be transparent in the tile set</param>
+        /// <returns>SpriteSheet from the provided information</returns>
+        public static SpriteSheet CreateTileSheet(string filename, Color transparentColor)
+        {
+            // Note that if the graphics device hasn't been set yet, don't do anything
+            if (graphics == null)
+            {
+                Console.WriteLine("[TextureHelper::CreateTileSheet]-> Graphics device hasn't been set.  Not doing anything!");
+                return null;
+            }
+
+            // Loads a bitmap from the file to get the dimensions
+            Bitmap image = (Bitmap)Image.FromFile(filename);
+
+            // Set the color key parameter
+            // NOTE:  This method will only make one color transparent.  Do we want multiple color support?
+            TextureCreationParameters textureParam = new TextureCreationParameters();
+            textureParam.Width = image.Width;
+            textureParam.Height = image.Height;
+            textureParam.Depth = 0;
+            textureParam.MipLevels = 0;
+            textureParam.MipFilter = FilterOptions.None;
+            textureParam.Filter = FilterOptions.None;
+            textureParam.Format = SurfaceFormat.Unknown;
+            textureParam.TextureUsage = TextureUsage.None;
+            textureParam.ColorKey = transparentColor;
+
+            Texture2D texture = Texture2D.FromFile(graphics, filename, textureParam);
+
+            // Create a new sheet
+            return new SpriteSheet(texture, filename);
         }
     }
 }

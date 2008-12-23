@@ -40,7 +40,7 @@ namespace ProjectSandWindows
         SpriteBatch spriteBatch;
         SpriteSheetLayer sheetLayer;
         GridLayer gridLayer;
-        Camera camera;
+        Camera camera = new Camera();
 
         // Image file for displaying in the properties window
         Bitmap spriteImage;
@@ -87,15 +87,6 @@ namespace ProjectSandWindows
                 else
                     return null;
             }
-        }
-
-        /// <summary>
-        /// Camera used for viewing the tiles
-        /// </summary>
-        public Camera Camera
-        {
-            get { return camera; }
-            set { camera = value; }
         }
 
         /// <summary>
@@ -380,6 +371,10 @@ namespace ProjectSandWindows
 
             // Reset the scroll bar values
             hsbTileDisplay.Value = vsbTileDisplay.Value = 0;
+
+            // Reset the camera
+            camera.position = Vector2.Zero;
+
         }
 
         #endregion
